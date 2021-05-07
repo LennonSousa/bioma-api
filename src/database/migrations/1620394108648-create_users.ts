@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class createBanks1620235864083 implements MigrationInterface {
+export class createUsers1620394108648 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(new Table({
-            name: 'banks',
+            name: 'users',
             columns: [
                 {
                     name: 'id',
@@ -14,61 +14,58 @@ export class createBanks1620235864083 implements MigrationInterface {
                     generationStrategy: 'uuid',
                 },
                 {
-                    name: 'agency',
+                    name: 'name',
                     type: 'varchar',
-                },
-                {
-                    name: 'address',
-                    type: 'varchar',
-                    isNullable: true,
-                },
-                {
-                    name: 'city',
-                    type: 'varchar',
-                },
-                {
-                    name: 'state',
-                    type: 'varchar',
-                },
-                {
-                    name: 'sector',
-                    type: 'varchar',
-                },
-                {
-                    name: 'department',
-                    type: 'varchar',
-                    isNullable: true,
                 },
                 {
                     name: 'phone',
-                    type: 'varchar',
+                    type: 'varchar(100)',
                     isNullable: true,
                 },
                 {
-                    name: 'cellphone',
+                    name: 'email',
                     type: 'varchar',
-                    isNullable: true,
                 },
                 {
-                    name: 'institution_id',
+                    name: 'password',
                     type: 'varchar',
                 },
+                {
+                    name: 'active',
+                    type: 'boolean',
+                    default: false,
+                },
+                {
+                    name: 'paused',
+                    type: 'boolean',
+                    default: false,
+                },
+                {
+                    name: 'created_at',
+                    type: 'datetime',
+                    default: 'Now()',
+                },
+                {
+                    name: 'type_id',
+                    type: 'integer',
+                    unsigned: true,
+                }
             ],
             foreignKeys: [
                 {
-                    name: 'Institution',
-                    columnNames: ['institution_id'],
-                    referencedTableName: 'institutions',
+                    name: 'UserType',
+                    columnNames: ['type_id'],
+                    referencedTableName: 'user_types',
                     referencedColumnNames: ['id'],
                     onUpdate: 'CASCADE',
                     onDelete: 'RESTRICT',
                 }
-            ]
+            ],
         }));
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable('banks');
+        await queryRunner.dropTable('users');
     }
 
 }

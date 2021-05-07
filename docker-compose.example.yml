@@ -9,7 +9,7 @@ services:
             - '3306:3306'
         environment:
             MYSQL_DATABASE: bioma_deploy
-            MYSQL_ROOT_PASSWORD: Parece@falar1
+            MYSQL_ROOT_PASSWORD: example
 
     api:
         depends_on:

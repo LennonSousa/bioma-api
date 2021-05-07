@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class createProjectDocs1620308978605 implements MigrationInterface {
+export class createCustomerAttachments1620392268745 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(new Table({
-            name: 'project_docs',
+            name: 'customer_attachments',
             columns: [
                 {
                     name: 'id',
@@ -14,51 +14,50 @@ export class createProjectDocs1620308978605 implements MigrationInterface {
                     generationStrategy: 'uuid',
                 },
                 {
+                    name: 'name',
+                    type: 'varchar',
+                },
+                {
                     name: 'path',
                     type: 'varchar',
                 },
                 {
                     name: 'received_at',
-                    type: 'datetime',
-                    default: 'Now()',
+                    type: 'date',
                 },
                 {
-                    name: 'checked',
+                    name: 'expire',
                     type: 'boolean',
                     default: false,
                 },
                 {
-                    name: 'project_id',
+                    name: 'expire_at',
                     type: 'varchar',
                 },
                 {
-                    name: 'project_doc_id',
-                    type: 'varchar'
-                }
+                    name: 'renewal',
+                    type: 'varchar(100)',
+                },
+                {
+                    name: 'customer_id',
+                    type: 'varchar',
+                },
             ],
             foreignKeys: [
                 {
-                    name: 'DocProject',
-                    columnNames: ['project_id'],
-                    referencedTableName: 'projects',
+                    name: 'AttachmentCustomer',
+                    columnNames: ['customer_id'],
+                    referencedTableName: 'customers',
                     referencedColumnNames: ['id'],
                     onUpdate: 'CASCADE',
                     onDelete: 'CASCADE',
                 },
-                {
-                    name: 'DocDocsProject',
-                    columnNames: ['project_doc_id'],
-                    referencedTableName: 'docs_project',
-                    referencedColumnNames: ['id'],
-                    onUpdate: 'CASCADE',
-                    onDelete: 'RESTRICT',
-                }
-            ]
+            ],
         }));
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable('project_docs');
+        await queryRunner.dropTable('customer_attachments');
     }
 
 }

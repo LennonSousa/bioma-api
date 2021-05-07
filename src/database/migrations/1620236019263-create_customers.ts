@@ -51,7 +51,7 @@ export class createCustomers1620236019263 implements MigrationInterface {
                     type: 'varchar',
                 },
                 {
-                    name: 'country',
+                    name: 'state',
                     type: 'varchar',
                 },
                 {

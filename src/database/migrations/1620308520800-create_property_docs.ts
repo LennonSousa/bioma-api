@@ -8,19 +8,19 @@ export class createPropertyDocs1620308520800 implements MigrationInterface {
             columns: [
                 {
                     name: 'id',
-                    type: 'integer',
-                    unsigned: true,
+                    type: 'varchar',
                     isPrimary: true,
                     isGenerated: true,
-                    generationStrategy: 'increment'
+                    generationStrategy: 'uuid',
                 },
                 {
                     name: 'path',
                     type: 'varchar',
                 },
                 {
-                    name: 'expire',
-                    type: 'date',
+                    name: 'received_at',
+                    type: 'datetime',
+                    default: 'Now()',
                 },
                 {
                     name: 'checked',

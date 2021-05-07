@@ -8,19 +8,19 @@ export class createCustomerDocs1620238509511 implements MigrationInterface {
             columns: [
                 {
                     name: 'id',
-                    type: 'integer',
-                    unsigned: true,
+                    type: 'varchar',
                     isPrimary: true,
                     isGenerated: true,
-                    generationStrategy: 'increment'
+                    generationStrategy: 'uuid',
                 },
                 {
                     name: 'path',
                     type: 'varchar',
                 },
                 {
-                    name: 'expire',
-                    type: 'date',
+                    name: 'received_at',
+                    type: 'datetime',
+                    default: 'Now()',
                 },
                 {
                     name: 'checked',
@@ -46,7 +46,7 @@ export class createCustomerDocs1620238509511 implements MigrationInterface {
                     onDelete: 'CASCADE',
                 },
                 {
-                    name: 'DocFromDoc',
+                    name: 'DocFromDocs',
                     columnNames: ['doc_id'],
                     referencedTableName: 'docs_customer',
                     referencedColumnNames: ['id'],

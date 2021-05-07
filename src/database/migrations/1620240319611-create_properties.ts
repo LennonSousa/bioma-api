@@ -33,7 +33,7 @@ export class createProperties1620240319611 implements MigrationInterface {
                         type: 'varchar',
                     },
                     {
-                        name: 'country',
+                        name: 'state',
                         type: 'varchar(5)'
                     },
                     {

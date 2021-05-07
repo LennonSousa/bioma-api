@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 
-//import './database/connection';
+import './database/connection';
 
 require('dotenv/config');
 
