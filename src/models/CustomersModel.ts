@@ -50,6 +50,9 @@ export default class CustomersModel {
     @Column()
     birth: Date;
 
+    @Column()
+    created_at: Date;
+
     @OneToMany(() => CustomerDoc, customerDoc => customerDoc.doc)
     @JoinColumn({ name: 'customer_id' })
     docs: CustomerDoc[];

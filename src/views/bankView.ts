@@ -1,5 +1,6 @@
 import Bank from '../models/BanksModel';
 import institutionView from './institutionView';
+import projectView from './projectView';
 
 export default {
     render(bank: Bank) {
@@ -14,6 +15,7 @@ export default {
             phone: bank.phone,
             cellphone: bank.cellphone,
             institution: institutionView.render(bank.institution),
+            projects: projectView.renderMany(bank.projects),
         }
     },
 
