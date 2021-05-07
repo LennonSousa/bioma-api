@@ -5,7 +5,7 @@ export class createEventsProjects1620313621224 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(new Table
             ({
-                name: 'events_projects',
+                name: 'events_project',
                 columns: [
                     {
                         name: 'id',
@@ -34,7 +34,7 @@ export class createEventsProjects1620313621224 implements MigrationInterface {
                         default: 'Now()',
                     },
                     {
-                        name: 'finished_in',
+                        name: 'finished_at',
                         type: 'datetime',
                         default: 'Now()',
                     },

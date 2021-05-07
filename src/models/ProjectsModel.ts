@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import Customer from './CustomersModel';
 import Bank from './BanksModel';
@@ -6,6 +6,7 @@ import Property from './PropertiesModel';
 import ProjectType from './ProjectTypesModel';
 import ProjectStatus from './ProjectStatusModel';
 import ProjectLine from './ProjectLinesModel';
+import Event from './EventsProjectModel';
 
 @Entity('projects')
 export default class ProjectsModel {
@@ -59,4 +60,8 @@ export default class ProjectsModel {
     @ManyToOne(() => ProjectLine, projectLine => projectLine.projects)
     @JoinColumn({ name: 'project_line_id' })
     line: ProjectLine;
+
+    @OneToMany(() => Event, event => event.project)
+    @JoinColumn({ name: 'project_id' })
+    events: Event[];
 }

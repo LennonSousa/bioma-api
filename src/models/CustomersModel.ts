@@ -3,6 +3,8 @@ import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 't
 import CustomerDoc from './CustomerDocsModel';
 import Property from './PropertiesModel';
 import Project from './ProjectsModel';
+import Licensing from './LicensingsModel';
+import Attachment from './CustomerAttachmentsModel';
 
 @Entity('customers')
 export default class CustomersModel {
@@ -59,4 +61,12 @@ export default class CustomersModel {
     @OneToMany(() => Project, project => project.customer)
     @JoinColumn({ name: 'customer_id' })
     projects: Project[];
+
+    @OneToMany(() => Licensing, licensing => licensing.customer)
+    @JoinColumn({ name: 'customer_id' })
+    licensings: Licensing[];
+
+    @OneToMany(() => Attachment, attachment => attachment.customer)
+    @JoinColumn({ name: 'customer_id' })
+    attachments: Attachment[];
 }

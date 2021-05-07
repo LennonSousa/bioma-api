@@ -34,7 +34,7 @@ export class createEventsLicensing1620313602578 implements MigrationInterface {
                         default: 'Now()',
                     },
                     {
-                        name: 'finished_in',
+                        name: 'finished_at',
                         type: 'datetime',
                         default: 'Now()',
                     },
