@@ -6,4 +6,3 @@ docker-compose.yml
 
 /uploads/*
 !/uploads/.gitkeep
-docker-compose.yml
