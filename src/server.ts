@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 
 import './database/connection';
+import userAuthRoutes from './routes/user.auth.routes';
 
 require('dotenv/config');
 
@@ -17,7 +18,7 @@ app.use(cors({
 
 app.use(express.json());
 
-app.get('/', (req, res) => { return res.json({ message: 'Oks' }) })
+app.use(userAuthRoutes);
 
 app.listen(process.env.PORT || 3333, () => {
     console.info(`> Server listening on port: ${process.env.PORT || 3333}`);

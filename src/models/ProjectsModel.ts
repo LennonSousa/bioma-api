@@ -14,9 +14,6 @@ export default class ProjectsModel {
     readonly id: string;
 
     @Column()
-    name: string;
-
-    @Column()
     value: number;
 
     @Column()

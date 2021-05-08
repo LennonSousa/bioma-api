@@ -11,7 +11,6 @@ export default {
     render(project: Project) {
         return {
             id: project.id,
-            name: project.name,
             value: project.value,
             deal: project.deal,
             contract: project.contract,

@@ -57,6 +57,7 @@ export class createCustomers1620236019263 implements MigrationInterface {
                 {
                     name: 'owner',
                     type: 'varchar(100)',
+                    isNullable: true,
                 },
                 {
                     name: 'notes',
