@@ -2,6 +2,10 @@ import Project from '../models/ProjectsModel';
 import customerView from './customerView';
 import bankView from './bankView';
 import propertyView from './propertyView';
+import projectTypeView from './projectTypeView';
+import projectStatusView from './projectStatusView';
+import projectLineView from './projectLineView';
+import eventProjectView from './eventProjectView';
 
 export default {
     render(project: Project) {
@@ -18,10 +22,10 @@ export default {
             customer: customerView.render(project.customer),
             bank: bankView.render(project.bank),
             property: propertyView.render(project.property),
-            type: project.type,
-            status: project.status,
-            line: project.line,
-            events: project.events,
+            type: projectTypeView.render(project.type),
+            status: projectStatusView.render(project.status),
+            line: projectLineView.render(project.line),
+            events: eventProjectView.renderMany(project.events),
         }
     },
 

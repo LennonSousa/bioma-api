@@ -3,6 +3,7 @@ import propertyView from './propertyView';
 import projectView from './projectView';
 import customerDocView from './customerDocView';
 import licensingView from './licensingView';
+import attachmentView from './customerAttachmentView';
 
 export default {
     render(customer: Customer) {
@@ -26,7 +27,7 @@ export default {
             properties: propertyView.renderMany(customer.properties),
             projects: projectView.renderMany(customer.projects),
             licensings: licensingView.renderMany(customer.licensings),
-            attachments: customer.attachments,
+            attachments: attachmentView.renderMany(customer.attachments),
         }
     },
 
