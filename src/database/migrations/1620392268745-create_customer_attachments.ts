@@ -32,11 +32,12 @@ export class createCustomerAttachments1620392268745 implements MigrationInterfac
                 },
                 {
                     name: 'expire_at',
-                    type: 'varchar',
+                    type: 'date',
                 },
                 {
                     name: 'renewal',
                     type: 'varchar(100)',
+                    isNullable: true,
                 },
                 {
                     name: 'customer_id',

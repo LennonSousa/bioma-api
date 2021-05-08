@@ -14,6 +14,6 @@ export default class LicensingsStatusModel {
     order: number;
 
     @OneToMany(() => Licensing, licensings => licensings.status)
-    @JoinColumn({ name: 'institution_id' })
+    @JoinColumn({ name: 'licensing_status_id' })
     licensings: Licensing[];
 }
