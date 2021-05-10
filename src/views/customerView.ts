@@ -24,11 +24,11 @@ export default {
             birth: customer.birth,
             created_by: customer.created_by,
             created_at: customer.created_at,
-            docs: customerDocView.renderMany(customer.docs),
-            properties: propertyView.renderMany(customer.properties),
-            projects: projectView.renderMany(customer.projects),
-            licensings: licensingView.renderMany(customer.licensings),
-            attachments: attachmentView.renderMany(customer.attachments),
+            docs: customer.docs ? customerDocView.renderMany(customer.docs) : [],
+            properties: customer.properties ? propertyView.renderMany(customer.properties) : [],
+            projects: customer.projects ? projectView.renderMany(customer.projects) : [],
+            licensings: customer.licensings ? licensingView.renderMany(customer.licensings) : [],
+            attachments: customer.attachments ? attachmentView.renderMany(customer.attachments) : [],
         }
     },
 

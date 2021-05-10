@@ -15,7 +15,7 @@ export default {
             phone: bank.phone,
             cellphone: bank.cellphone,
             institution: institutionView.render(bank.institution),
-            projects: projectView.renderMany(bank.projects),
+            projects: bank.projects ? projectView.renderMany(bank.projects) : [],
         }
     },
 

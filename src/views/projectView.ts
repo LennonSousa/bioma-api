@@ -26,7 +26,7 @@ export default {
             type: projectTypeView.render(project.type),
             status: projectStatusView.render(project.status),
             line: projectLineView.render(project.line),
-            events: eventProjectView.renderMany(project.events),
+            events: project.events ? eventProjectView.renderMany(project.events) : [],
         }
     },
 

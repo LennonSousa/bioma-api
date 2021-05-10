@@ -10,6 +10,15 @@ export default {
         const projectsRepository = getCustomRepository(ProjectsRepository);
 
         const projects = await projectsRepository.find({
+            relations: [
+                'customer',
+                'bank',
+                'bank.institution',
+                'property',
+                'type',
+                'status',
+                'line',
+            ],
             order: {
                 created_at: "ASC"
             }
@@ -27,6 +36,7 @@ export default {
             relations: [
                 'customer',
                 'bank',
+                'bank.institution',
                 'property',
                 'type',
                 'status',
@@ -76,7 +86,7 @@ export default {
             deal: Yup.number().required(),
             contract: Yup.string().notRequired(),
             notes: Yup.string().notRequired(),
-            warnings: Yup.boolean().required(),
+            warnings: Yup.boolean().notRequired(),
             customer: Yup.string().required(),
             type: Yup.string().required(),
             line: Yup.string().required(),
@@ -137,7 +147,7 @@ export default {
             deal: Yup.number().required(),
             contract: Yup.string().notRequired(),
             notes: Yup.string().notRequired(),
-            warnings: Yup.boolean().required(),
+            warnings: Yup.boolean().notRequired(),
             customer: Yup.string().required(),
             type: Yup.string().required(),
             line: Yup.string().required(),

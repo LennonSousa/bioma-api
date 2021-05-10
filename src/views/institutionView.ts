@@ -6,7 +6,7 @@ export default {
         return {
             id: institution.id,
             name: institution.name,
-            banks: bankView.renderMany(institution.banks),
+            banks: institution.banks ? bankView.renderMany(institution.banks) : [],
         }
     },
 

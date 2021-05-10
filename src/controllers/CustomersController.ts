@@ -69,6 +69,7 @@ export default {
             notes,
             warnings,
             birth,
+            created_by: 'ex',
         };
 
         const schema = Yup.object().shape({
@@ -83,7 +84,7 @@ export default {
             state: Yup.string().required(),
             owner: Yup.string().notRequired(),
             notes: Yup.string().notRequired(),
-            warnings: Yup.boolean().required(),
+            warnings: Yup.boolean().notRequired(),
             birth: Yup.date().required(),
         });
 
@@ -148,7 +149,7 @@ export default {
             state: Yup.string().required(),
             owner: Yup.string().notRequired(),
             notes: Yup.string().notRequired(),
-            warnings: Yup.boolean().required(),
+            warnings: Yup.boolean().notRequired(),
             birth: Yup.date().required(),
         });
 

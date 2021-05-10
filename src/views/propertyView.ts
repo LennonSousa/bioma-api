@@ -17,9 +17,9 @@ export default {
             warnings: property.warnings,
             created_by: property.created_by,
             created_at: property.created_at,
-            customer: customerView.render(property.customer),
-            docs: propertyDocView.renderMany(property.docs),
-            projects: projectView.renderMany(property.projects),
+            customer: property.customer,
+            docs: property.docs ? propertyDocView.renderMany(property.docs) : [],
+            projects: property.projects ? projectView.renderMany(property.projects) : [],
         }
     },
 

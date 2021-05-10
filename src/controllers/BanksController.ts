@@ -9,7 +9,11 @@ export default {
     async index(request: Request, response: Response) {
         const banksRepository = getCustomRepository(BanksRepository);
 
-        const banks = await banksRepository.find();
+        const banks = await banksRepository.find({
+            relations: [
+                'institution',
+            ]
+        });
 
         return response.json(bankView.renderMany(banks));
     },

@@ -17,7 +17,7 @@ import LicensingStatusController from '../controllers/LicensingStatusController'
 import ProjectLinesController from '../controllers/ProjectLinesController';
 import ProjectsController from '../controllers/ProjectsController';
 import ProjectStatusController from '../controllers/ProjectStatusController';
-import ProjectTypesController from '../controllers/ProjectStatusController';
+import ProjectTypesController from '../controllers/ProjectTypesController';
 import PropertiesController from '../controllers/PropertiesController';
 import PropertyDocsController from '../controllers/PropertyDocsController';
 

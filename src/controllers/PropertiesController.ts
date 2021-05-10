@@ -10,6 +10,9 @@ export default {
         const propertiesRepository = getCustomRepository(PropertiesRepository);
 
         const properties = await propertiesRepository.find({
+            relations: [
+                'customer',
+            ],
             order: {
                 created_at: "ASC"
             }
@@ -44,6 +47,7 @@ export default {
             area,
             notes,
             warnings,
+            customer,
         } = request.body;
 
         const propertiesRepository = getCustomRepository(PropertiesRepository);
@@ -58,6 +62,7 @@ export default {
             notes,
             warnings,
             created_by: 'ex',
+            customer,
         };
 
         const schema = Yup.object().shape({
@@ -69,6 +74,7 @@ export default {
             area: Yup.string().required(),
             notes: Yup.string().notRequired(),
             warnings: Yup.boolean().notRequired(),
+            customer: Yup.string().required(),
         });
 
         await schema.validate(data, {

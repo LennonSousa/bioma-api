@@ -71,7 +71,7 @@ export class createCustomers1620236019263 implements MigrationInterface {
                 },
                 {
                     name: 'birth',
-                    type: 'date',
+                    type: 'datetime',
                 },
                 {
                     name: 'created_by',

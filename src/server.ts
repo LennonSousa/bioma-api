@@ -1,7 +1,9 @@
 import express from 'express';
 import cors from 'cors';
+import 'express-async-errors';
 
 import './database/connection';
+import errorHandler from './errors/handler';
 import userAuthRoutes from './routes/user.auth.routes';
 
 require('dotenv/config');
@@ -19,6 +21,7 @@ app.use(cors({
 app.use(express.json());
 
 app.use(userAuthRoutes);
+app.use(errorHandler);
 
 app.listen(process.env.PORT || 3333, () => {
     console.info(`> Server listening on port: ${process.env.PORT || 3333}`);
