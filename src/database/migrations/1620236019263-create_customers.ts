@@ -74,6 +74,10 @@ export class createCustomers1620236019263 implements MigrationInterface {
                     type: 'date',
                 },
                 {
+                    name: 'created_by',
+                    type: 'varchar',
+                },
+                {
                     name: 'created_at',
                     type: 'datetime',
                     default: 'Now()',

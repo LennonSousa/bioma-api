@@ -29,7 +29,13 @@ export default class LicensingsModel {
     process_number: string;
 
     @Column()
+    created_by: string;
+
+    @Column()
     created_at: Date;
+
+    @Column()
+    updated_by: string;
 
     @Column()
     updated_at: Date;

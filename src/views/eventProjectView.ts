@@ -6,7 +6,9 @@ export default {
             id: eventProject.id,
             description: eventProject.description,
             done: eventProject.done,
+            created_by: eventProject.created_by,
             created_at: eventProject.created_at,
+            updated_by: eventProject.updated_by,
             updated_at: eventProject.updated_at,
             finished_at: eventProject.finished_at,
         }

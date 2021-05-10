@@ -67,6 +67,8 @@ export default {
             type,
             status,
             line,
+            created_by: 'ex',
+            updated_by: 'ex',
         };
 
         const schema = Yup.object().shape({
@@ -119,6 +121,8 @@ export default {
             contract,
             notes,
             warnings,
+            created_by: 'ex',
+            updated_by: 'ex',
             updated_at: new Date(),
             customer,
             bank,

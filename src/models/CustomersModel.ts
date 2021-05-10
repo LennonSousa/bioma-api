@@ -51,6 +51,9 @@ export default class CustomersModel {
     birth: Date;
 
     @Column()
+    created_by: string;
+
+    @Column()
     created_at: Date;
 
     @OneToMany(() => CustomerDoc, customerDoc => customerDoc.doc)

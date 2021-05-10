@@ -51,6 +51,10 @@ export class createProperties1620240319611 implements MigrationInterface {
                         default: false,
                     },
                     {
+                        name: 'created_by',
+                        type: 'varchar',
+                    },
+                    {
                         name: 'created_at',
                         type: 'datetime',
                         default: 'Now()',

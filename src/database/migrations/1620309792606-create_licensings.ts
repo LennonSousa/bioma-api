@@ -50,9 +50,17 @@ export class createLicensings1620309792606 implements MigrationInterface {
                         isNullable: true,
                     },
                     {
+                        name: 'created_by',
+                        type: 'varchar',
+                    },
+                    {
                         name: 'created_at',
                         type: 'datetime',
                         default: 'Now()',
+                    },
+                    {
+                        name: 'updated_by',
+                        type: 'varchar',
                     },
                     {
                         name: 'updated_at',

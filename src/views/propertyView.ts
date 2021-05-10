@@ -15,6 +15,7 @@ export default {
             area: property.area,
             notes: property.notes,
             warnings: property.warnings,
+            created_by: property.created_by,
             created_at: property.created_at,
             customer: customerView.render(property.customer),
             docs: propertyDocView.renderMany(property.docs),

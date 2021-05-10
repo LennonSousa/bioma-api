@@ -22,6 +22,7 @@ export default {
             notes: customer.notes,
             warnings: customer.warnings,
             birth: customer.birth,
+            created_by: customer.created_by,
             created_at: customer.created_at,
             docs: customerDocView.renderMany(customer.docs),
             properties: propertyView.renderMany(customer.properties),

@@ -133,6 +133,7 @@ export default {
             notes,
             warnings,
             birth,
+            created_by: 'ex',
         };
 
         const schema = Yup.object().shape({

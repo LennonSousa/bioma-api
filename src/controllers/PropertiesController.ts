@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { getCustomRepository } from 'typeorm';
 import * as Yup from 'yup';
 
-import projectView from '../views/propertyView';
+import propertyView from '../views/propertyView';
 import { PropertiesRepository } from '../repositories/PropertiesRepository';
 
 export default {
@@ -15,7 +15,7 @@ export default {
             }
         });
 
-        return response.json(projectView.renderMany(properties));
+        return response.json(propertyView.renderMany(properties));
     },
 
     async show(request: Request, response: Response) {
@@ -31,7 +31,7 @@ export default {
             ]
         });
 
-        return response.json(projectView.render(property));
+        return response.json(propertyView.render(property));
     },
 
     async create(request: Request, response: Response) {
@@ -57,6 +57,7 @@ export default {
             area,
             notes,
             warnings,
+            created_by: 'ex',
         };
 
         const schema = Yup.object().shape({
@@ -78,7 +79,7 @@ export default {
 
         await propertiesRepository.save(property);
 
-        return response.status(201).json(projectView.render(property));
+        return response.status(201).json(propertyView.render(property));
     },
 
     async update(request: Request, response: Response) {

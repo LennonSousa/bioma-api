@@ -34,6 +34,9 @@ export default class PropertiesModel {
     warnings: boolean;
 
     @Column()
+    created_by: string;
+
+    @Column()
     created_at: Date;
 
     @ManyToOne(() => Customer, customer => customer.properties)

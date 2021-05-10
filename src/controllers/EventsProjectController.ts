@@ -47,6 +47,8 @@ export default {
             done,
             finished_at,
             licensing,
+            created_by: 'ex',
+            updated_by: 'ex',
         };
 
         const schema = Yup.object().shape({
@@ -86,6 +88,8 @@ export default {
             updated_at,
             finished_at,
             licensing,
+            created_by: 'ex',
+            updated_by: 'ex',
         };
 
         const schema = Yup.object().shape({
