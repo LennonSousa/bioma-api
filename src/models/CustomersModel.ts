@@ -56,7 +56,9 @@ export default class CustomersModel {
     @Column()
     created_at: Date;
 
-    @OneToMany(() => CustomerDoc, customerDoc => customerDoc.doc)
+    @OneToMany(() => CustomerDoc, customerDoc => customerDoc.customer, {
+        cascade: ['insert', 'update']
+    })
     @JoinColumn({ name: 'customer_id' })
     docs: CustomerDoc[];
 

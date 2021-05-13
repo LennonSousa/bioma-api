@@ -8,7 +8,7 @@ import attachmentView from './customerAttachmentView';
 export default {
     render(customer: Customer) {
         return {
-            id: customer.id,
+            id: customer.id ? customer.id : 's',
             name: customer.name,
             document: customer.document,
             phone: customer.phone,

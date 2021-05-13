@@ -16,6 +16,7 @@ export class createPropertyDocs1620308520800 implements MigrationInterface {
                 {
                     name: 'path',
                     type: 'varchar',
+                    isNullable: true,
                 },
                 {
                     name: 'received_at',

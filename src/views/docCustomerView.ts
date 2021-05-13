@@ -4,11 +4,11 @@ import customerDocView from './customerDocView';
 export default {
     render(docCustomer: DocCustomer) {
         return {
-            id: docCustomer.id,
+            id: docCustomer.id && docCustomer.id,
             name: docCustomer.name,
             active: docCustomer.active,
             order: docCustomer.order,
-            docs: customerDocView.renderMany(docCustomer.docs),
+            docs: docCustomer.docs ? customerDocView.renderMany(docCustomer.docs) : [],
         }
     },
 

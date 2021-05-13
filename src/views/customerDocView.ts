@@ -9,8 +9,8 @@ export default {
             path: customerDoc.path,
             received_at: customerDoc.received_at,
             checked: customerDoc.checked,
-            customer: customerView.render(customerDoc.customer),
-            doc: docCustomerView.render(customerDoc.doc),
+            customer: customerDoc.customer && customerView.render(customerDoc.customer),
+            doc: customerDoc.doc && docCustomerView.render(customerDoc.doc),
         }
     },
 

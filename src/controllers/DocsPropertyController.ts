@@ -49,7 +49,7 @@ export default {
 
         const schema = Yup.object().shape({
             name: Yup.string().required(),
-            active: Yup.boolean().required(),
+            active: Yup.boolean().notRequired(),
             order: Yup.number().required(),
         });
 
@@ -83,7 +83,7 @@ export default {
 
         const schema = Yup.object().shape({
             name: Yup.string().required(),
-            active: Yup.boolean().required(),
+            active: Yup.boolean().notRequired(),
             order: Yup.number().required(),
         });
 

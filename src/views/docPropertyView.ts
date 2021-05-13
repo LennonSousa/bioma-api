@@ -8,7 +8,7 @@ export default {
             name: docProperty.name,
             active: docProperty.active,
             order: docProperty.order,
-            docs: propertyDocView.renderMany(docProperty.docs),
+            docs: docProperty.docs ? propertyDocView.renderMany(docProperty.docs) : [],
         }
     },
 

@@ -16,6 +16,7 @@ export class createCustomerDocs1620238509511 implements MigrationInterface {
                 {
                     name: 'path',
                     type: 'varchar',
+                    isNullable: true,
                 },
                 {
                     name: 'received_at',
