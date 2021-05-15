@@ -33,9 +33,8 @@ export default {
     },
 
     async create(request: Request, response: Response) {
-        const {
+        let {
             name,
-            path,
             received_at,
             expire,
             expire_at,
@@ -43,11 +42,18 @@ export default {
             customer,
         } = request.body;
 
+        if (expire)
+            expire = Yup.boolean().cast(expire);
+
+        renewal = Number(renewal);
+
         const customerAttachmentsRepository = getCustomRepository(CustomerAttachmentsRepository);
+
+        const file = request.file as Express.Multer.File;
 
         const data = {
             name,
-            path,
+            path: file.filename,
             received_at,
             expire,
             expire_at,
@@ -61,7 +67,7 @@ export default {
             received_at: Yup.date().required(),
             expire: Yup.boolean().notRequired(),
             expire_at: Yup.date().required(),
-            renewal: Yup.string().notRequired(),
+            renewal: Yup.number().notRequired(),
             customer: Yup.string().required(),
         });
 
@@ -79,9 +85,8 @@ export default {
     async update(request: Request, response: Response) {
         const { id } = request.params;
 
-        const {
+        let {
             name,
-            path,
             received_at,
             expire,
             expire_at,
@@ -89,11 +94,15 @@ export default {
             customer,
         } = request.body;
 
+        if (expire)
+            expire = Yup.boolean().cast(expire);
+
+        renewal = Number(renewal);
+
         const customerAttachmentsRepository = getCustomRepository(CustomerAttachmentsRepository);
 
         const data = {
             name,
-            path,
             received_at,
             expire,
             expire_at,
@@ -103,12 +112,10 @@ export default {
 
         const schema = Yup.object().shape({
             name: Yup.string().required(),
-            path: Yup.string().required(),
             received_at: Yup.date().required(),
             expire: Yup.boolean().notRequired(),
             expire_at: Yup.date().required(),
-            renewal: Yup.string().notRequired(),
-            customer: Yup.string().required(),
+            renewal: Yup.number().notRequired(),
         });
 
         await schema.validate(data, {

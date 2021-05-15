@@ -36,8 +36,7 @@ export class createCustomerAttachments1620392268745 implements MigrationInterfac
                 },
                 {
                     name: 'renewal',
-                    type: 'varchar(100)',
-                    isNullable: true,
+                    type: 'integer',
                 },
                 {
                     name: 'customer_id',

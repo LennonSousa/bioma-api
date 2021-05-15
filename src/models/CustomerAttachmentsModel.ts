@@ -20,10 +20,10 @@ export default class CustomerAttachmentsModel {
     expire: boolean;
 
     @Column()
-    expire_at: string;
+    expire_at: Date;
 
     @Column()
-    renewal: string;
+    renewal: number;
 
     @ManyToOne(() => Customer, licensing => licensing.attachments)
     @JoinColumn({ name: 'customer_id' })

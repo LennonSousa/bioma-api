@@ -11,7 +11,7 @@ export default {
             expire: customerAttachment.expire,
             expire_at: customerAttachment.expire_at,
             renewal: customerAttachment.renewal,
-            customer: customerView.render(customerAttachment.customer),
+            customer: customerAttachment.customer && customerView.render(customerAttachment.customer),
         }
     },
 

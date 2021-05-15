@@ -1,5 +1,7 @@
 import express from 'express';
+import multer from 'multer';
 
+import uploadConfig from '../config/uploadCustomerAttachments';
 import BanksController from '../controllers/BanksController';
 import CustomerAttachmentsController from '../controllers/CustomerAttachmentsController';
 import CustomerDocsController from '../controllers/CustomerDocsController';
@@ -22,6 +24,7 @@ import PropertiesController from '../controllers/PropertiesController';
 import PropertyDocsController from '../controllers/PropertyDocsController';
 
 const userAuthRoutes = express.Router();
+const upload = multer(uploadConfig);
 
 userAuthRoutes.get('/banks', BanksController.index);
 userAuthRoutes.get('/banks/:id', BanksController.show);
@@ -31,7 +34,7 @@ userAuthRoutes.delete('/banks/:id', BanksController.delete);
 
 userAuthRoutes.get('/customers/attachments', CustomerAttachmentsController.index);
 userAuthRoutes.get('/customers/attachments/:id', CustomerAttachmentsController.show);
-userAuthRoutes.post('/customers/attachments', CustomerAttachmentsController.create);
+userAuthRoutes.post('/customers/attachments', upload.single('file'), CustomerAttachmentsController.create);
 userAuthRoutes.put('/customers/attachments/:id', CustomerAttachmentsController.update);
 userAuthRoutes.delete('/customers/attachments/:id', CustomerAttachmentsController.delete);
 
