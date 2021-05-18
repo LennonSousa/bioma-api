@@ -53,7 +53,7 @@ export default {
         };
 
         const schema = Yup.object().shape({
-            path: Yup.string().notRequired(),
+            path: Yup.string().notRequired().nullable(),
             received_at: Yup.date().notRequired(),
             checked: Yup.boolean().notRequired(),
             customer: Yup.string().required(),
@@ -91,7 +91,7 @@ export default {
         };
 
         const schema = Yup.object().shape({
-            path: Yup.string().notRequired(),
+            path: Yup.string().notRequired().nullable(),
             received_at: Yup.date().notRequired(),
             checked: Yup.boolean().notRequired(),
             customer: Yup.string().required(),
