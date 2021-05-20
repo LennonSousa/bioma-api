@@ -9,8 +9,8 @@ export default {
             path: propertyDoc.path,
             received_at: propertyDoc.received_at,
             checked: propertyDoc.checked,
-            property: propertyView.render(propertyDoc.property),
-            doc: docPropertyView.render(propertyDoc.doc),
+            property: propertyDoc.property && propertyView.render(propertyDoc.property),
+            doc: propertyDoc.doc && docPropertyView.render(propertyDoc.doc),
         }
     },
 

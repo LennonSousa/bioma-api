@@ -43,7 +43,9 @@ export default class PropertiesModel {
     @JoinColumn({ name: 'customer_id' })
     customer: Customer;
 
-    @OneToMany(() => PropertyDoc, propertyDoc => propertyDoc.doc)
+    @OneToMany(() => PropertyDoc, propertyDoc => propertyDoc.property, {
+        cascade: ['insert', 'update']
+    })
     @JoinColumn({ name: 'property_id' })
     docs: PropertyDoc[];
 

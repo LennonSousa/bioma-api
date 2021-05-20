@@ -29,7 +29,9 @@ export default {
         const property = await propertiesRepository.findOneOrFail(id, {
             relations: [
                 'customer',
+                'customer.properties',
                 'docs',
+                'docs.doc',
                 'projects',
             ]
         });
@@ -48,6 +50,7 @@ export default {
             notes,
             warnings,
             customer,
+            docs,
         } = request.body;
 
         const propertiesRepository = getCustomRepository(PropertiesRepository);
@@ -63,6 +66,7 @@ export default {
             warnings,
             created_by: 'ex',
             customer,
+            docs,
         };
 
         const schema = Yup.object().shape({
@@ -75,6 +79,14 @@ export default {
             notes: Yup.string().notRequired(),
             warnings: Yup.boolean().notRequired(),
             customer: Yup.string().required(),
+            docs: Yup.array(
+                Yup.object().shape({
+                    path: Yup.string().notRequired(),
+                    received_at: Yup.date().notRequired(),
+                    checked: Yup.boolean().notRequired(),
+                    doc: Yup.string().required(),
+                })
+            ),
         });
 
         await schema.validate(data, {
@@ -100,6 +112,7 @@ export default {
             area,
             notes,
             warnings,
+            customer,
         } = request.body;
 
         const propertiesRepository = getCustomRepository(PropertiesRepository);
@@ -113,17 +126,19 @@ export default {
             area,
             notes,
             warnings,
+            customer,
         };
 
         const schema = Yup.object().shape({
             name: Yup.string().required(),
             registration: Yup.string().notRequired(),
-            route: Yup.string().notRequired(),
+            route: Yup.string().notRequired().nullable(),
             city: Yup.string().required(),
             state: Yup.string().required(),
             area: Yup.string().required(),
-            notes: Yup.string().notRequired(),
+            notes: Yup.string().notRequired().nullable(),
             warnings: Yup.boolean().notRequired(),
+            customer: Yup.string().required(),
         });
 
         await schema.validate(data, {
