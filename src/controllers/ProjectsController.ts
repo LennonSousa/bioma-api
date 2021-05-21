@@ -82,9 +82,9 @@ export default {
         };
 
         const schema = Yup.object().shape({
-            value: Yup.number().required(),
-            deal: Yup.number().required(),
-            contract: Yup.string().notRequired(),
+            value: Yup.number().notRequired(),
+            deal: Yup.number().notRequired(),
+            contract: Yup.string().notRequired().nullable(),
             notes: Yup.string().notRequired(),
             warnings: Yup.boolean().notRequired(),
             customer: Yup.string().required(),
@@ -143,8 +143,8 @@ export default {
         };
 
         const schema = Yup.object().shape({
-            value: Yup.number().required(),
-            deal: Yup.number().required(),
+            value: Yup.number().notRequired(),
+            deal: Yup.number().notRequired(),
             contract: Yup.string().notRequired(),
             notes: Yup.string().notRequired(),
             warnings: Yup.boolean().notRequired(),

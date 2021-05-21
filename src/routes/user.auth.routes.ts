@@ -6,6 +6,7 @@ import BanksController from '../controllers/BanksController';
 import CustomerAttachmentsController from '../controllers/CustomerAttachmentsController';
 import CustomerDocsController from '../controllers/CustomerDocsController';
 import CustomersController from '../controllers/CustomersController';
+import CustomerPropertiesController from '../controllers/CustomerPropertiesController';
 import DocsCustomerController from '../controllers/DocsCustomerController';
 import DocsPropertyController from '../controllers/DocsPropertyController';
 import EventsLicensingController from '../controllers/EventsLicensingController';
@@ -49,6 +50,8 @@ userAuthRoutes.get('/customers/:id', CustomersController.show);
 userAuthRoutes.post('/customers', CustomersController.create);
 userAuthRoutes.put('/customers/:id', CustomersController.update);
 userAuthRoutes.delete('/customers/:id', CustomersController.delete);
+
+userAuthRoutes.get('/customers/:id/properties', CustomerPropertiesController.index);
 
 userAuthRoutes.get('/docs/customer', DocsCustomerController.index);
 userAuthRoutes.get('/docs/customer/:id', DocsCustomerController.show);
