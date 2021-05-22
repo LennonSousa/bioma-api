@@ -7,9 +7,12 @@ import { EventsProjectRepository } from '../repositories/EventsProjectRepository
 
 export default {
     async index(request: Request, response: Response) {
+        const { id } = request.params;
+
         const eventsProjectRepository = getCustomRepository(EventsProjectRepository);
 
         const eventsProject = await eventsProjectRepository.find({
+            where: { project: id },
             order: {
                 created_at: "ASC"
             }
@@ -37,7 +40,7 @@ export default {
             description,
             done,
             finished_at,
-            licensing,
+            project,
         } = request.body;
 
         const eventsProjectRepository = getCustomRepository(EventsProjectRepository);
@@ -46,7 +49,7 @@ export default {
             description,
             done,
             finished_at,
-            licensing,
+            project,
             created_by: 'ex',
             updated_by: 'ex',
         };
@@ -55,7 +58,7 @@ export default {
             description: Yup.string().required(),
             done: Yup.boolean().required(),
             finished_at: Yup.date().notRequired(),
-            licensing: Yup.string().required(),
+            project: Yup.string().required(),
         });
 
         await schema.validate(data, {
@@ -75,9 +78,7 @@ export default {
         const {
             description,
             done,
-            updated_at,
             finished_at,
-            licensing,
         } = request.body;
 
         const eventsProjectRepository = getCustomRepository(EventsProjectRepository);
@@ -85,9 +86,8 @@ export default {
         const data = {
             description,
             done,
-            updated_at,
+            updated_at: new Date(),
             finished_at,
-            licensing,
             created_by: 'ex',
             updated_by: 'ex',
         };
@@ -97,7 +97,6 @@ export default {
             done: Yup.boolean().required(),
             updated_at: Yup.date().notRequired(),
             finished_at: Yup.date().notRequired(),
-            licensing: Yup.string().required(),
         });
 
         await schema.validate(data, {

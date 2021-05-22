@@ -71,7 +71,7 @@ userAuthRoutes.post('/events/licensing', EventsLicensingController.create);
 userAuthRoutes.put('/events/licensing/:id', EventsLicensingController.update);
 userAuthRoutes.delete('/events/licensing/:id', EventsLicensingController.delete);
 
-userAuthRoutes.get('/events/project', EventsProjectController.index);
+userAuthRoutes.get('/project/:id/events', EventsProjectController.index);
 userAuthRoutes.get('/events/project/:id', EventsProjectController.show);
 userAuthRoutes.post('/events/project', EventsProjectController.create);
 userAuthRoutes.put('/events/project/:id', EventsProjectController.update);
