@@ -27,6 +27,8 @@ export default {
             relations: [
                 'institution',
                 'projects',
+                'projects.customer',
+                'projects.status',
             ]
         });
 
@@ -62,13 +64,13 @@ export default {
 
         const schema = Yup.object().shape({
             agency: Yup.string().required(),
-            address: Yup.string().notRequired(),
+            address: Yup.string().notRequired().nullable(),
             city: Yup.string().required(),
             state: Yup.string().required(),
             sector: Yup.string().required(),
-            department: Yup.string().notRequired(),
-            phone: Yup.string().notRequired(),
-            cellphone: Yup.string().notRequired(),
+            department: Yup.string().notRequired().nullable(),
+            phone: Yup.string().notRequired().nullable(),
+            cellphone: Yup.string().notRequired().nullable(),
             institution: Yup.string().required(),
         });
 
@@ -114,13 +116,13 @@ export default {
 
         const schema = Yup.object().shape({
             agency: Yup.string().required(),
-            address: Yup.string().notRequired(),
+            address: Yup.string().notRequired().nullable(),
             city: Yup.string().required(),
             state: Yup.string().required(),
             sector: Yup.string().required(),
-            department: Yup.string().notRequired(),
-            phone: Yup.string().notRequired(),
-            cellphone: Yup.string().notRequired(),
+            department: Yup.string().notRequired().nullable(),
+            phone: Yup.string().notRequired().nullable(),
+            cellphone: Yup.string().notRequired().nullable(),
             institution: Yup.string().required(),
         });
 

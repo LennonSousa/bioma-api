@@ -51,8 +51,8 @@ export default {
 
         const schema = Yup.object().shape({
             department: Yup.string().required(),
-            activity: Yup.string().notRequired(),
-            sub_activity: Yup.string().notRequired(),
+            activity: Yup.string().notRequired().nullable(),
+            sub_activity: Yup.string().notRequired().nullable(),
             order: Yup.number().required(),
         });
 
@@ -88,8 +88,8 @@ export default {
 
         const schema = Yup.object().shape({
             department: Yup.string().required(),
-            activity: Yup.string().notRequired(),
-            sub_activity: Yup.string().notRequired(),
+            activity: Yup.string().notRequired().nullable(),
+            sub_activity: Yup.string().notRequired().nullable(),
             order: Yup.number().required(),
         });
 
