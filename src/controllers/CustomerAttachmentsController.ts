@@ -29,7 +29,9 @@ export default {
             ]
         });
 
-        return response.json(customerAttachmentView.render(customerAttachment));
+        const download = customerAttachmentView.renderDownload(customerAttachment);
+
+        return response.download(download.path);
     },
 
     async create(request: Request, response: Response) {

@@ -31,6 +31,7 @@ export default {
                 'projects',
                 'licensings',
                 'attachments',
+                'attachments.customer',
             ]
         });
 

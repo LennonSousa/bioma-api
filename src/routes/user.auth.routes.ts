@@ -33,7 +33,7 @@ userAuthRoutes.post('/banks', BanksController.create);
 userAuthRoutes.put('/banks/:id', BanksController.update);
 userAuthRoutes.delete('/banks/:id', BanksController.delete);
 
-userAuthRoutes.get('/customers/attachments', CustomerAttachmentsController.index);
+//userAuthRoutes.get('/customers/attachments', CustomerAttachmentsController.index);
 userAuthRoutes.get('/customers/attachments/:id', CustomerAttachmentsController.show);
 userAuthRoutes.post('/customers/attachments', upload.single('file'), CustomerAttachmentsController.create);
 userAuthRoutes.put('/customers/attachments/:id', CustomerAttachmentsController.update);

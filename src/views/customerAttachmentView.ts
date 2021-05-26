@@ -15,6 +15,12 @@ export default {
         }
     },
 
+    renderDownload(customerAttachment: CustomerAttachment) {
+        return {
+            path: `uploads/attachments/${customerAttachment.path}`,
+        }
+    },
+
     renderMany(customerAttachments: CustomerAttachment[]) {
         return customerAttachments.map(customerAttachment => this.render(customerAttachment));
     }
