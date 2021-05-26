@@ -75,9 +75,7 @@ export default {
         const {
             description,
             done,
-            updated_at,
             finished_at,
-            licensing,
         } = request.body;
 
         const eventsLicensingRepository = getCustomRepository(EventsLicensingRepository);
@@ -85,9 +83,8 @@ export default {
         const data = {
             description,
             done,
-            updated_at,
+            updated_at: new Date(),
             finished_at,
-            licensing,
             created_by: 'ex',
             updated_by: 'ex',
         };
@@ -97,7 +94,6 @@ export default {
             done: Yup.boolean().required(),
             updated_at: Yup.date().notRequired(),
             finished_at: Yup.date().notRequired(),
-            licensing: Yup.string().required(),
         });
 
         await schema.validate(data, {

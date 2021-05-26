@@ -12,7 +12,13 @@ export default {
         const licensings = await licensingsRepository.find({
             order: {
                 created_at: "ASC"
-            }
+            },
+            relations: [
+                'customer',
+                'property',
+                'authorization',
+                'status',
+            ]
         });
 
         return response.json(licensingView.renderMany(licensings));
@@ -72,14 +78,14 @@ export default {
         };
 
         const schema = Yup.object().shape({
-            licensing_number: Yup.string().notRequired(),
-            expire: Yup.string().notRequired(),
-            renovation: Yup.string().notRequired(),
-            deadline: Yup.string().notRequired(),
-            process_number: Yup.string().notRequired(),
+            licensing_number: Yup.string().notRequired().nullable(),
+            expire: Yup.string().notRequired().nullable(),
+            renovation: Yup.string().notRequired().nullable(),
+            deadline: Yup.string().notRequired().nullable(),
+            process_number: Yup.string().notRequired().nullable(),
             customer: Yup.string().required(),
-            property: Yup.string().notRequired(),
-            infringement: Yup.string().notRequired(),
+            property: Yup.string().notRequired().nullable(),
+            infringement: Yup.string().notRequired().nullable(),
             authorization: Yup.string().required(),
             agency: Yup.string().required(),
             status: Yup.string().required(),
@@ -132,15 +138,15 @@ export default {
         };
 
         const schema = Yup.object().shape({
-            licensing_number: Yup.string().notRequired(),
-            expire: Yup.string().notRequired(),
-            renovation: Yup.string().notRequired(),
-            deadline: Yup.string().notRequired(),
-            process_number: Yup.string().notRequired(),
+            licensing_number: Yup.string().notRequired().nullable(),
+            expire: Yup.string().notRequired().nullable(),
+            renovation: Yup.string().notRequired().nullable(),
+            deadline: Yup.string().notRequired().nullable(),
+            process_number: Yup.string().notRequired().nullable(),
             updated_at: Yup.date().required(),
             customer: Yup.string().required(),
-            property: Yup.string().notRequired(),
-            infringement: Yup.string().notRequired(),
+            property: Yup.string().notRequired().nullable(),
+            infringement: Yup.string().notRequired().nullable(),
             authorization: Yup.string().required(),
             agency: Yup.string().required(),
             status: Yup.string().required(),
