@@ -67,9 +67,9 @@ export default {
             name: Yup.string().required(),
             path: Yup.string().required(),
             received_at: Yup.date().required(),
-            expire: Yup.boolean().notRequired(),
+            expire: Yup.boolean().notRequired().nullable(),
             expire_at: Yup.date().required(),
-            renewal: Yup.number().notRequired(),
+            renewal: Yup.number().notRequired().nullable(),
             customer: Yup.string().required(),
         });
 
@@ -115,9 +115,9 @@ export default {
         const schema = Yup.object().shape({
             name: Yup.string().required(),
             received_at: Yup.date().required(),
-            expire: Yup.boolean().notRequired(),
+            expire: Yup.boolean().notRequired().nullable(),
             expire_at: Yup.date().required(),
-            renewal: Yup.number().notRequired(),
+            renewal: Yup.number().notRequired().nullable(),
         });
 
         await schema.validate(data, {
