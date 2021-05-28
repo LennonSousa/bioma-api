@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class createUsers1620394108648 implements MigrationInterface {
+export class createUsers1622125669777 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(new Table({
@@ -11,7 +11,7 @@ export class createUsers1620394108648 implements MigrationInterface {
                     type: 'varchar',
                     isPrimary: true,
                     isGenerated: true,
-                    generationStrategy: 'uuid',
+                    generationStrategy: 'uuid'
                 },
                 {
                     name: 'name',
@@ -19,7 +19,7 @@ export class createUsers1620394108648 implements MigrationInterface {
                 },
                 {
                     name: 'phone',
-                    type: 'varchar(100)',
+                    type: 'varchar(50)',
                     isNullable: true,
                 },
                 {
@@ -28,7 +28,7 @@ export class createUsers1620394108648 implements MigrationInterface {
                 },
                 {
                     name: 'password',
-                    type: 'varchar',
+                    type: 'varchar'
                 },
                 {
                     name: 'active',
@@ -41,25 +41,15 @@ export class createUsers1620394108648 implements MigrationInterface {
                     default: false,
                 },
                 {
+                    name: 'sudo',
+                    type: 'boolean',
+                    default: false,
+                },
+                {
                     name: 'created_at',
                     type: 'datetime',
                     default: 'Now()',
                 },
-                {
-                    name: 'type_id',
-                    type: 'integer',
-                    unsigned: true,
-                }
-            ],
-            foreignKeys: [
-                {
-                    name: 'UserType',
-                    columnNames: ['type_id'],
-                    referencedTableName: 'user_types',
-                    referencedColumnNames: ['id'],
-                    onUpdate: 'CASCADE',
-                    onDelete: 'RESTRICT',
-                }
             ],
         }));
     }

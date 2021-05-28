@@ -4,6 +4,7 @@ import 'express-async-errors';
 
 import './database/connection';
 import errorHandler from './errors/handler';
+import userPublicRoutes from './routes/user.public.routes';
 import userAuthRoutes from './routes/user.auth.routes';
 
 require('dotenv/config');
@@ -20,6 +21,7 @@ app.use(cors({
 
 app.use(express.json());
 
+app.use(userPublicRoutes);
 app.use(userAuthRoutes);
 app.use(errorHandler);
 

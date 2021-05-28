@@ -1,6 +1,6 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import Type from './UserTypesModel';
+import Role from './UsersRolesModel';
 
 @Entity('users')
 export default class UsersModel {
@@ -26,9 +26,14 @@ export default class UsersModel {
     paused: boolean;
 
     @Column()
+    sudo: boolean;
+
+    @Column()
     created_at: Date;
 
-    @ManyToOne(() => Type, type => type.users)
-    @JoinColumn({ name: 'type_id' })
-    type: Type;
+    @OneToMany(() => Role, role => role.user, {
+        cascade: ['insert', 'update']
+    })
+    @JoinColumn({ name: 'users_id' })
+    roles: Role[];
 }
