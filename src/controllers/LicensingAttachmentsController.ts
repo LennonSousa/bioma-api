@@ -1,36 +1,35 @@
 import { Request, Response } from 'express';
 import { getCustomRepository } from 'typeorm';
 import * as Yup from 'yup';
-import fs from 'fs';
 
-import customerAttachmentView from '../views/customerAttachmentView';
-import { CustomerAttachmentsRepository } from '../repositories/CustomerAttachmentsRepository';
+import licensingAttachmentView from '../views/licensingAttachmentView';
+import { LicensingAttachmentsRepository } from '../repositories/LicensingAttachmentsRepository';
 
 export default {
     async index(request: Request, response: Response) {
-        const customerAttachmentsRepository = getCustomRepository(CustomerAttachmentsRepository);
+        const licensingAttachmentsRepository = getCustomRepository(LicensingAttachmentsRepository);
 
-        const customerAttachments = await customerAttachmentsRepository.find({
+        const licensingAttachments = await licensingAttachmentsRepository.find({
             order: {
                 received_at: "ASC"
             }
         });
 
-        return response.json(customerAttachmentView.renderMany(customerAttachments));
+        return response.json(licensingAttachmentView.renderMany(licensingAttachments));
     },
 
     async show(request: Request, response: Response) {
         const { id } = request.params;
 
-        const customerAttachmentsRepository = getCustomRepository(CustomerAttachmentsRepository);
+        const licensingAttachmentsRepository = getCustomRepository(LicensingAttachmentsRepository);
 
-        const customerAttachment = await customerAttachmentsRepository.findOneOrFail(id, {
+        const licensingAttachment = await licensingAttachmentsRepository.findOneOrFail(id, {
             relations: [
-                'customer',
+                'licensing',
             ]
         });
 
-        const download = customerAttachmentView.renderDownload(customerAttachment);
+        const download = licensingAttachmentView.renderDownload(licensingAttachment);
 
         return response.download(download.path);
     },
@@ -41,13 +40,13 @@ export default {
             received_at,
             expire,
             expire_at,
-            customer,
+            licensing,
         } = request.body;
 
         if (expire)
             expire = Yup.boolean().cast(expire);
 
-        const customerAttachmentsRepository = getCustomRepository(CustomerAttachmentsRepository);
+        const licensingAttachmentsRepository = getCustomRepository(LicensingAttachmentsRepository);
 
         const file = request.file as Express.Multer.File;
 
@@ -57,7 +56,7 @@ export default {
             received_at,
             expire,
             expire_at,
-            customer,
+            licensing,
         };
 
         const schema = Yup.object().shape({
@@ -66,18 +65,18 @@ export default {
             received_at: Yup.date().required(),
             expire: Yup.boolean().notRequired().nullable(),
             expire_at: Yup.date().required(),
-            customer: Yup.string().required(),
+            licensing: Yup.string().required(),
         });
 
         await schema.validate(data, {
             abortEarly: false,
         });
 
-        const customerAttachment = customerAttachmentsRepository.create(data);
+        const licensingAttachment = licensingAttachmentsRepository.create(data);
 
-        await customerAttachmentsRepository.save(customerAttachment);
+        await licensingAttachmentsRepository.save(licensingAttachment);
 
-        return response.status(201).json(customerAttachmentView.render(customerAttachment));
+        return response.status(201).json(licensingAttachmentView.render(licensingAttachment));
     },
 
     async update(request: Request, response: Response) {
@@ -93,7 +92,7 @@ export default {
         if (expire)
             expire = Yup.boolean().cast(expire);
 
-        const customerAttachmentsRepository = getCustomRepository(CustomerAttachmentsRepository);
+        const licensingAttachmentsRepository = getCustomRepository(LicensingAttachmentsRepository);
 
         const data = {
             name,
@@ -113,9 +112,9 @@ export default {
             abortEarly: false,
         });
 
-        const customerAttachment = customerAttachmentsRepository.create(data);
+        const licensingAttachment = licensingAttachmentsRepository.create(data);
 
-        await customerAttachmentsRepository.update(id, customerAttachment);
+        await licensingAttachmentsRepository.update(id, licensingAttachment);
 
         return response.status(204).json();
     },
@@ -123,18 +122,9 @@ export default {
     async delete(request: Request, response: Response) {
         const { id } = request.params;
 
-        const customerAttachmentsRepository = getCustomRepository(CustomerAttachmentsRepository);
+        const licensingAttachmentsRepository = getCustomRepository(LicensingAttachmentsRepository);
 
-        await customerAttachmentsRepository.delete(id);
-
-        const customerAttachment = await customerAttachmentsRepository.findOneOrFail(id);
-
-        try {
-            fs.rmSync(`${process.env.CUSTOMERS_DIR}${customerAttachment.path}`, { maxRetries: 3 });
-        }
-        catch (err) {
-            console.error("> Error to remove file customer attachment: ", err);
-        }
+        await licensingAttachmentsRepository.delete(id);
 
         return response.status(204).send();
     }

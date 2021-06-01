@@ -7,6 +7,7 @@ import LicensingAuthorization from './LicensingAuthorizationsModel';
 import LicensingAgency from './LicensingAgenciesModel';
 import LicensingStatus from './LicensingStatusModel';
 import Event from './EventsLicensingModel';
+import Attachment from './LicensingAttachmentsModel';
 
 @Entity('licensings')
 export default class LicensingsModel {
@@ -67,4 +68,8 @@ export default class LicensingsModel {
     @OneToMany(() => Event, event => event.licensing)
     @JoinColumn({ name: 'licensing_id' })
     events: Event[];
+
+    @OneToMany(() => Attachment, attachment => attachment.licensing)
+    @JoinColumn({ name: 'licensing_id' })
+    attachments: Attachment[];
 }

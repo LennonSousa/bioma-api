@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class createCustomerAttachments1620392268745 implements MigrationInterface {
+export class createPropertyAttachments1622571823872 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(new Table({
-            name: 'customer_attachments',
+            name: 'property_attachments',
             columns: [
                 {
                     name: 'id',
@@ -35,15 +35,15 @@ export class createCustomerAttachments1620392268745 implements MigrationInterfac
                     type: 'date',
                 },
                 {
-                    name: 'customer_id',
+                    name: 'property_id',
                     type: 'varchar',
                 },
             ],
             foreignKeys: [
                 {
-                    name: 'AttachmentCustomer',
-                    columnNames: ['customer_id'],
-                    referencedTableName: 'customers',
+                    name: 'AttachmentProperty',
+                    columnNames: ['property_id'],
+                    referencedTableName: 'properties',
                     referencedColumnNames: ['id'],
                     onUpdate: 'CASCADE',
                     onDelete: 'CASCADE',
@@ -53,7 +53,7 @@ export class createCustomerAttachments1620392268745 implements MigrationInterfac
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable('customer_attachments');
+        await queryRunner.dropTable('property_attachments');
     }
 
 }

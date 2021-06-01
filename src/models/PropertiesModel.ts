@@ -3,6 +3,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColum
 import Customer from './CustomersModel';
 import PropertyDoc from './PropertyDocsModel';
 import Project from './ProjectsModel';
+import Attachment from './PropertyAttachmentsModel';
 
 @Entity('properties')
 export default class PropertiesModel {
@@ -52,4 +53,8 @@ export default class PropertiesModel {
     @OneToMany(() => Project, project => project.property)
     @JoinColumn({ name: 'property_id' })
     projects: Project[];
+
+    @OneToMany(() => Attachment, attachment => attachment.property)
+    @JoinColumn({ name: 'property_id' })
+    attachments: Attachment[];
 }

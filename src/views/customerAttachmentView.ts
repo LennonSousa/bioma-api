@@ -1,6 +1,8 @@
 import CustomerAttachment from '../models/CustomerAttachmentsModel';
 import customerView from './customerView';
 
+require('dotenv/config');
+
 export default {
     render(customerAttachment: CustomerAttachment) {
         return {
@@ -10,14 +12,13 @@ export default {
             received_at: customerAttachment.received_at,
             expire: customerAttachment.expire,
             expire_at: customerAttachment.expire_at,
-            renewal: customerAttachment.renewal,
             customer: customerAttachment.customer && customerView.render(customerAttachment.customer),
         }
     },
 
     renderDownload(customerAttachment: CustomerAttachment) {
         return {
-            path: `uploads/attachments/${customerAttachment.path}`,
+            path: `${process.env.UPLOADS_DIR}/customers/${customerAttachment.customer.id}/${customerAttachment.path}`,
         }
     },
 

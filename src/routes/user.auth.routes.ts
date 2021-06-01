@@ -1,28 +1,39 @@
 import express from 'express';
-import multer from 'multer';
 
-import uploadConfig from '../config/uploadCustomerAttachments';
+import { UploadsConfig } from '../config/uploads';
+
 import BanksController from '../controllers/BanksController';
+
 import CustomerAttachmentsController from '../controllers/CustomerAttachmentsController';
 import CustomerDocsController from '../controllers/CustomerDocsController';
 import CustomersController from '../controllers/CustomersController';
 import CustomerPropertiesController from '../controllers/CustomerPropertiesController';
+
 import DocsCustomerController from '../controllers/DocsCustomerController';
 import DocsPropertyController from '../controllers/DocsPropertyController';
+
 import EventsLicensingController from '../controllers/EventsLicensingController';
 import EventsProjectController from '../controllers/EventsProjectController';
+
 import InstitutionsController from '../controllers/InstitutionsController';
+
 import LicensingAgenciesController from '../controllers/LicensingAgenciesController';
+import LicensingAttachmentsController from '../controllers/LicensingAttachmentsController';
 import LicensingAuthorizationsController from '../controllers/LicensingAuthorizationsController';
 import LicensingInfringementsController from '../controllers/LicensingInfringementsController';
 import LicensingsController from '../controllers/LicensingsController';
 import LicensingStatusController from '../controllers/LicensingStatusController';
+
+import ProjectAttachmentsController from '../controllers/ProjectAttachmentsController';
 import ProjectLinesController from '../controllers/ProjectLinesController';
 import ProjectsController from '../controllers/ProjectsController';
 import ProjectStatusController from '../controllers/ProjectStatusController';
 import ProjectTypesController from '../controllers/ProjectTypesController';
+
+import PropertyAttachmentsController from '../controllers/PropertyAttachmentsController';
 import PropertiesController from '../controllers/PropertiesController';
 import PropertyDocsController from '../controllers/PropertyDocsController';
+
 import UsersController from '../controllers/UsersController';
 import UsersRolesController from '../controllers/UsersRolesController';
 import UsersNewController from '../controllers/UsersNewController';
@@ -30,7 +41,6 @@ import UsersNewController from '../controllers/UsersNewController';
 import usersAuthMiddleware from '../middlewares/usersAuth';
 
 const userAuthRoutes = express.Router();
-const upload = multer(uploadConfig);
 
 userAuthRoutes.get('/users/authenticated', usersAuthMiddleware, function (request, response) {
     return response.status(202).json();
@@ -57,7 +67,7 @@ userAuthRoutes.delete('/banks/:id', usersAuthMiddleware, BanksController.delete)
 
 //userAuthRoutes.get('/customers/attachments', usersAuthMiddleware, CustomerAttachmentsController.index);
 userAuthRoutes.get('/customers/attachments/:id', usersAuthMiddleware, CustomerAttachmentsController.show);
-userAuthRoutes.post('/customers/attachments', usersAuthMiddleware, upload.single('file'), CustomerAttachmentsController.create);
+userAuthRoutes.post('/customers/:id/attachments', usersAuthMiddleware, UploadsConfig('customers').single('file'), CustomerAttachmentsController.create);
 userAuthRoutes.put('/customers/attachments/:id', usersAuthMiddleware, CustomerAttachmentsController.update);
 userAuthRoutes.delete('/customers/attachments/:id', usersAuthMiddleware, CustomerAttachmentsController.delete);
 
@@ -111,6 +121,11 @@ userAuthRoutes.post('/licensings/agencies', usersAuthMiddleware, LicensingAgenci
 userAuthRoutes.put('/licensings/agencies/:id', usersAuthMiddleware, LicensingAgenciesController.update);
 userAuthRoutes.delete('/licensings/agencies/:id', usersAuthMiddleware, LicensingAgenciesController.delete);
 
+userAuthRoutes.get('/licensings/attachments/:id', usersAuthMiddleware, LicensingAttachmentsController.show);
+userAuthRoutes.post('/licensings/:id/attachments', usersAuthMiddleware, UploadsConfig('licensings').single('file'), LicensingAttachmentsController.create);
+userAuthRoutes.put('/licensings/attachments/:id', usersAuthMiddleware, LicensingAttachmentsController.update);
+userAuthRoutes.delete('/licensings/attachments/:id', usersAuthMiddleware, LicensingAttachmentsController.delete);
+
 userAuthRoutes.get('/licensings/authorizations', usersAuthMiddleware, LicensingAuthorizationsController.index);
 userAuthRoutes.get('/licensings/authorizations/:id', usersAuthMiddleware, LicensingAuthorizationsController.show);
 userAuthRoutes.post('/licensings/authorizations', usersAuthMiddleware, LicensingAuthorizationsController.create);
@@ -135,6 +150,11 @@ userAuthRoutes.post('/licensings', usersAuthMiddleware, LicensingsController.cre
 userAuthRoutes.put('/licensings/:id', usersAuthMiddleware, LicensingsController.update);
 userAuthRoutes.delete('/licensings/:id', usersAuthMiddleware, LicensingsController.delete);
 
+userAuthRoutes.get('/projects/attachments/:id', usersAuthMiddleware, ProjectAttachmentsController.show);
+userAuthRoutes.post('/projects/:id/attachments', usersAuthMiddleware, UploadsConfig('projects').single('file'), ProjectAttachmentsController.create);
+userAuthRoutes.put('/projects/attachments/:id', usersAuthMiddleware, ProjectAttachmentsController.update);
+userAuthRoutes.delete('/projects/attachments/:id', usersAuthMiddleware, ProjectAttachmentsController.delete);
+
 userAuthRoutes.get('/projects/lines', usersAuthMiddleware, ProjectLinesController.index);
 userAuthRoutes.get('/projects/lines/:id', usersAuthMiddleware, ProjectLinesController.show);
 userAuthRoutes.post('/projects/lines', usersAuthMiddleware, ProjectLinesController.create);
@@ -158,6 +178,11 @@ userAuthRoutes.get('/projects/:id', usersAuthMiddleware, ProjectsController.show
 userAuthRoutes.post('/projects', usersAuthMiddleware, ProjectsController.create);
 userAuthRoutes.put('/projects/:id', usersAuthMiddleware, ProjectsController.update);
 userAuthRoutes.delete('/projects/:id', usersAuthMiddleware, ProjectsController.delete);
+
+userAuthRoutes.get('/properties/attachments/:id', usersAuthMiddleware, PropertyAttachmentsController.show);
+userAuthRoutes.post('/properties/:id/attachments', usersAuthMiddleware, UploadsConfig('properties').single('file'), PropertyAttachmentsController.create);
+userAuthRoutes.put('/properties/attachments/:id', usersAuthMiddleware, PropertyAttachmentsController.update);
+userAuthRoutes.delete('/properties/attachments/:id', usersAuthMiddleware, PropertyAttachmentsController.delete);
 
 userAuthRoutes.get('/properties', usersAuthMiddleware, PropertiesController.index);
 userAuthRoutes.get('/properties/:id', usersAuthMiddleware, PropertiesController.show);

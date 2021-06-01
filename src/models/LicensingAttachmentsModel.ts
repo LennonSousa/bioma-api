@@ -1,9 +1,9 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import Customer from './CustomersModel';
+import Licensing from './LicensingsModel';
 
 @Entity('customer_attachments')
-export default class CustomerAttachmentsModel {
+export default class LicensingAttachmentsModel {
     @PrimaryGeneratedColumn('uuid')
     readonly id: string;
 
@@ -22,7 +22,7 @@ export default class CustomerAttachmentsModel {
     @Column()
     expire_at: Date;
 
-    @ManyToOne(() => Customer, licensing => licensing.attachments)
-    @JoinColumn({ name: 'customer_id' })
-    customer: Customer;
+    @ManyToOne(() => Licensing, licensing => licensing.attachments)
+    @JoinColumn({ name: 'licensing_id' })
+    licensing: Licensing;
 }
