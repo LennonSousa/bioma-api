@@ -32,6 +32,10 @@ import usersAuthMiddleware from '../middlewares/usersAuth';
 const userAuthRoutes = express.Router();
 const upload = multer(uploadConfig);
 
+userAuthRoutes.get('/users/authenticated', usersAuthMiddleware, function (request, response) {
+    return response.status(202).json();
+});
+
 userAuthRoutes.get('/users', usersAuthMiddleware, UsersController.index);
 userAuthRoutes.get('/users/:id', usersAuthMiddleware, UsersController.show);
 userAuthRoutes.post('/users', usersAuthMiddleware, UsersController.create);

@@ -29,7 +29,27 @@ export class createProjects1620241475552 implements MigrationInterface {
                         default: 0.00,
                     },
                     {
+                        name: 'paid',
+                        type: 'boolean',
+                        default: false,
+                    },
+                    {
+                        name: 'paid_date',
+                        type: 'varchar(50)',
+                        isNullable: true,
+                    },
+                    {
                         name: 'contract',
+                        type: 'varchar',
+                        isNullable: true,
+                    },
+                    {
+                        name: 'analyst',
+                        type: 'varchar',
+                        isNullable: true,
+                    },
+                    {
+                        name: 'analyst_contact',
                         type: 'varchar',
                         isNullable: true,
                     },

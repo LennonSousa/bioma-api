@@ -56,7 +56,7 @@ export default {
 
         const schema = Yup.object().shape({
             description: Yup.string().required(),
-            done: Yup.boolean().required(),
+            done: Yup.boolean().notRequired(),
             finished_at: Yup.date().notRequired(),
             project: Yup.string().required(),
         });
@@ -94,7 +94,7 @@ export default {
 
         const schema = Yup.object().shape({
             description: Yup.string().required(),
-            done: Yup.boolean().required(),
+            done: Yup.boolean().notRequired(),
             updated_at: Yup.date().notRequired(),
             finished_at: Yup.date().notRequired(),
         });

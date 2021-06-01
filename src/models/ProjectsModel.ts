@@ -20,7 +20,19 @@ export default class ProjectsModel {
     deal: number;
 
     @Column()
+    paid: boolean;
+
+    @Column()
+    paid_date: string;
+
+    @Column()
     contract: string;
+
+    @Column()
+    analyst: string;
+
+    @Column()
+    analyst_contact: string;
 
     @Column()
     notes: string;
