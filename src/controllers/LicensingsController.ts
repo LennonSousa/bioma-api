@@ -38,6 +38,9 @@ export default {
                 'agency',
                 'status',
                 'events',
+                'attachments',
+                'attachments.licensing',
+                'attachments.logs',
             ]
         });
 

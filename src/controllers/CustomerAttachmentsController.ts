@@ -5,6 +5,7 @@ import fs from 'fs';
 
 import customerAttachmentView from '../views/customerAttachmentView';
 import { CustomerAttachmentsRepository } from '../repositories/CustomerAttachmentsRepository';
+import LogsCustomerAttachmentsController from '../controllers/LogsCustomerAttachmentsController';
 
 export default {
     async index(request: Request, response: Response) {
@@ -31,6 +32,8 @@ export default {
         });
 
         const download = customerAttachmentView.renderDownload(customerAttachment);
+
+        await LogsCustomerAttachmentsController.create(new Date(), 'ex', 'view', customerAttachment.id);
 
         return response.download(download.path);
     },
@@ -77,6 +80,8 @@ export default {
 
         await customerAttachmentsRepository.save(customerAttachment);
 
+        await LogsCustomerAttachmentsController.create(new Date(), 'ex', 'create', customerAttachment.id);
+
         return response.status(201).json(customerAttachmentView.render(customerAttachment));
     },
 
@@ -116,6 +121,8 @@ export default {
         const customerAttachment = customerAttachmentsRepository.create(data);
 
         await customerAttachmentsRepository.update(id, customerAttachment);
+
+        await LogsCustomerAttachmentsController.create(new Date(), 'ex', 'update', customerAttachment.id);
 
         return response.status(204).json();
     },

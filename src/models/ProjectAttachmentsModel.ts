@@ -1,8 +1,9 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import Project from './ProjectsModel';
+import Log from './LogsProjectAttachmentsModel';
 
-@Entity('customer_attachments')
+@Entity('project_attachments')
 export default class ProjectAttachmentsModel {
     @PrimaryGeneratedColumn('uuid')
     readonly id: string;
@@ -25,4 +26,10 @@ export default class ProjectAttachmentsModel {
     @ManyToOne(() => Project, project => project.attachments)
     @JoinColumn({ name: 'project_id' })
     project: Project;
+
+    @OneToMany(() => Log, log => log.attachment, {
+        cascade: ['insert', 'update']
+    })
+    @JoinColumn({ name: 'attachment_id' })
+    logs: Log[];
 }

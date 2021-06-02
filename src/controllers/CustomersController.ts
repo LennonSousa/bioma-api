@@ -32,6 +32,7 @@ export default {
                 'licensings',
                 'attachments',
                 'attachments.customer',
+                'attachments.logs',
             ]
         });
 

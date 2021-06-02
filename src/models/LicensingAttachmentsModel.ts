@@ -1,8 +1,9 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import Licensing from './LicensingsModel';
+import Log from './LogsLicensingAttachmentsModel';
 
-@Entity('customer_attachments')
+@Entity('licensing_attachments')
 export default class LicensingAttachmentsModel {
     @PrimaryGeneratedColumn('uuid')
     readonly id: string;
@@ -25,4 +26,10 @@ export default class LicensingAttachmentsModel {
     @ManyToOne(() => Licensing, licensing => licensing.attachments)
     @JoinColumn({ name: 'licensing_id' })
     licensing: Licensing;
+
+    @OneToMany(() => Log, log => log.attachment, {
+        cascade: ['insert', 'update']
+    })
+    @JoinColumn({ name: 'attachment_id' })
+    logs: Log[];
 }

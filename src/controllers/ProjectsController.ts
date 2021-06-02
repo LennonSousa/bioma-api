@@ -42,6 +42,9 @@ export default {
                 'status',
                 'line',
                 'events',
+                'attachments',
+                'attachments.project',
+                'attachments.logs',
             ]
         });
 

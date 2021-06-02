@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 
 import projectAttachmentView from '../views/projectAttachmentView';
 import { ProjectAttachmentsRepository } from '../repositories/ProjectAttachmentsRepository';
+import LogsProjectAttachmentsController from '../controllers/LogsProjectAttachmentsController';
 
 export default {
     async index(request: Request, response: Response) {
@@ -30,6 +31,8 @@ export default {
         });
 
         const download = projectAttachmentView.renderDownload(projectAttachment);
+
+        await LogsProjectAttachmentsController.create(new Date(), 'ex', 'view', projectAttachment.id);
 
         return response.download(download.path);
     },
@@ -76,6 +79,8 @@ export default {
 
         await projectAttachmentsRepository.save(projectAttachment);
 
+        await LogsProjectAttachmentsController.create(new Date(), 'ex', 'create', projectAttachment.id);
+
         return response.status(201).json(projectAttachmentView.render(projectAttachment));
     },
 
@@ -115,6 +120,8 @@ export default {
         const projectAttachment = projectAttachmentsRepository.create(data);
 
         await projectAttachmentsRepository.update(id, projectAttachment);
+
+        await LogsProjectAttachmentsController.create(new Date(), 'ex', 'update', projectAttachment.id);
 
         return response.status(204).json();
     },

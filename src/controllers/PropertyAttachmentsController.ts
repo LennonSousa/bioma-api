@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 
 import propertyAttachmentView from '../views/propertyAttachmentView';
 import { PropertyAttachmentsRepository } from '../repositories/PropertyAttachmentsRepository';
+import LogsPropertyAttachmentsController from '../controllers/LogsPropertyAttachmentsController';
 
 export default {
     async index(request: Request, response: Response) {
@@ -30,6 +31,8 @@ export default {
         });
 
         const download = propertyAttachmentView.renderDownload(propertyAttachment);
+
+        await LogsPropertyAttachmentsController.create(new Date(), 'ex', 'view', propertyAttachment.id);
 
         return response.download(download.path);
     },
@@ -76,6 +79,8 @@ export default {
 
         await propertyAttachmentsRepository.save(propertyAttachment);
 
+        await LogsPropertyAttachmentsController.create(new Date(), 'ex', 'create', propertyAttachment.id);
+
         return response.status(201).json(propertyAttachmentView.render(propertyAttachment));
     },
 
@@ -115,6 +120,8 @@ export default {
         const propertyAttachment = propertyAttachmentsRepository.create(data);
 
         await propertyAttachmentsRepository.update(id, propertyAttachment);
+
+        await LogsPropertyAttachmentsController.create(new Date(), 'ex', 'update', propertyAttachment.id);
 
         return response.status(204).json();
     },

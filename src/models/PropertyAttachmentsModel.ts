@@ -1,6 +1,7 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import Property from './PropertiesModel';
+import Log from './LogsPropertyAttachmentsModel';
 
 @Entity('property_attachments')
 export default class PropertyAttachmentsModel {
@@ -25,4 +26,10 @@ export default class PropertyAttachmentsModel {
     @ManyToOne(() => Property, property => property.attachments)
     @JoinColumn({ name: 'property_id' })
     property: Property;
+
+    @OneToMany(() => Log, log => log.attachment, {
+        cascade: ['insert', 'update']
+    })
+    @JoinColumn({ name: 'attachment_id' })
+    logs: Log[];
 }

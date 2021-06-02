@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 
 import licensingAttachmentView from '../views/licensingAttachmentView';
 import { LicensingAttachmentsRepository } from '../repositories/LicensingAttachmentsRepository';
+import LogsLicensingAttachmentsController from '../controllers/LogsLicensingAttachmentsController';
 
 export default {
     async index(request: Request, response: Response) {
@@ -30,6 +31,8 @@ export default {
         });
 
         const download = licensingAttachmentView.renderDownload(licensingAttachment);
+
+        await LogsLicensingAttachmentsController.create(new Date(), 'ex', 'view', licensingAttachment.id);
 
         return response.download(download.path);
     },
@@ -76,6 +79,8 @@ export default {
 
         await licensingAttachmentsRepository.save(licensingAttachment);
 
+        await LogsLicensingAttachmentsController.create(new Date(), 'ex', 'create', licensingAttachment.id);
+
         return response.status(201).json(licensingAttachmentView.render(licensingAttachment));
     },
 
@@ -115,6 +120,8 @@ export default {
         const licensingAttachment = licensingAttachmentsRepository.create(data);
 
         await licensingAttachmentsRepository.update(id, licensingAttachment);
+
+        await LogsLicensingAttachmentsController.create(new Date(), 'ex', 'update', licensingAttachment.id);
 
         return response.status(204).json();
     },

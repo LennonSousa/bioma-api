@@ -33,6 +33,9 @@ export default {
                 'docs',
                 'docs.doc',
                 'projects',
+                'attachments',
+                'attachments.property',
+                'attachments.logs',
             ]
         });
 

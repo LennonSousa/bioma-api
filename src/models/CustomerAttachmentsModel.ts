@@ -1,6 +1,7 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import Customer from './CustomersModel';
+import Log from './LogsCustomerAttachmentsModel';
 
 @Entity('customer_attachments')
 export default class CustomerAttachmentsModel {
@@ -25,4 +26,10 @@ export default class CustomerAttachmentsModel {
     @ManyToOne(() => Customer, licensing => licensing.attachments)
     @JoinColumn({ name: 'customer_id' })
     customer: Customer;
+
+    @OneToMany(() => Log, log => log.attachment, {
+        cascade: ['insert', 'update']
+    })
+    @JoinColumn({ name: 'attachment_id' })
+    logs: Log[];
 }
