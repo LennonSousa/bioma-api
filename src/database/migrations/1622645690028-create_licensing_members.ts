@@ -26,7 +26,7 @@ export class createLicensingMembers1622645690028 implements MigrationInterface {
                 {
                     name: 'LicensingMember',
                     columnNames: ['licensing_id'],
-                    referencedTableName: 'licencings',
+                    referencedTableName: 'licensings',
                     referencedColumnNames: ['id'],
                     onUpdate: 'CASCADE',
                     onDelete: 'CASCADE',

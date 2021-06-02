@@ -41,6 +41,8 @@ export default {
                 'attachments',
                 'attachments.licensing',
                 'attachments.logs',
+                'members',
+                'members.user'
             ]
         });
 
@@ -48,6 +50,8 @@ export default {
     },
 
     async create(request: Request, response: Response) {
+        const { user_id } = request.params;
+
         const {
             licensing_number,
             expire,
@@ -60,6 +64,7 @@ export default {
             authorization,
             agency,
             status,
+            members,
         } = request.body;
 
         const licensingsRepository = getCustomRepository(LicensingsRepository);
@@ -76,6 +81,7 @@ export default {
             authorization,
             agency,
             status,
+            members,
             created_by: 'ex',
             updated_by: 'ex',
         };
@@ -92,6 +98,12 @@ export default {
             authorization: Yup.string().required(),
             agency: Yup.string().required(),
             status: Yup.string().required(),
+            members: Yup.array(
+                Yup.object().shape({
+                    licensing: Yup.string().required(),
+                    user: Yup.string().required(),
+                }),
+            ),
         });
 
         await schema.validate(data, {

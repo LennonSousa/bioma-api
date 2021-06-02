@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from "jsonwebtoken";
 
-require('dotenv/config');
-
 export default (request: Request, response: Response, next: NextFunction) => {
     const authHeader = request.headers.authorization;
 
@@ -23,7 +21,7 @@ export default (request: Request, response: Response, next: NextFunction) => {
         jwt.verify(token, process.env.USER_JWT_SECRET, (err: any, decoded: any) => {
             if (err) return response.status(401).send({ error: 'Token invalid  user auth', err });
 
-            request = decoded.id;
+            request.params['user_id'] = decoded.id;
 
             return next();
         });

@@ -5,6 +5,11 @@ import * as Yup from 'yup';
 import userRoleView from '../views/userRoleView';
 import { UsersRolesRepository } from '../repositories/UsersRolesRepository';
 
+let role: 'customers' | 'licensings' | 'properties' | 'projects' | 'banks' | 'users';
+let grant: 'view' | 'view_self' | 'create' | 'update' | 'update_self' | 'remove';
+
+const grants = ['view', 'view_self', 'create', 'update', 'update_self', 'remove']
+
 export default {
     async index(request: Request, response: Response) {
         const { id } = request.params;
@@ -34,31 +39,31 @@ export default {
         const userRoles = [
             {
                 role: 'customers',
-                grants: ['view', 'view_self', 'create', 'update', 'update_self', 'remove'],
+                grants,
             },
             {
                 role: 'properties',
-                grants: ['view', 'view_self', 'create', 'update', 'update_self', 'remove'],
+                grants,
             },
             {
                 role: 'projects',
-                grants: ['view', 'view_self', 'create', 'update', 'update_self', 'remove'],
+                grants,
             },
             {
                 role: 'licensings',
-                grants: ['view', 'view_self', 'create', 'update', 'update_self', 'remove'],
+                grants,
             },
             {
                 role: 'institutions',
-                grants: ['view', 'view_self', 'create', 'update', 'update_self', 'remove'],
+                grants,
             },
             {
                 role: 'banks',
-                grants: ['view', 'view_self', 'create', 'update', 'update_self', 'remove'],
+                grants,
             },
             {
                 role: 'users',
-                grants: ['view', 'view_self', 'create', 'update', 'update_self', 'remove'],
+                grants,
             }
         ];
 
@@ -108,4 +113,16 @@ export default {
 
         return response.status(204).json();
     },
+
+    async can(userId: string, userRole: typeof role, userGrant: typeof grant) {
+        const usersRolesRepository = getCustomRepository(UsersRolesRepository);
+
+        const role = await usersRolesRepository.findOne({
+            where: { user: userId, role: userRole, [userGrant]: true }
+        });
+
+        if (role) return true;
+
+        return false;
+    }
 }

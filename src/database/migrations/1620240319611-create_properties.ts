@@ -41,7 +41,7 @@ export class createProperties1620240319611 implements MigrationInterface {
                         type: 'varchar(50)'
                     },
                     {
-                        name: 'coordinates ',
+                        name: 'coordinates',
                         type: 'varchar',
                         isNullable: true,
                     },
