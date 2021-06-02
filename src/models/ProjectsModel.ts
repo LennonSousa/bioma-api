@@ -8,6 +8,7 @@ import ProjectStatus from './ProjectStatusModel';
 import ProjectLine from './ProjectLinesModel';
 import Event from './EventsProjectModel';
 import Attachment from './ProjectAttachmentsModel';
+import Member from './ProjectMembersModel';
 
 @Entity('projects')
 export default class ProjectsModel {
@@ -84,4 +85,10 @@ export default class ProjectsModel {
     @OneToMany(() => Attachment, attachment => attachment.project)
     @JoinColumn({ name: 'project_id' })
     attachments: Attachment[];
+
+    @OneToMany(() => Member, member => member.project, {
+        cascade: ['insert', 'update']
+    })
+    @JoinColumn({ name: 'project_id' })
+    members: Member[];
 }

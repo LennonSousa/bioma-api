@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class createLogsCustomerAttachments1622638093518 implements MigrationInterface {
+export class createLicensingMembers1622645690028 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(new Table({
-            name: 'logs_customer_attachments',
+            name: 'licencing_members',
             columns: [
                 {
                     name: 'id',
@@ -14,27 +14,27 @@ export class createLogsCustomerAttachments1622638093518 implements MigrationInte
                     generationStrategy: 'uuid',
                 },
                 {
-                    name: 'accessed_at',
-                    type: 'datetime',
-                },
-                {
-                    name: 'user',
+                    name: 'licensing_id',
                     type: 'varchar',
                 },
                 {
-                    name: 'action',
-                    type: 'varchar(50)',
-                },
-                {
-                    name: 'attachment_id',
+                    name: 'user_id',
                     type: 'varchar',
                 },
             ],
             foreignKeys: [
                 {
-                    name: 'CustomerAttachment',
-                    columnNames: ['attachment_id'],
-                    referencedTableName: 'customer_attachments',
+                    name: 'LicensingMember',
+                    columnNames: ['licensing_id'],
+                    referencedTableName: 'licencings',
+                    referencedColumnNames: ['id'],
+                    onUpdate: 'CASCADE',
+                    onDelete: 'CASCADE',
+                },
+                {
+                    name: 'UserLicensingMember',
+                    columnNames: ['user_id'],
+                    referencedTableName: 'users',
                     referencedColumnNames: ['id'],
                     onUpdate: 'CASCADE',
                     onDelete: 'CASCADE',
@@ -44,7 +44,7 @@ export class createLogsCustomerAttachments1622638093518 implements MigrationInte
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable('logs_customer_attachments');
+        await queryRunner.dropTable('licencing_members');
     }
 
 }

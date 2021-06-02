@@ -29,6 +29,9 @@ export default class PropertiesModel {
     area: string;
 
     @Column()
+    coordinates: string;
+
+    @Column()
     notes: string;
 
     @Column()

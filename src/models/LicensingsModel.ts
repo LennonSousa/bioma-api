@@ -8,6 +8,7 @@ import LicensingAgency from './LicensingAgenciesModel';
 import LicensingStatus from './LicensingStatusModel';
 import Event from './EventsLicensingModel';
 import Attachment from './LicensingAttachmentsModel';
+import Member from './LicensingMembersModel';
 
 @Entity('licensings')
 export default class LicensingsModel {
@@ -72,4 +73,10 @@ export default class LicensingsModel {
     @OneToMany(() => Attachment, attachment => attachment.licensing)
     @JoinColumn({ name: 'licensing_id' })
     attachments: Attachment[];
+
+    @OneToMany(() => Member, member => member.licensing, {
+        cascade: ['insert', 'update']
+    })
+    @JoinColumn({ name: 'licensing_id' })
+    members: Member[];
 }

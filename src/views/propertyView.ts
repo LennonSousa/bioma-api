@@ -13,6 +13,7 @@ export default {
             city: property.city,
             state: property.state,
             area: property.area,
+            coordinates: property.coordinates,
             notes: property.notes,
             warnings: property.warnings,
             created_by: property.created_by,
