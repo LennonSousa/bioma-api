@@ -23,6 +23,12 @@ export default class CustomerAttachmentsModel {
     @Column()
     expire_at: Date;
 
+    @Column()
+    schedule: boolean;
+
+    @Column()
+    schedule_at: Date;
+
     @ManyToOne(() => Customer, licensing => licensing.attachments)
     @JoinColumn({ name: 'customer_id' })
     customer: Customer;

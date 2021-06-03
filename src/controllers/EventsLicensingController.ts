@@ -4,12 +4,20 @@ import * as Yup from 'yup';
 
 import eventLicensingView from '../views/eventLicensingView';
 import { EventsLicensingRepository } from '../repositories/EventsLicensingRepository';
+import { UsersRepository } from '../repositories/UsersRepository';
+import UsersRolesController from './UsersRolesController';
 
 export default {
     async index(request: Request, response: Response) {
+        const { id, user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "licensings", "view"))
+            return response.status(403).send({ error: 'User permission not granted!' });
+
         const eventsLicensingRepository = getCustomRepository(EventsLicensingRepository);
 
         const eventsLicensing = await eventsLicensingRepository.find({
+            where: { licensing: id },
             order: {
                 created_at: "ASC"
             }
@@ -19,7 +27,10 @@ export default {
     },
 
     async show(request: Request, response: Response) {
-        const { id } = request.params;
+        const { id, user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "licensings", "view"))
+            return response.status(403).send({ error: 'User permission not granted!' });
 
         const eventsLicensingRepository = getCustomRepository(EventsLicensingRepository);
 
@@ -33,6 +44,11 @@ export default {
     },
 
     async create(request: Request, response: Response) {
+        const { user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "licensings", "create"))
+            return response.status(403).send({ error: 'User permission not granted!' });
+
         const {
             description,
             done,
@@ -42,13 +58,17 @@ export default {
 
         const eventsLicensingRepository = getCustomRepository(EventsLicensingRepository);
 
+        const userRepository = getCustomRepository(UsersRepository);
+
+        const user = await userRepository.findOneOrFail(user_id);
+
         const data = {
             description,
             done,
             finished_at,
             licensing,
-            created_by: 'ex',
-            updated_by: 'ex',
+            created_by: user.name,
+            updated_by: user.name,
         };
 
         const schema = Yup.object().shape({
@@ -70,7 +90,10 @@ export default {
     },
 
     async update(request: Request, response: Response) {
-        const { id } = request.params;
+        const { id, user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "licensings", "update"))
+            return response.status(403).send({ error: 'User permission not granted!' });
 
         const {
             description,
@@ -80,13 +103,16 @@ export default {
 
         const eventsLicensingRepository = getCustomRepository(EventsLicensingRepository);
 
+        const userRepository = getCustomRepository(UsersRepository);
+
+        const user = await userRepository.findOneOrFail(user_id);
+
         const data = {
             description,
             done,
             updated_at: new Date(),
             finished_at,
-            created_by: 'ex',
-            updated_by: 'ex',
+            updated_by: user.name,
         };
 
         const schema = Yup.object().shape({
@@ -108,7 +134,10 @@ export default {
     },
 
     async delete(request: Request, response: Response) {
-        const { id } = request.params;
+        const { id, user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "licensings", "remove"))
+            return response.status(403).send({ error: 'User permission not granted!' });
 
         const eventsLicensingRepository = getCustomRepository(EventsLicensingRepository);
 

@@ -4,9 +4,16 @@ import * as Yup from 'yup';
 
 import propertyView from '../views/propertyView';
 import { PropertiesRepository } from '../repositories/PropertiesRepository';
+import { UsersRepository } from '../repositories/UsersRepository';
+import UsersRolesController from './UsersRolesController';
 
 export default {
     async index(request: Request, response: Response) {
+        const { user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "properties", "view"))
+            return response.status(403).send({ error: 'User permission not granted!' });
+
         const propertiesRepository = getCustomRepository(PropertiesRepository);
 
         const properties = await propertiesRepository.find({
@@ -22,7 +29,10 @@ export default {
     },
 
     async show(request: Request, response: Response) {
-        const { id } = request.params;
+        const { id, user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "properties", "view"))
+            return response.status(403).send({ error: 'User permission not granted!' });
 
         const propertiesRepository = getCustomRepository(PropertiesRepository);
 
@@ -43,6 +53,11 @@ export default {
     },
 
     async create(request: Request, response: Response) {
+        const { user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "properties", "create"))
+            return response.status(403).send({ error: 'User permission not granted!' });
+
         const {
             name,
             registration,
@@ -59,6 +74,10 @@ export default {
 
         const propertiesRepository = getCustomRepository(PropertiesRepository);
 
+        const userRepository = getCustomRepository(UsersRepository);
+
+        const user = await userRepository.findOneOrFail(user_id);
+
         const data = {
             name,
             registration,
@@ -69,7 +88,7 @@ export default {
             coordinates,
             notes,
             warnings,
-            created_by: 'ex',
+            created_by: user.name,
             customer,
             docs,
         };
@@ -107,7 +126,10 @@ export default {
     },
 
     async update(request: Request, response: Response) {
-        const { id } = request.params;
+        const { id, user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "properties", "update"))
+            return response.status(403).send({ error: 'User permission not granted!' });
 
         const {
             name,
@@ -162,7 +184,10 @@ export default {
     },
 
     async delete(request: Request, response: Response) {
-        const { id } = request.params;
+        const { id, user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "properties", "remove"))
+            return response.status(403).send({ error: 'User permission not granted!' });
 
         const propertiesRepository = getCustomRepository(PropertiesRepository);
 

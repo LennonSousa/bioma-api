@@ -1,12 +1,19 @@
 import { Request, Response } from 'express';
 import { getCustomRepository } from 'typeorm';
 import * as Yup from 'yup';
+import { UsersRepository } from '../repositories/UsersRepository';
+import UsersRolesController from './UsersRolesController';
 
 import projectView from '../views/projectView';
 import { ProjectsRepository } from '../repositories/ProjectsRepository';
 
 export default {
     async index(request: Request, response: Response) {
+        const { user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "projects", "view"))
+            return response.status(403).send({ error: 'User permission not granted!' });
+
         const projectsRepository = getCustomRepository(ProjectsRepository);
 
         const projects = await projectsRepository.find({
@@ -28,7 +35,10 @@ export default {
     },
 
     async show(request: Request, response: Response) {
-        const { id } = request.params;
+        const { id, user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "projects", "view"))
+            return response.status(403).send({ error: 'User permission not granted!' });
 
         const projectsRepository = getCustomRepository(ProjectsRepository);
 
@@ -52,6 +62,11 @@ export default {
     },
 
     async create(request: Request, response: Response) {
+        const { user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "projects", "create"))
+            return response.status(403).send({ error: 'User permission not granted!' });
+
         const {
             value,
             deal,
@@ -72,6 +87,10 @@ export default {
 
         const projectsRepository = getCustomRepository(ProjectsRepository);
 
+        const userRepository = getCustomRepository(UsersRepository);
+
+        const user = await userRepository.findOneOrFail(user_id);
+
         const data = {
             value,
             deal,
@@ -88,8 +107,8 @@ export default {
             type,
             status,
             line,
-            created_by: 'ex',
-            updated_by: 'ex',
+            created_by: user.name,
+            updated_by: user.name,
         };
 
         const schema = Yup.object().shape({
@@ -122,7 +141,10 @@ export default {
     },
 
     async update(request: Request, response: Response) {
-        const { id } = request.params;
+        const { id, user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "projects", "update"))
+            return response.status(403).send({ error: 'User permission not granted!' });
 
         const {
             value,
@@ -144,6 +166,10 @@ export default {
 
         const projectsRepository = getCustomRepository(ProjectsRepository);
 
+        const userRepository = getCustomRepository(UsersRepository);
+
+        const user = await userRepository.findOneOrFail(user_id);
+
         const data = {
             value,
             deal,
@@ -154,7 +180,7 @@ export default {
             analyst_contact,
             notes,
             warnings,
-            updated_by: 'ex',
+            updated_by: user.name,
             updated_at: new Date(),
             customer,
             bank,
@@ -194,7 +220,10 @@ export default {
     },
 
     async delete(request: Request, response: Response) {
-        const { id } = request.params;
+        const { id, user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "projects", "remove"))
+            return response.status(403).send({ error: 'User permission not granted!' });
 
         const projectsRepository = getCustomRepository(ProjectsRepository);
 

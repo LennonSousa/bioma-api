@@ -1,13 +1,21 @@
 import { Request, Response } from 'express';
 import { getCustomRepository } from 'typeorm';
 import * as Yup from 'yup';
+import fs from 'fs';
 
 import propertyAttachmentView from '../views/propertyAttachmentView';
 import { PropertyAttachmentsRepository } from '../repositories/PropertyAttachmentsRepository';
 import LogsPropertyAttachmentsController from '../controllers/LogsPropertyAttachmentsController';
+import { UsersRepository } from '../repositories/UsersRepository';
+import UsersRolesController from './UsersRolesController';
 
 export default {
     async index(request: Request, response: Response) {
+        const { user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "properties", "view"))
+            return response.status(403).send({ error: 'User permission not granted!' });
+
         const propertyAttachmentsRepository = getCustomRepository(PropertyAttachmentsRepository);
 
         const propertyAttachments = await propertyAttachmentsRepository.find({
@@ -20,7 +28,10 @@ export default {
     },
 
     async show(request: Request, response: Response) {
-        const { id } = request.params;
+        const { id, user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "properties", "view"))
+            return response.status(403).send({ error: 'User permission not granted!' });
 
         const propertyAttachmentsRepository = getCustomRepository(PropertyAttachmentsRepository);
 
@@ -32,22 +43,36 @@ export default {
 
         const download = propertyAttachmentView.renderDownload(propertyAttachment);
 
-        await LogsPropertyAttachmentsController.create(new Date(), 'ex', 'view', propertyAttachment.id);
+        const userRepository = getCustomRepository(UsersRepository);
+
+        const user = await userRepository.findOneOrFail(user_id);
+
+        await LogsPropertyAttachmentsController.create(new Date(), user.name, 'view', propertyAttachment.id);
 
         return response.download(download.path);
     },
 
     async create(request: Request, response: Response) {
+        const { user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "properties", "create"))
+            return response.status(403).send({ error: 'User permission not granted!' });
+
         let {
             name,
             received_at,
             expire,
             expire_at,
+            schedule,
+            schedule_at,
             property,
         } = request.body;
 
         if (expire)
             expire = Yup.boolean().cast(expire);
+
+        if (schedule)
+            expire = Yup.boolean().cast(schedule);
 
         const propertyAttachmentsRepository = getCustomRepository(PropertyAttachmentsRepository);
 
@@ -59,6 +84,8 @@ export default {
             received_at,
             expire,
             expire_at,
+            schedule,
+            schedule_at,
             property,
         };
 
@@ -66,8 +93,10 @@ export default {
             name: Yup.string().required(),
             path: Yup.string().required(),
             received_at: Yup.date().required(),
-            expire: Yup.boolean().notRequired().nullable(),
-            expire_at: Yup.date().required(),
+            expire: Yup.boolean().notRequired(),
+            expire_at: Yup.date().notRequired(),
+            schedule: Yup.boolean().notRequired(),
+            schedule_at: Yup.date().notRequired(),
             property: Yup.string().required(),
         });
 
@@ -79,23 +108,35 @@ export default {
 
         await propertyAttachmentsRepository.save(propertyAttachment);
 
-        await LogsPropertyAttachmentsController.create(new Date(), 'ex', 'create', propertyAttachment.id);
+        const userRepository = getCustomRepository(UsersRepository);
+
+        const user = await userRepository.findOneOrFail(user_id);
+
+        await LogsPropertyAttachmentsController.create(new Date(), user.name, 'create', propertyAttachment.id);
 
         return response.status(201).json(propertyAttachmentView.render(propertyAttachment));
     },
 
     async update(request: Request, response: Response) {
-        const { id } = request.params;
+        const { id, user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "properties", "update"))
+            return response.status(403).send({ error: 'User permission not granted!' });
 
         let {
             name,
             received_at,
             expire,
             expire_at,
+            schedule,
+            schedule_at,
         } = request.body;
 
         if (expire)
             expire = Yup.boolean().cast(expire);
+
+        if (schedule)
+            expire = Yup.boolean().cast(schedule);
 
         const propertyAttachmentsRepository = getCustomRepository(PropertyAttachmentsRepository);
 
@@ -104,13 +145,17 @@ export default {
             received_at,
             expire,
             expire_at,
+            schedule,
+            schedule_at,
         };
 
         const schema = Yup.object().shape({
             name: Yup.string().required(),
             received_at: Yup.date().required(),
-            expire: Yup.boolean().notRequired().nullable(),
-            expire_at: Yup.date().required(),
+            expire: Yup.boolean().notRequired(),
+            expire_at: Yup.date().notRequired(),
+            schedule: Yup.boolean().notRequired(),
+            schedule_at: Yup.date().notRequired(),
         });
 
         await schema.validate(data, {
@@ -121,15 +166,38 @@ export default {
 
         await propertyAttachmentsRepository.update(id, propertyAttachment);
 
-        await LogsPropertyAttachmentsController.create(new Date(), 'ex', 'update', propertyAttachment.id);
+        const userRepository = getCustomRepository(UsersRepository);
+
+        const user = await userRepository.findOneOrFail(user_id);
+
+        await LogsPropertyAttachmentsController.create(new Date(), user.name, 'update', propertyAttachment.id);
 
         return response.status(204).json();
     },
 
     async delete(request: Request, response: Response) {
-        const { id } = request.params;
+        const { id, user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "properties", "remove"))
+            return response.status(403).send({ error: 'User permission not granted!' });
 
         const propertyAttachmentsRepository = getCustomRepository(PropertyAttachmentsRepository);
+
+        const propertyAttachment = await propertyAttachmentsRepository.findOneOrFail(id, {
+            relations: [
+                'property',
+            ]
+        });
+
+        try {
+            fs.rmSync(
+                `${process.env.UPLOADS_DIR}/properties/${propertyAttachment.property.id}/${propertyAttachment.path}`, {
+                maxRetries: 3
+            });
+        }
+        catch (err) {
+            console.error("> Error to remove file property attachment: ", err);
+        }
 
         await propertyAttachmentsRepository.delete(id);
 

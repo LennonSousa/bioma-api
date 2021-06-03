@@ -1,27 +1,40 @@
 import { Request, Response } from 'express';
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, Equal } from 'typeorm';
 import * as Yup from 'yup';
 import fs from 'fs';
+import { format } from 'date-fns';
 
 import customerAttachmentView from '../views/customerAttachmentView';
 import { CustomerAttachmentsRepository } from '../repositories/CustomerAttachmentsRepository';
 import LogsCustomerAttachmentsController from '../controllers/LogsCustomerAttachmentsController';
+import { UsersRepository } from '../repositories/UsersRepository';
+import UsersRolesController from './UsersRolesController';
 
 export default {
-    async index(request: Request, response: Response) {
+    async index() {
         const customerAttachmentsRepository = getCustomRepository(CustomerAttachmentsRepository);
 
+        const now = format(new Date(), 'yyyy-MM-dd');
+
         const customerAttachments = await customerAttachmentsRepository.find({
+            where: {
+                expire: true,
+                schedule: true,
+                schedule_at: Equal(now),
+            },
             order: {
                 received_at: "ASC"
             }
         });
 
-        return response.json(customerAttachmentView.renderMany(customerAttachments));
+        return customerAttachments;
     },
 
     async show(request: Request, response: Response) {
-        const { id } = request.params;
+        const { id, user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "customers", "view"))
+            return response.status(403).send({ error: 'User permission not granted!' });
 
         const customerAttachmentsRepository = getCustomRepository(CustomerAttachmentsRepository);
 
@@ -33,22 +46,36 @@ export default {
 
         const download = customerAttachmentView.renderDownload(customerAttachment);
 
-        await LogsCustomerAttachmentsController.create(new Date(), 'ex', 'view', customerAttachment.id);
+        const userRepository = getCustomRepository(UsersRepository);
+
+        const user = await userRepository.findOneOrFail(user_id);
+
+        await LogsCustomerAttachmentsController.create(new Date(), user.name, 'view', customerAttachment.id);
 
         return response.download(download.path);
     },
 
     async create(request: Request, response: Response) {
+        const { user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "customers", "create"))
+            return response.status(403).send({ error: 'User permission not granted!' });
+
         let {
             name,
             received_at,
             expire,
             expire_at,
+            schedule,
+            schedule_at,
             customer,
         } = request.body;
 
         if (expire)
             expire = Yup.boolean().cast(expire);
+
+        if (schedule)
+            expire = Yup.boolean().cast(schedule);
 
         const customerAttachmentsRepository = getCustomRepository(CustomerAttachmentsRepository);
 
@@ -60,6 +87,8 @@ export default {
             received_at,
             expire,
             expire_at,
+            schedule,
+            schedule_at,
             customer,
         };
 
@@ -67,8 +96,10 @@ export default {
             name: Yup.string().required(),
             path: Yup.string().required(),
             received_at: Yup.date().required(),
-            expire: Yup.boolean().notRequired().nullable(),
-            expire_at: Yup.date().required(),
+            expire: Yup.boolean().notRequired(),
+            expire_at: Yup.date().notRequired(),
+            schedule: Yup.boolean().notRequired(),
+            schedule_at: Yup.date().notRequired(),
             customer: Yup.string().required(),
         });
 
@@ -80,23 +111,35 @@ export default {
 
         await customerAttachmentsRepository.save(customerAttachment);
 
-        await LogsCustomerAttachmentsController.create(new Date(), 'ex', 'create', customerAttachment.id);
+        const userRepository = getCustomRepository(UsersRepository);
+
+        const user = await userRepository.findOneOrFail(user_id);
+
+        await LogsCustomerAttachmentsController.create(new Date(), user.name, 'create', customerAttachment.id);
 
         return response.status(201).json(customerAttachmentView.render(customerAttachment));
     },
 
     async update(request: Request, response: Response) {
-        const { id } = request.params;
+        const { id, user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "customers", "update"))
+            return response.status(403).send({ error: 'User permission not granted!' });
 
         let {
             name,
             received_at,
             expire,
             expire_at,
+            schedule,
+            schedule_at,
         } = request.body;
 
         if (expire)
             expire = Yup.boolean().cast(expire);
+
+        if (schedule)
+            expire = Yup.boolean().cast(schedule);
 
         const customerAttachmentsRepository = getCustomRepository(CustomerAttachmentsRepository);
 
@@ -105,13 +148,17 @@ export default {
             received_at,
             expire,
             expire_at,
+            schedule,
+            schedule_at,
         };
 
         const schema = Yup.object().shape({
             name: Yup.string().required(),
             received_at: Yup.date().required(),
-            expire: Yup.boolean().notRequired().nullable(),
-            expire_at: Yup.date().required(),
+            expire: Yup.boolean().notRequired(),
+            expire_at: Yup.date().notRequired(),
+            schedule: Yup.boolean().notRequired(),
+            schedule_at: Yup.date().notRequired(),
         });
 
         await schema.validate(data, {
@@ -122,26 +169,40 @@ export default {
 
         await customerAttachmentsRepository.update(id, customerAttachment);
 
-        await LogsCustomerAttachmentsController.create(new Date(), 'ex', 'update', customerAttachment.id);
+        const userRepository = getCustomRepository(UsersRepository);
+
+        const user = await userRepository.findOneOrFail(user_id);
+
+        await LogsCustomerAttachmentsController.create(new Date(), user.name, 'update', customerAttachment.id);
 
         return response.status(204).json();
     },
 
     async delete(request: Request, response: Response) {
-        const { id } = request.params;
+        const { id, user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "customers", "remove"))
+            return response.status(403).send({ error: 'User permission not granted!' });
 
         const customerAttachmentsRepository = getCustomRepository(CustomerAttachmentsRepository);
 
-        await customerAttachmentsRepository.delete(id);
-
-        const customerAttachment = await customerAttachmentsRepository.findOneOrFail(id);
+        const customerAttachment = await customerAttachmentsRepository.findOneOrFail(id, {
+            relations: [
+                'customer',
+            ]
+        });
 
         try {
-            fs.rmSync(`${process.env.CUSTOMERS_DIR}${customerAttachment.path}`, { maxRetries: 3 });
+            fs.rmSync(
+                `${process.env.UPLOADS_DIR}/customers/${customerAttachment.customer.id}/${customerAttachment.path}`, {
+                maxRetries: 3
+            });
         }
         catch (err) {
             console.error("> Error to remove file customer attachment: ", err);
         }
+
+        await customerAttachmentsRepository.delete(id);
 
         return response.status(204).send();
     }

@@ -12,6 +12,8 @@ export default {
             received_at: customerAttachment.received_at,
             expire: customerAttachment.expire,
             expire_at: customerAttachment.expire_at,
+            schedule: customerAttachment.schedule,
+            schedule_at: customerAttachment.schedule_at,
             customer: customerAttachment.customer && customerView.render(customerAttachment.customer),
         }
     },

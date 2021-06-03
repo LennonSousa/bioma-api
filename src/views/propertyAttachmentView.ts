@@ -10,6 +10,8 @@ export default {
             received_at: propertyAttachment.received_at,
             expire: propertyAttachment.expire,
             expire_at: propertyAttachment.expire_at,
+            schedule: propertyAttachment.schedule,
+            schedule_at: propertyAttachment.schedule_at,
             property: propertyAttachment.property && propertyView.render(propertyAttachment.property),
         }
     },

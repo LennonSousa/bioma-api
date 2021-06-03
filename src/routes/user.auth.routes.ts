@@ -97,7 +97,7 @@ userAuthRoutes.post('/docs/property', usersAuthMiddleware, DocsPropertyControlle
 userAuthRoutes.put('/docs/property/:id', usersAuthMiddleware, DocsPropertyController.update);
 userAuthRoutes.delete('/docs/property/:id', usersAuthMiddleware, DocsPropertyController.delete);
 
-userAuthRoutes.get('/events/licensing', usersAuthMiddleware, EventsLicensingController.index);
+userAuthRoutes.get('/licensing/:id/events', usersAuthMiddleware, EventsLicensingController.index);
 userAuthRoutes.get('/events/licensing/:id', usersAuthMiddleware, EventsLicensingController.show);
 userAuthRoutes.post('/events/licensing', usersAuthMiddleware, EventsLicensingController.create);
 userAuthRoutes.put('/events/licensing/:id', usersAuthMiddleware, EventsLicensingController.update);
@@ -131,6 +131,8 @@ userAuthRoutes.get('/licensings/authorizations/:id', usersAuthMiddleware, Licens
 userAuthRoutes.post('/licensings/authorizations', usersAuthMiddleware, LicensingAuthorizationsController.create);
 userAuthRoutes.put('/licensings/authorizations/:id', usersAuthMiddleware, LicensingAuthorizationsController.update);
 userAuthRoutes.delete('/licensings/authorizations/:id', usersAuthMiddleware, LicensingAuthorizationsController.delete);
+
+
 
 userAuthRoutes.get('/licensings/infringements', usersAuthMiddleware, LicensingInfringementsController.index);
 userAuthRoutes.get('/licensings/infringements/:id', usersAuthMiddleware, LicensingInfringementsController.show);

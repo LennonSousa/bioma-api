@@ -33,6 +33,17 @@ export class createProjectAttachments1622571912995 implements MigrationInterface
                 {
                     name: 'expire_at',
                     type: 'date',
+                    default: '(CURRENT_DATE)',
+                },
+                {
+                    name: 'schedule',
+                    type: 'boolean',
+                    default: false,
+                },
+                {
+                    name: 'schedule_at',
+                    type: 'date',
+                    default: '(CURRENT_DATE)',
                 },
                 {
                     name: 'project_id',

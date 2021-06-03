@@ -33,6 +33,17 @@ export class createPropertyAttachments1622571823872 implements MigrationInterfac
                 {
                     name: 'expire_at',
                     type: 'date',
+                    default: '(CURRENT_DATE)',
+                },
+                {
+                    name: 'schedule',
+                    type: 'boolean',
+                    default: false,
+                },
+                {
+                    name: 'schedule_at',
+                    type: 'date',
+                    default: '(CURRENT_DATE)',
                 },
                 {
                     name: 'property_id',

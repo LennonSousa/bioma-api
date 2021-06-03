@@ -33,6 +33,17 @@ export class createLicensingAttachments1622572004221 implements MigrationInterfa
                 {
                     name: 'expire_at',
                     type: 'date',
+                    default: '(CURRENT_DATE)',
+                },
+                {
+                    name: 'schedule',
+                    type: 'boolean',
+                    default: false,
+                },
+                {
+                    name: 'schedule_at',
+                    type: 'date',
+                    default: '(CURRENT_DATE)',
                 },
                 {
                     name: 'licensing_id',

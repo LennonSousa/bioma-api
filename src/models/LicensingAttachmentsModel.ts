@@ -23,6 +23,12 @@ export default class LicensingAttachmentsModel {
     @Column()
     expire_at: Date;
 
+    @Column()
+    schedule: boolean;
+
+    @Column()
+    schedule_at: Date;
+
     @ManyToOne(() => Licensing, licensing => licensing.attachments)
     @JoinColumn({ name: 'licensing_id' })
     licensing: Licensing;

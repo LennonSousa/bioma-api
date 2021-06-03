@@ -23,6 +23,12 @@ export default class PropertyAttachmentsModel {
     @Column()
     expire_at: Date;
 
+    @Column()
+    schedule: boolean;
+
+    @Column()
+    schedule_at: Date;
+
     @ManyToOne(() => Property, property => property.attachments)
     @JoinColumn({ name: 'property_id' })
     property: Property;

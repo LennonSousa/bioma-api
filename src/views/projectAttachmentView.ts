@@ -10,6 +10,8 @@ export default {
             received_at: projectAttachment.received_at,
             expire: projectAttachment.expire,
             expire_at: projectAttachment.expire_at,
+            schedule: projectAttachment.schedule,
+            schedule_at: projectAttachment.schedule_at,
             project: projectAttachment.project && projectView.render(projectAttachment.project),
         }
     },

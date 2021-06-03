@@ -23,6 +23,12 @@ export default class ProjectAttachmentsModel {
     @Column()
     expire_at: Date;
 
+    @Column()
+    schedule: boolean;
+
+    @Column()
+    schedule_at: Date;
+
     @ManyToOne(() => Project, project => project.attachments)
     @JoinColumn({ name: 'project_id' })
     project: Project;
