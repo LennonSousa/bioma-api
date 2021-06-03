@@ -4,6 +4,7 @@ import Customer from './CustomersModel';
 import PropertyDoc from './PropertyDocsModel';
 import Project from './ProjectsModel';
 import Attachment from './PropertyAttachmentsModel';
+import Member from './PropertyMembersModel';
 
 @Entity('properties')
 export default class PropertiesModel {
@@ -60,4 +61,10 @@ export default class PropertiesModel {
     @OneToMany(() => Attachment, attachment => attachment.property)
     @JoinColumn({ name: 'property_id' })
     attachments: Attachment[];
+
+    @OneToMany(() => Member, member => member.property, {
+        cascade: ['insert', 'update']
+    })
+    @JoinColumn({ name: 'customer_id' })
+    members: Member[];
 }

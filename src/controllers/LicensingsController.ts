@@ -117,10 +117,9 @@ export default {
             status: Yup.string().required(),
             members: Yup.array(
                 Yup.object().shape({
-                    licensing: Yup.string().required(),
                     user: Yup.string().required(),
                 }),
-            ),
+            ).required(),
         });
 
         await schema.validate(data, {

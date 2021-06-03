@@ -1,8 +1,10 @@
 import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import Role from './UsersRolesModel';
-import ProjectMember from './ProjectMembersModel';
+import CustomerMember from './CustomerMembersModel';
 import LicensingMember from './LicensingMembersModel';
+import ProjectMember from './ProjectMembersModel';
+import PropertyMember from './PropertyMembersModel';
 
 @Entity('users')
 export default class UsersModel {
@@ -39,11 +41,19 @@ export default class UsersModel {
     @JoinColumn({ name: 'users_id' })
     roles: Role[];
 
-    @OneToMany(() => ProjectMember, projectMember => projectMember.user)
+    @OneToMany(() => CustomerMember, customerMember => customerMember.user)
     @JoinColumn({ name: 'user_id' })
-    projectMembers: ProjectMember[];
+    customerMembers: CustomerMember[];
 
     @OneToMany(() => LicensingMember, licensingMember => licensingMember.user)
     @JoinColumn({ name: 'user_id' })
     licensingMembers: LicensingMember[];
+
+    @OneToMany(() => ProjectMember, projectMember => projectMember.user)
+    @JoinColumn({ name: 'user_id' })
+    projectMembers: ProjectMember[];
+
+    @OneToMany(() => PropertyMember, propertyMember => propertyMember.user)
+    @JoinColumn({ name: 'user_id' })
+    propertyMembers: PropertyMember[];
 }

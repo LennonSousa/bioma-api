@@ -55,6 +55,8 @@ export default {
                 'attachments',
                 'attachments.project',
                 'attachments.logs',
+                'members',
+                'members.user'
             ]
         });
 
@@ -83,6 +85,7 @@ export default {
             type,
             status,
             line,
+            members,
         } = request.body;
 
         const projectsRepository = getCustomRepository(ProjectsRepository);
@@ -107,6 +110,7 @@ export default {
             type,
             status,
             line,
+            members,
             created_by: user.name,
             updated_by: user.name,
         };
@@ -127,6 +131,11 @@ export default {
             status: Yup.string().required(),
             bank: Yup.string().required(),
             property: Yup.string().required(),
+            members: Yup.array(
+                Yup.object().shape({
+                    user: Yup.string().required(),
+                })
+            ).required(),
         });
 
         await schema.validate(data, {

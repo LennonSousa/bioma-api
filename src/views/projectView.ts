@@ -6,6 +6,7 @@ import projectTypeView from './projectTypeView';
 import projectStatusView from './projectStatusView';
 import projectLineView from './projectLineView';
 import eventProjectView from './eventProjectView';
+import memberView from './projectMemberView';
 
 export default {
     render(project: Project) {
@@ -31,6 +32,7 @@ export default {
             status: project.status && projectStatusView.render(project.status),
             line: project.line && projectLineView.render(project.line),
             events: project.events ? eventProjectView.renderMany(project.events) : [],
+            members: project.members ? memberView.renderMany(project.members) : [],
         }
     },
 

@@ -43,6 +43,8 @@ export default {
                 'attachments',
                 'attachments.customer',
                 'attachments.logs',
+                'members',
+                'members.user'
             ]
         });
 
@@ -70,6 +72,7 @@ export default {
             warnings,
             birth,
             docs,
+            members,
         } = request.body;
 
         const customersRepository = getCustomRepository(CustomersRepository);
@@ -94,6 +97,7 @@ export default {
             birth,
             created_by: user.name,
             docs,
+            members,
         };
 
         const schema = Yup.object().shape({
@@ -119,6 +123,11 @@ export default {
                     doc: Yup.string().required(),
                 })
             ),
+            members: Yup.array(
+                Yup.object().shape({
+                    user: Yup.string().required(),
+                })
+            ).required(),
         });
 
         await schema.validate(data, {

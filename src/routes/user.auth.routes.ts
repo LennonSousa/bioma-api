@@ -12,6 +12,11 @@ import CustomerPropertiesController from '../controllers/CustomerPropertiesContr
 import DocsCustomerController from '../controllers/DocsCustomerController';
 import DocsPropertyController from '../controllers/DocsPropertyController';
 
+import CustomerMembersController from '../controllers/CustomerMembersController';
+import LicensingMembersController from '../controllers/LicensingMembersController';
+import ProjectMembersController from '../controllers/ProjectMembersController';
+import PropertyMembersController from '../controllers/PropertyMembersController';
+
 import EventsLicensingController from '../controllers/EventsLicensingController';
 import EventsProjectController from '../controllers/EventsProjectController';
 
@@ -77,6 +82,26 @@ userAuthRoutes.post('/customers/docs', usersAuthMiddleware, CustomerDocsControll
 userAuthRoutes.put('/customers/docs/:id', usersAuthMiddleware, CustomerDocsController.update);
 userAuthRoutes.delete('/customers/docs/:id', usersAuthMiddleware, CustomerDocsController.delete);
 
+userAuthRoutes.get('/members/customer/:id', usersAuthMiddleware, CustomerMembersController.index);
+userAuthRoutes.get('/members/:id/customer', usersAuthMiddleware, CustomerMembersController.show);
+userAuthRoutes.post('/members/customer', usersAuthMiddleware, CustomerMembersController.create);
+userAuthRoutes.delete('/members/:id/customer', usersAuthMiddleware, CustomerMembersController.delete);
+
+userAuthRoutes.get('/members/licensing/:id', usersAuthMiddleware, LicensingMembersController.index);
+userAuthRoutes.get('/members/:id/licensing', usersAuthMiddleware, LicensingMembersController.show);
+userAuthRoutes.post('/members/licensing', usersAuthMiddleware, LicensingMembersController.create);
+userAuthRoutes.delete('/members/:id/licensing', usersAuthMiddleware, LicensingMembersController.delete);
+
+userAuthRoutes.get('/members/project/:id', usersAuthMiddleware, ProjectMembersController.index);
+userAuthRoutes.get('/members/:id/project', usersAuthMiddleware, ProjectMembersController.show);
+userAuthRoutes.post('/members/project', usersAuthMiddleware, ProjectMembersController.create);
+userAuthRoutes.delete('/members/:id/project', usersAuthMiddleware, ProjectMembersController.delete);
+
+userAuthRoutes.get('/members/property/:id', usersAuthMiddleware, PropertyMembersController.index);
+userAuthRoutes.get('/members/:id/property', usersAuthMiddleware, PropertyMembersController.show);
+userAuthRoutes.post('/members/property', usersAuthMiddleware, PropertyMembersController.create);
+userAuthRoutes.delete('/members/:id/property', usersAuthMiddleware, PropertyMembersController.delete);
+
 userAuthRoutes.get('/customers', usersAuthMiddleware, CustomersController.index);
 userAuthRoutes.get('/customers/:id', usersAuthMiddleware, CustomersController.show);
 userAuthRoutes.post('/customers', usersAuthMiddleware, CustomersController.create);
@@ -131,8 +156,6 @@ userAuthRoutes.get('/licensings/authorizations/:id', usersAuthMiddleware, Licens
 userAuthRoutes.post('/licensings/authorizations', usersAuthMiddleware, LicensingAuthorizationsController.create);
 userAuthRoutes.put('/licensings/authorizations/:id', usersAuthMiddleware, LicensingAuthorizationsController.update);
 userAuthRoutes.delete('/licensings/authorizations/:id', usersAuthMiddleware, LicensingAuthorizationsController.delete);
-
-
 
 userAuthRoutes.get('/licensings/infringements', usersAuthMiddleware, LicensingInfringementsController.index);
 userAuthRoutes.get('/licensings/infringements/:id', usersAuthMiddleware, LicensingInfringementsController.show);

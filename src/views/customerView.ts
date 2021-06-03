@@ -4,11 +4,12 @@ import projectView from './projectView';
 import customerDocView from './customerDocView';
 import licensingView from './licensingView';
 import attachmentView from './customerAttachmentView';
+import memberView from './customerMemberView';
 
 export default {
     render(customer: Customer) {
         return {
-            id: customer.id ? customer.id : 's',
+            id: customer.id,
             name: customer.name,
             document: customer.document,
             phone: customer.phone,
@@ -29,6 +30,7 @@ export default {
             projects: customer.projects ? projectView.renderMany(customer.projects) : [],
             licensings: customer.licensings ? licensingView.renderMany(customer.licensings) : [],
             attachments: customer.attachments ? attachmentView.renderMany(customer.attachments) : [],
+            members: customer.members ? memberView.renderMany(customer.members) : [],
         }
     },
 

@@ -5,6 +5,7 @@ import Property from './PropertiesModel';
 import Project from './ProjectsModel';
 import Licensing from './LicensingsModel';
 import Attachment from './CustomerAttachmentsModel';
+import Member from './CustomerMembersModel';
 
 @Entity('customers')
 export default class CustomersModel {
@@ -77,4 +78,10 @@ export default class CustomersModel {
     @OneToMany(() => Attachment, attachment => attachment.customer)
     @JoinColumn({ name: 'customer_id' })
     attachments: Attachment[];
+
+    @OneToMany(() => Member, member => member.customer, {
+        cascade: ['insert', 'update']
+    })
+    @JoinColumn({ name: 'customer_id' })
+    members: Member[];
 }

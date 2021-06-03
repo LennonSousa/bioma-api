@@ -24,7 +24,10 @@ export default {
             },
             order: {
                 received_at: "ASC"
-            }
+            },
+            relations: [
+                'customer',
+            ]
         });
 
         return customerAttachments;

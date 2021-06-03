@@ -6,6 +6,16 @@ import { getYear } from 'date-fns';
 
 require('dotenv/config');
 
+export interface DocumentsProps {
+    title: string;
+    subTitle: string;
+}
+
+export interface DocumentsListProps {
+    type: "customers" | "licensings" | "projects" | "properties";
+    documents: DocumentsProps[]
+}
+
 class Mailer {
     private client: Transporter;
 
@@ -23,8 +33,6 @@ class Mailer {
     }
 
     private async execute(to: string, subject: string, variables: object, hbsTemplatePath: string, text: string) {
-        //const resetUserPasswordPath = resolve(__dirname, "..", "views", "emails", "reset.hbs");
-
         const hbsTemplate = fs.readFileSync(hbsTemplatePath).toString("utf-8");
 
         const mailTemplateParse = handlebars.compile(hbsTemplate);
@@ -86,24 +94,45 @@ class Mailer {
         });
     }
 
-    async sendCustomerConfirmedEmail(name: string, email: string) {
+    async sendDailyNotificationEmail(name: string, email: string, list: DocumentsListProps[]) {
+        let document: String[] = [];
+
+        list.forEach(item => {
+            let type = '';
+
+            if (item.type === "customers")
+                type = "Clientes";
+            else if (item.type === "licensings")
+                type = "Licenciamentos";
+            else if (item.type === "projects")
+                type = "Projetos";
+            else if (item.type === "properties")
+                type = "Imóveis";
+
+            document.push(type);
+
+            item.documents.forEach(doc => {
+                document.push(doc.title);
+                document.push(doc.subTitle);
+            });
+        });
+
         const variables = {
             store_name: process.env.STORE_NAME,
             name,
+            documents: document,
             current_year: getYear(new Date()),
         }
 
         const templatePath = resolve(__dirname, "..", "views", "emails", "confirmedNewCustomer.hbs");
 
         const text = `Olá ${name},
-        O seu cadastro no aplicativo foi concluído com sucesso!
-        Aproveite para fazer a sua primeira compra no aplicativo.
-        Estamos aguardando você!`;
+        Você tem documentos próximos de expirar.`;
 
-        await this.execute(email, "Cadastro concluído.", variables, templatePath, text).then(() => {
+        await this.execute(email, "Documentos expirando.", variables, templatePath, text).then(() => {
             return true;
         }).catch(err => {
-            console.log('Error to send confirmed user e-mail: ', err);
+            console.log('Error to send daily notification e-mail: ', err);
             return false
         });
     }
