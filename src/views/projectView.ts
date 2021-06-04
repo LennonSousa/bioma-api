@@ -1,4 +1,5 @@
 import Project from '../models/ProjectsModel';
+import projectDocView from './projectDocView';
 import customerView from './customerView';
 import bankView from './bankView';
 import propertyView from './propertyView';
@@ -25,6 +26,7 @@ export default {
             created_at: project.created_at,
             updated_by: project.updated_by,
             updated_at: project.updated_at,
+            docs: project.docs ? projectDocView.renderMany(project.docs) : [],
             customer: project.customer && customerView.render(project.customer),
             bank: project.bank && bankView.render(project.bank),
             property: project.property && propertyView.render(project.property),

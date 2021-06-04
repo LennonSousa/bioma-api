@@ -10,6 +10,7 @@ import CustomersController from '../controllers/CustomersController';
 import CustomerPropertiesController from '../controllers/CustomerPropertiesController';
 
 import DocsCustomerController from '../controllers/DocsCustomerController';
+import DocsProjectController from '../controllers/DocsProjectController';
 import DocsPropertyController from '../controllers/DocsPropertyController';
 
 import CustomerMembersController from '../controllers/CustomerMembersController';
@@ -30,6 +31,7 @@ import LicensingsController from '../controllers/LicensingsController';
 import LicensingStatusController from '../controllers/LicensingStatusController';
 
 import ProjectAttachmentsController from '../controllers/ProjectAttachmentsController';
+import ProjectDocsController from '../controllers/ProjectDocsController';
 import ProjectLinesController from '../controllers/ProjectLinesController';
 import ProjectsController from '../controllers/ProjectsController';
 import ProjectStatusController from '../controllers/ProjectStatusController';
@@ -42,6 +44,7 @@ import PropertyDocsController from '../controllers/PropertyDocsController';
 import UsersController from '../controllers/UsersController';
 import UsersRolesController from '../controllers/UsersRolesController';
 import UsersNewController from '../controllers/UsersNewController';
+import NotificationsController from '../controllers/NotificationsController';
 
 import usersAuthMiddleware from '../middlewares/usersAuth';
 
@@ -62,6 +65,9 @@ userAuthRoutes.get('/users/roles/:id', usersAuthMiddleware, UsersRolesController
 userAuthRoutes.get('/users/roles', usersAuthMiddleware, UsersRolesController.generate);
 userAuthRoutes.put('/users/roles/:id', usersAuthMiddleware, UsersRolesController.update);
 
+userAuthRoutes.get('/users/:id/notifications', usersAuthMiddleware, NotificationsController.index);
+userAuthRoutes.put('/users/notifications/:id', usersAuthMiddleware, NotificationsController.update);
+
 userAuthRoutes.put('/users/new/:id', usersAuthMiddleware, UsersNewController.update);
 
 userAuthRoutes.get('/banks', usersAuthMiddleware, BanksController.index);
@@ -78,8 +84,8 @@ userAuthRoutes.delete('/customers/attachments/:id', usersAuthMiddleware, Custome
 
 userAuthRoutes.get('/customers/docs', usersAuthMiddleware, CustomerDocsController.index);
 userAuthRoutes.get('/customers/docs/:id', usersAuthMiddleware, CustomerDocsController.show);
-userAuthRoutes.post('/customers/docs', usersAuthMiddleware, CustomerDocsController.create);
-userAuthRoutes.put('/customers/docs/:id', usersAuthMiddleware, CustomerDocsController.update);
+userAuthRoutes.post('/customers/docs', usersAuthMiddleware, usersAuthMiddleware, UploadsConfig('customers').single('file'), CustomerDocsController.create);
+userAuthRoutes.put('/customers/docs/:id', usersAuthMiddleware, usersAuthMiddleware, UploadsConfig('customers').single('file'), CustomerDocsController.update);
 userAuthRoutes.delete('/customers/docs/:id', usersAuthMiddleware, CustomerDocsController.delete);
 
 userAuthRoutes.get('/members/customer/:id', usersAuthMiddleware, CustomerMembersController.index);
@@ -115,6 +121,12 @@ userAuthRoutes.get('/docs/customer/:id', usersAuthMiddleware, DocsCustomerContro
 userAuthRoutes.post('/docs/customer', usersAuthMiddleware, DocsCustomerController.create);
 userAuthRoutes.put('/docs/customer/:id', usersAuthMiddleware, DocsCustomerController.update);
 userAuthRoutes.delete('/docs/customer/:id', usersAuthMiddleware, DocsCustomerController.delete);
+
+userAuthRoutes.get('/docs/project', usersAuthMiddleware, DocsProjectController.index);
+userAuthRoutes.get('/docs/project/:id', usersAuthMiddleware, DocsProjectController.show);
+userAuthRoutes.post('/docs/project', usersAuthMiddleware, DocsProjectController.create);
+userAuthRoutes.put('/docs/project/:id', usersAuthMiddleware, DocsProjectController.update);
+userAuthRoutes.delete('/docs/project/:id', usersAuthMiddleware, DocsProjectController.delete);
 
 userAuthRoutes.get('/docs/property', usersAuthMiddleware, DocsPropertyController.index);
 userAuthRoutes.get('/docs/property/:id', usersAuthMiddleware, DocsPropertyController.show);
@@ -179,6 +191,12 @@ userAuthRoutes.get('/projects/attachments/:id', usersAuthMiddleware, ProjectAtta
 userAuthRoutes.post('/projects/:id/attachments', usersAuthMiddleware, UploadsConfig('projects').single('file'), ProjectAttachmentsController.create);
 userAuthRoutes.put('/projects/attachments/:id', usersAuthMiddleware, ProjectAttachmentsController.update);
 userAuthRoutes.delete('/projects/attachments/:id', usersAuthMiddleware, ProjectAttachmentsController.delete);
+
+userAuthRoutes.get('/projects/docs', usersAuthMiddleware, ProjectDocsController.index);
+userAuthRoutes.get('/projects/docs/:id', usersAuthMiddleware, ProjectDocsController.show);
+userAuthRoutes.post('/projects/docs', usersAuthMiddleware, ProjectDocsController.create);
+userAuthRoutes.put('/projects/docs/:id', usersAuthMiddleware, ProjectDocsController.update);
+userAuthRoutes.delete('/projects/docs/:id', usersAuthMiddleware, ProjectDocsController.delete);
 
 userAuthRoutes.get('/projects/lines', usersAuthMiddleware, ProjectLinesController.index);
 userAuthRoutes.get('/projects/lines/:id', usersAuthMiddleware, ProjectLinesController.show);

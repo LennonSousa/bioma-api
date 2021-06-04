@@ -1,6 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import Customer from './CustomersModel';
+import ProjectDoc from './ProjectDocsModel';
 import Bank from './BanksModel';
 import Property from './PropertiesModel';
 import ProjectType from './ProjectTypesModel';
@@ -53,6 +54,12 @@ export default class ProjectsModel {
 
     @Column()
     updated_at: Date;
+
+    @OneToMany(() => ProjectDoc, projectDoc => projectDoc.project, {
+        cascade: ['insert', 'update']
+    })
+    @JoinColumn({ name: 'project_id' })
+    docs: ProjectDoc[];
 
     @ManyToOne(() => Customer, customer => customer.projects)
     @JoinColumn({ name: 'customer_id' })

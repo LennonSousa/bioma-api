@@ -5,6 +5,7 @@ import CustomerMember from './CustomerMembersModel';
 import LicensingMember from './LicensingMembersModel';
 import ProjectMember from './ProjectMembersModel';
 import PropertyMember from './PropertyMembersModel';
+import Notifications from './NotificationsModel';
 
 @Entity('users')
 export default class UsersModel {
@@ -56,4 +57,8 @@ export default class UsersModel {
     @OneToMany(() => PropertyMember, propertyMember => propertyMember.user)
     @JoinColumn({ name: 'user_id' })
     propertyMembers: PropertyMember[];
+
+    @OneToMany(() => Notifications, notification => notification.user)
+    @JoinColumn({ name: 'user_id' })
+    notifications: Notifications[];
 }

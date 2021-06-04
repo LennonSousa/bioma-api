@@ -1,5 +1,6 @@
 import User from '../models/UsersModel';
 import userRoleView from '../views/userRoleView';
+import notificationView from '../views/notificationView';
 
 export default {
     render(user: User) {
@@ -12,7 +13,8 @@ export default {
             paused: user.paused,
             sudo: user.sudo,
             created_at: user.created_at,
-            roles: user.roles ? userRoleView.renderMany(user.roles) : []
+            roles: user.roles ? userRoleView.renderMany(user.roles) : [],
+            notifications: user.notifications ? notificationView.renderMany(user.notifications) : []
         }
     },
 
