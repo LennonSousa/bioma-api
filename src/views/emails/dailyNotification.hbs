@@ -28,11 +28,20 @@
             <p style="color: #303030; font-size: 16px">Você tem documentos próximos de expirar.</p>
             <span style="color: #666666;">Veja abaixo quais são:</span>
 
+            {{#each documents}}
             <ul>
-                {{#each document}}
-                <li>{{this}}</li>
-                {{/each}}
+                <li>
+                    <p style="color: #0b722b; font-weight: 700; font-size: 14px;">{{category}}</p>
+                    {{#documentList}}
+                    <dl>
+                        <dt style="color: #303030; font-weight: 700;">{{item}}</dt>
+                        <dd style="color: #666666;">{{document}}</dd>
+                    </dl>
+
+                    {{/documentList}}
+                </li>
             </ul>
+            {{/each}}
         </div>
 
         <div>

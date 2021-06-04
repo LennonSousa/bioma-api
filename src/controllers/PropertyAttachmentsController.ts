@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
-import { getCustomRepository } from 'typeorm';
+import { Equal, getCustomRepository } from 'typeorm';
 import * as Yup from 'yup';
 import fs from 'fs';
+import { format } from 'date-fns';
 
 import propertyAttachmentView from '../views/propertyAttachmentView';
 import { PropertyAttachmentsRepository } from '../repositories/PropertyAttachmentsRepository';
@@ -10,21 +11,28 @@ import { UsersRepository } from '../repositories/UsersRepository';
 import UsersRolesController from './UsersRolesController';
 
 export default {
-    async index(request: Request, response: Response) {
-        const { user_id } = request.params;
-
-        if (! await UsersRolesController.can(user_id, "properties", "view"))
-            return response.status(403).send({ error: 'User permission not granted!' });
-
+    async index() {
         const propertyAttachmentsRepository = getCustomRepository(PropertyAttachmentsRepository);
 
+        const now = format(new Date(), 'yyyy-MM-dd');
+
         const propertyAttachments = await propertyAttachmentsRepository.find({
+            where: {
+                expire: true,
+                schedule: true,
+                schedule_at: Equal(now),
+            },
             order: {
                 received_at: "ASC"
-            }
+            },
+            relations: [
+                'property',
+                'property.members',
+                'property.members.user',
+            ]
         });
 
-        return response.json(propertyAttachmentView.renderMany(propertyAttachments));
+        return propertyAttachments;
     },
 
     async show(request: Request, response: Response) {

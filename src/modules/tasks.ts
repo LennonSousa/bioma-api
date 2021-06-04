@@ -5,12 +5,20 @@ import br from 'date-fns/locale/pt-BR';
 
 import { UsersRepository } from '../repositories/UsersRepository';
 import CustomerAttachmentsController from '../controllers/CustomerAttachmentsController';
-import mailer, { DocumentsListProps } from './mailer';
+import LicensingAttachmentsController from '../controllers/LicensingAttachmentsController';
+import ProjectAttachmentsController from '../controllers/ProjectAttachmentsController';
+import PropertyAttachmentsController from '../controllers/PropertyAttachmentsController';
+import mailer from './mailer';
 
 class Tasks {
     async scheduleDailyNotifications() {
-        cron.schedule('11 20 * * *', async () => {
+        cron.schedule('57 11 * * *', async () => {
             console.log('> Running a daily task');
+
+            const customerAttachments = await CustomerAttachmentsController.index();
+            const licensingAttachments = await LicensingAttachmentsController.index();
+            const projectAttachments = await ProjectAttachmentsController.index();
+            const propertyAttachments = await PropertyAttachmentsController.index();
 
             const userRepository = getCustomRepository(UsersRepository);
 
@@ -19,58 +27,67 @@ class Tasks {
             });
 
             users.forEach(async user => {
-                const customerAttachments = await CustomerAttachmentsController.index();
+                const customerAttachmentsOnUser = customerAttachments.filter(attachment => {
+                    return attachment.customer.members.find(member => {
+                        return member.user.id === user.id
+                    })
+                });
 
-                let documents = customerAttachments.map(attachment => {
+                const customerDocuments = customerAttachmentsOnUser.map(attachment => {
                     return {
-                        title: attachment.customer.name,
-                        subTitle: `${attachment.name} - expira ${formatDistanceToNow(new Date(attachment.expire_at), { addSuffix: true, locale: br })}`,
+                        item: attachment.customer.name,
+                        document: `${attachment.name} - expira ${formatDistanceToNow(new Date(attachment.expire_at), { addSuffix: true, locale: br })}`,
                     }
                 });
 
-                let customerDocumentsList: DocumentsListProps = {
-                    type: "customers",
-                    documents,
-                };
+                const licensingAttachmentsOnUser = licensingAttachments.filter(attachment => {
+                    return attachment.licensing.members.find(member => {
+                        return member.user.id === user.id
+                    })
+                });
 
-                let documentsList = [];
+                const licensingDocuments = licensingAttachmentsOnUser.map(attachment => {
+                    return {
+                        item: attachment.licensing.customer.name,
+                        document: `${attachment.name} - expira ${formatDistanceToNow(new Date(attachment.expire_at), { addSuffix: true, locale: br })}`,
+                    }
+                });
 
-                documentsList.push(customerDocumentsList);
+                const projectAttachmentsOnUser = projectAttachments.filter(attachment => {
+                    return attachment.project.members.find(member => {
+                        return member.user.id === user.id
+                    })
+                });
 
-                if (documentsList.length > 0) {
-                    await mailer.sendDailyNotificationEmail(
-                        user.name,
-                        user.email,
-                        [{
-                            type: "customers",
-                            documents: [
-                                {
-                                    title: "cliente 01",
-                                    subTitle: "documento 01 - expira em 22/06-2021"
-                                },
-                                {
-                                    title: "cliente 01",
-                                    subTitle: "documento 02 - expira em 03/07-2021"
-                                }
-                            ]
-                        },
-                        {
-                            type: "projects",
-                            documents: [
-                                {
-                                    title: "cliente A",
-                                    subTitle: "documento dsf - expira em 22/06-2021"
-                                },
-                                {
-                                    title: "cliente B",
-                                    subTitle: "documento 02 - expira em 03/07-2021"
-                                }
-                            ]
-                        }
-                        ],
-                    ).then(() => {
-                    });
-                }
+                const projectDocuments = projectAttachmentsOnUser.map(attachment => {
+                    return {
+                        item: attachment.project.customer.name,
+                        document: `${attachment.name} - expira ${formatDistanceToNow(new Date(attachment.expire_at), { addSuffix: true, locale: br })}`,
+                    }
+                });
+
+                const propertyAttachmentsOnUser = propertyAttachments.filter(attachment => {
+                    return attachment.property.members.find(member => {
+                        return member.user.id === user.id
+                    })
+                });
+
+                const propertyDocuments = propertyAttachmentsOnUser.map(attachment => {
+                    return {
+                        item: attachment.property.name,
+                        document: `${attachment.name} - expira ${formatDistanceToNow(new Date(attachment.expire_at), { addSuffix: true, locale: br })}`,
+                    }
+                });
+
+                await mailer.sendDailyNotificationEmail(
+                    user.name,
+                    user.email,
+                    customerDocuments,
+                    licensingDocuments,
+                    projectDocuments,
+                    propertyDocuments
+                ).then(() => {
+                });
             });
         }),
         {

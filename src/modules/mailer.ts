@@ -7,13 +7,13 @@ import { getYear } from 'date-fns';
 require('dotenv/config');
 
 export interface DocumentsProps {
-    title: string;
-    subTitle: string;
+    item: string;
+    document: string;
 }
 
 export interface DocumentsListProps {
-    type: "customers" | "licensings" | "projects" | "properties";
-    documents: DocumentsProps[]
+    item: string;
+    document: string;
 }
 
 class Mailer {
@@ -94,40 +94,62 @@ class Mailer {
         });
     }
 
-    async sendDailyNotificationEmail(name: string, email: string, list: DocumentsListProps[]) {
-        let document: String[] = [];
+    async sendDailyNotificationEmail(
+        name: string,
+        email: string,
+        customerList: DocumentsListProps[],
+        licensingList: DocumentsListProps[],
+        projectList: DocumentsListProps[],
+        propertyList: DocumentsListProps[]
+    ) {
+        let documents = [];
 
-        list.forEach(item => {
-            let type = '';
+        if (customerList.length > 0) {
+            documents.push(
+                {
+                    category: "Clientes",
+                    documentList: customerList,
+                }
+            );
+        }
 
-            if (item.type === "customers")
-                type = "Clientes";
-            else if (item.type === "licensings")
-                type = "Licenciamentos";
-            else if (item.type === "projects")
-                type = "Projetos";
-            else if (item.type === "properties")
-                type = "Imóveis";
+        if (licensingList.length > 0) {
+            documents.push(
+                {
+                    category: "Licensiamentos",
+                    documentList: licensingList,
+                }
+            );
+        }
 
-            document.push(type);
+        if (projectList.length > 0) {
+            documents.push(
+                {
+                    category: "Projetos",
+                    documentList: projectList,
+                }
+            );
+        }
 
-            item.documents.forEach(doc => {
-                document.push(doc.title);
-                document.push(doc.subTitle);
-            });
-        });
+        if (propertyList.length > 0) {
+            documents.push(
+                {
+                    category: "Imóveis",
+                    documentList: propertyList,
+                }
+            );
+        }
 
         const variables = {
             store_name: process.env.STORE_NAME,
             name,
-            documents: document,
+            documents,
             current_year: getYear(new Date()),
         }
 
-        const templatePath = resolve(__dirname, "..", "views", "emails", "confirmedNewCustomer.hbs");
+        const templatePath = resolve(__dirname, "..", "views", "emails", "dailyNotification.hbs");
 
-        const text = `Olá ${name},
-        Você tem documentos próximos de expirar.`;
+        const text = `Olá ${name}, Você tem documentos próximos de expirar.`;
 
         await this.execute(email, "Documentos expirando.", variables, templatePath, text).then(() => {
             return true;

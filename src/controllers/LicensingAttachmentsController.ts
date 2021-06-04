@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
-import { getCustomRepository } from 'typeorm';
+import { Equal, getCustomRepository } from 'typeorm';
 import * as Yup from 'yup';
 import fs from 'fs';
+import { format } from 'date-fns';
 
 import licensingAttachmentView from '../views/licensingAttachmentView';
 import { LicensingAttachmentsRepository } from '../repositories/LicensingAttachmentsRepository';
@@ -10,21 +11,29 @@ import { UsersRepository } from '../repositories/UsersRepository';
 import UsersRolesController from './UsersRolesController';
 
 export default {
-    async index(request: Request, response: Response) {
-        const { user_id } = request.params;
-
-        if (! await UsersRolesController.can(user_id, "licensings", "view"))
-            return response.status(403).send({ error: 'User permission not granted!' });
-
+    async index() {
         const licensingAttachmentsRepository = getCustomRepository(LicensingAttachmentsRepository);
 
+        const now = format(new Date(), 'yyyy-MM-dd');
+
         const licensingAttachments = await licensingAttachmentsRepository.find({
+            where: {
+                expire: true,
+                schedule: true,
+                schedule_at: Equal(now),
+            },
             order: {
                 received_at: "ASC"
-            }
+            },
+            relations: [
+                'licensing',
+                'licensing.customer',
+                'licensing.members',
+                'licensing.members.user',
+            ]
         });
 
-        return response.json(licensingAttachmentView.renderMany(licensingAttachments));
+        return licensingAttachments;
     },
 
     async show(request: Request, response: Response) {

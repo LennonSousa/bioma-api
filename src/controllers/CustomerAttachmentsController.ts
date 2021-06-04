@@ -27,6 +27,8 @@ export default {
             },
             relations: [
                 'customer',
+                'customer.members',
+                'customer.members.user',
             ]
         });
 
