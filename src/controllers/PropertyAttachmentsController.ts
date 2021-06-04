@@ -80,7 +80,7 @@ export default {
             expire = Yup.boolean().cast(expire);
 
         if (schedule)
-            expire = Yup.boolean().cast(schedule);
+            schedule = Yup.boolean().cast(schedule);
 
         const propertyAttachmentsRepository = getCustomRepository(PropertyAttachmentsRepository);
 

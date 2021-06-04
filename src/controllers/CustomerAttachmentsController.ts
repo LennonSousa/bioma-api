@@ -80,7 +80,7 @@ export default {
             expire = Yup.boolean().cast(expire);
 
         if (schedule)
-            expire = Yup.boolean().cast(schedule);
+            schedule = Yup.boolean().cast(schedule);
 
         const customerAttachmentsRepository = getCustomRepository(CustomerAttachmentsRepository);
 
@@ -178,7 +178,7 @@ export default {
 
         const user = await userRepository.findOneOrFail(user_id);
 
-        await LogsCustomerAttachmentsController.create(new Date(), user.name, 'update', customerAttachment.id);
+        await LogsCustomerAttachmentsController.create(new Date(), user.name, 'update', id);
 
         return response.status(204).json();
     },
