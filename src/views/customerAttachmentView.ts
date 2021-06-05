@@ -1,5 +1,6 @@
 import CustomerAttachment from '../models/CustomerAttachmentsModel';
 import customerView from './customerView';
+import logCustomerAttachment from './logCustomerAttachmentView';
 
 require('dotenv/config');
 
@@ -15,6 +16,7 @@ export default {
             schedule: customerAttachment.schedule,
             schedule_at: customerAttachment.schedule_at,
             customer: customerAttachment.customer && customerView.render(customerAttachment.customer),
+            logs: customerAttachment.logs ? logCustomerAttachment.renderMany(customerAttachment.logs) : [],
         }
     },
 
