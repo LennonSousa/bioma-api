@@ -3,6 +3,7 @@ import customerView from './customerView';
 import propertyDocView from './propertyDocView';
 import projectView from './projectView';
 import memberView from './propertyMemberView';
+import attachmentView from './propertyAttachmentView';
 
 export default {
     render(property: Property) {
@@ -23,6 +24,7 @@ export default {
             docs: property.docs ? propertyDocView.renderMany(property.docs) : [],
             projects: property.projects ? projectView.renderMany(property.projects) : [],
             members: property.members ? memberView.renderMany(property.members) : [],
+            attachments: property.attachments ? attachmentView.renderMany(property.attachments) : [],
         }
     },
 
