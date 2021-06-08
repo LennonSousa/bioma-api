@@ -66,7 +66,7 @@ export default {
             password,
         } = request.body;
 
-        console.log(request.body);
+        console.log(request);
 
         const usersRepository = getCustomRepository(UsersRepository);
 
