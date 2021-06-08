@@ -13,6 +13,8 @@ export default {
     },
 
     renderMany(logs: Log[]) {
-        return logs.map(log => this.render(log));
+        const logsSorted = logs.sort((a, b) => b.accessed_at.getTime() - a.accessed_at.getTime());
+
+        return logsSorted.map(log => this.render(log));
     }
 }

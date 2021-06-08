@@ -51,6 +51,8 @@ export default {
                 'type',
                 'status',
                 'line',
+                'docs',
+                'docs.doc',
                 'events',
                 'attachments',
                 'attachments.project',
@@ -131,6 +133,14 @@ export default {
             status: Yup.string().required(),
             bank: Yup.string().required(),
             property: Yup.string().required(),
+            docs: Yup.array(
+                Yup.object().shape({
+                    path: Yup.string().notRequired(),
+                    received_at: Yup.date().notRequired(),
+                    checked: Yup.boolean().notRequired(),
+                    doc: Yup.string().required(),
+                })
+            ),
             members: Yup.array(
                 Yup.object().shape({
                     user: Yup.string().required(),

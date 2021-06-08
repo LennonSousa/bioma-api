@@ -6,6 +6,7 @@ import licensingAuthorizationView from './licensingAuthorizationView';
 import licensingAgencyView from './licensingAgencyView';
 import licensingStatusView from './licensingStatusView';
 import eventLicensingView from './eventLicensingView';
+import attachmentView from './licensingAttachmentView';
 import memberView from './licensingMemberView';
 
 export default {
@@ -28,6 +29,7 @@ export default {
             agency: licensing.agency && licensingAgencyView.render(licensing.agency),
             status: licensing.status && licensingStatusView.render(licensing.status),
             events: licensing.events ? eventLicensingView.renderMany(licensing.events) : [],
+            attachments: licensing.attachments ? attachmentView.renderMany(licensing.attachments) : [],
             members: licensing.members ? memberView.renderMany(licensing.members) : [],
         }
     },

@@ -179,7 +179,7 @@ export default {
 
         const user = await userRepository.findOneOrFail(user_id);
 
-        await LogsLicensingAttachmentsController.create(new Date(), user.name, 'update', licensingAttachment.id);
+        await LogsLicensingAttachmentsController.create(new Date(), user.name, 'update', id);
 
         return response.status(204).json();
     },

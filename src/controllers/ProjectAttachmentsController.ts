@@ -179,7 +179,7 @@ export default {
 
         const user = await userRepository.findOneOrFail(user_id);
 
-        await LogsProjectAttachmentsController.create(new Date(), user.name, 'update', projectAttachment.id);
+        await LogsProjectAttachmentsController.create(new Date(), user.name, 'update', id);
 
         return response.status(204).json();
     },

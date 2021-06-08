@@ -1,5 +1,6 @@
 import ProjectAttachment from '../models/ProjectAttachmentsModel';
 import projectView from './projectView';
+import logProjectAttachment from './logProjectAttachmentView';
 
 export default {
     render(projectAttachment: ProjectAttachment) {
@@ -13,6 +14,7 @@ export default {
             schedule: projectAttachment.schedule,
             schedule_at: projectAttachment.schedule_at,
             project: projectAttachment.project && projectView.render(projectAttachment.project),
+            logs: projectAttachment.logs ? logProjectAttachment.renderMany(projectAttachment.logs) : [],
         }
     },
 

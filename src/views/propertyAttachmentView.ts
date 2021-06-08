@@ -1,5 +1,6 @@
 import PropertyAttachment from '../models/PropertyAttachmentsModel';
 import propertyView from './propertyView';
+import logPropertyAttachment from './logPropertyAttachmentView';
 
 export default {
     render(propertyAttachment: PropertyAttachment) {
@@ -13,6 +14,7 @@ export default {
             schedule: propertyAttachment.schedule,
             schedule_at: propertyAttachment.schedule_at,
             property: propertyAttachment.property && propertyView.render(propertyAttachment.property),
+            logs: propertyAttachment.logs ? logPropertyAttachment.renderMany(propertyAttachment.logs) : [],
         }
     },
 

@@ -178,7 +178,7 @@ export default {
 
         const user = await userRepository.findOneOrFail(user_id);
 
-        await LogsPropertyAttachmentsController.create(new Date(), user.name, 'update', propertyAttachment.id);
+        await LogsPropertyAttachmentsController.create(new Date(), user.name, 'update', id);
 
         return response.status(204).json();
     },

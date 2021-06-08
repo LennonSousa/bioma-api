@@ -7,6 +7,7 @@ import projectTypeView from './projectTypeView';
 import projectStatusView from './projectStatusView';
 import projectLineView from './projectLineView';
 import eventProjectView from './eventProjectView';
+import attachmentView from './projectAttachmentView';
 import memberView from './projectMemberView';
 
 export default {
@@ -34,6 +35,7 @@ export default {
             status: project.status && projectStatusView.render(project.status),
             line: project.line && projectLineView.render(project.line),
             events: project.events ? eventProjectView.renderMany(project.events) : [],
+            attachments: project.attachments ? attachmentView.renderMany(project.attachments) : [],
             members: project.members ? memberView.renderMany(project.members) : [],
         }
     },
