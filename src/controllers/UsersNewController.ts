@@ -7,8 +7,6 @@ import jwt from 'jsonwebtoken';
 import { UsersRepository } from '../repositories/UsersRepository';
 import userView from '../views/userView';
 
-require('dotenv/config');
-
 export default {
     async show(request: Request, response: Response) {
         const { email, token } = request.query;
@@ -65,8 +63,6 @@ export default {
             phone,
             password,
         } = request.body;
-
-        console.log(request);
 
         const usersRepository = getCustomRepository(UsersRepository);
 
