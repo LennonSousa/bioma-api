@@ -46,6 +46,8 @@ import UsersRolesController from '../controllers/UsersRolesController';
 import UsersNewController from '../controllers/UsersNewController';
 import NotificationsController from '../controllers/NotificationsController';
 
+import ReportsController from '../controllers/ReportsController';
+
 import usersAuthMiddleware from '../middlewares/usersAuth';
 
 const userAuthRoutes = express.Router();
@@ -238,5 +240,11 @@ userAuthRoutes.get('/properties/docs/:id', usersAuthMiddleware, PropertyDocsCont
 userAuthRoutes.post('/properties/docs', usersAuthMiddleware, PropertyDocsController.create);
 userAuthRoutes.put('/properties/docs/:id', usersAuthMiddleware, PropertyDocsController.update);
 userAuthRoutes.delete('/properties/docs/:id', usersAuthMiddleware, PropertyDocsController.delete);
+
+userAuthRoutes.get('/reports/banks', usersAuthMiddleware, ReportsController.banks);
+userAuthRoutes.get('/reports/customers', usersAuthMiddleware, ReportsController.customers);
+userAuthRoutes.get('/reports/licensings', usersAuthMiddleware, ReportsController.licensings);
+userAuthRoutes.get('/reports/projects', usersAuthMiddleware, ReportsController.projects);
+userAuthRoutes.get('/reports/properties', usersAuthMiddleware, ReportsController.properties);
 
 export default userAuthRoutes;

@@ -6,6 +6,7 @@ export default {
             id: projectStatus.id,
             name: projectStatus.name,
             order: projectStatus.order,
+            projects: projectStatus.projects ? projectStatus.projects : [],
         }
     },
 

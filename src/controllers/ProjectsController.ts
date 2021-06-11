@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getCustomRepository } from 'typeorm';
+import { Between, getCustomRepository } from 'typeorm';
 import * as Yup from 'yup';
 import { UsersRepository } from '../repositories/UsersRepository';
 import UsersRolesController from './UsersRolesController';
@@ -10,28 +10,50 @@ import { ProjectsRepository } from '../repositories/ProjectsRepository';
 export default {
     async index(request: Request, response: Response) {
         const { user_id } = request.params;
+        const { start, end } = request.query;
 
         if (! await UsersRolesController.can(user_id, "projects", "view"))
             return response.status(403).send({ error: 'User permission not granted!' });
 
         const projectsRepository = getCustomRepository(ProjectsRepository);
 
-        const projects = await projectsRepository.find({
-            relations: [
-                'customer',
-                'bank',
-                'bank.institution',
-                'property',
-                'type',
-                'status',
-                'line',
-            ],
-            order: {
-                created_at: "ASC"
-            }
-        });
+        if (start && end) {
+            const projects = await projectsRepository.find({
+                where: { updated_at: Between(start, end) },
+                relations: [
+                    'customer',
+                    'bank',
+                    'bank.institution',
+                    'property',
+                    'type',
+                    'status',
+                    'line',
+                ],
+                order: {
+                    updated_at: "ASC"
+                }
+            });
 
-        return response.json(projectView.renderMany(projects));
+            return response.json(projectView.renderMany(projects));
+        }
+        else {
+            const projects = await projectsRepository.find({
+                relations: [
+                    'customer',
+                    'bank',
+                    'bank.institution',
+                    'property',
+                    'type',
+                    'status',
+                    'line',
+                ],
+                order: {
+                    created_at: "ASC"
+                }
+            });
+
+            return response.json(projectView.renderMany(projects));
+        }
     },
 
     async show(request: Request, response: Response) {

@@ -10,6 +10,9 @@ export default {
         const projectStatusRepository = getCustomRepository(ProjectStatusRepository);
 
         const projectStatus = await projectStatusRepository.find({
+            relations: [
+                'projects',
+            ],
             order: {
                 order: "ASC"
             }
