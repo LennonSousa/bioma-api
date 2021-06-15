@@ -82,6 +82,20 @@ export class createCustomers1620236019263 implements MigrationInterface {
                     type: 'datetime',
                     default: 'Now()',
                 },
+                {
+                    name: 'type_id',
+                    type: 'varchar',
+                },
+            ],
+            foreignKeys: [
+                {
+                    name: 'CustomerType',
+                    columnNames: ['type_id'],
+                    referencedTableName: 'customer_types',
+                    referencedColumnNames: ['id'],
+                    onUpdate: 'CASCADE',
+                    onDelete: 'RESTRICT',
+                },
             ]
         }));
     }

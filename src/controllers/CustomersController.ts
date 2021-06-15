@@ -17,6 +17,9 @@ export default {
         const customersRepository = getCustomRepository(CustomersRepository);
 
         const customers = await customersRepository.find({
+            relations: [
+                'type',
+            ],
             order: {
                 created_at: "ASC"
             }
@@ -35,6 +38,7 @@ export default {
 
         const customer = await customersRepository.findOneOrFail(id, {
             relations: [
+                'type',
                 'docs',
                 'docs.doc',
                 'properties',
@@ -71,6 +75,7 @@ export default {
             notes,
             warnings,
             birth,
+            type,
             docs,
             members,
         } = request.body;
@@ -95,6 +100,7 @@ export default {
             notes,
             warnings,
             birth,
+            type,
             created_by: user.name,
             docs,
             members,
@@ -114,6 +120,7 @@ export default {
             notes: Yup.string().notRequired().nullable(),
             warnings: Yup.boolean().notRequired().nullable(),
             birth: Yup.date().required(),
+            type: Yup.string().required(),
             created_by: Yup.string().required(),
             docs: Yup.array(
                 Yup.object().shape({
@@ -161,6 +168,7 @@ export default {
             notes,
             warnings,
             birth,
+            type,
         } = request.body;
 
         const customersRepository = getCustomRepository(CustomersRepository);
@@ -179,6 +187,7 @@ export default {
             notes,
             warnings,
             birth,
+            type,
         };
 
         const schema = Yup.object().shape({
@@ -195,6 +204,7 @@ export default {
             notes: Yup.string().notRequired().nullable(),
             warnings: Yup.boolean().notRequired().nullable(),
             birth: Yup.date().required(),
+            type: Yup.string().required(),
         });
 
         await schema.validate(data, {

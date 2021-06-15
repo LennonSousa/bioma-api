@@ -5,10 +5,10 @@ import * as Yup from 'yup';
 import userRoleView from '../views/userRoleView';
 import { UsersRolesRepository } from '../repositories/UsersRolesRepository';
 
-let role: 'customers' | 'licensings' | 'properties' | 'projects' | 'banks' | 'users';
-let grant: 'view' | 'view_self' | 'create' | 'update' | 'update_self' | 'remove';
+type Role = 'customers' | 'institutions' | 'licensings' | 'properties' | 'projects' | 'banks' | 'users';
+type Grant = 'view' | 'view_self' | 'create' | 'update' | 'update_self' | 'remove';
 
-const grants = ['view', 'view_self', 'create', 'update', 'update_self', 'remove']
+const grants = ['view', 'view_self', 'create', 'update', 'update_self', 'remove'];
 
 export default {
     async index(request: Request, response: Response) {
@@ -76,7 +76,7 @@ export default {
         const {
             view,
             view_self,
-            crete,
+            create,
             update,
             update_self,
             remove,
@@ -87,14 +87,13 @@ export default {
         const data = {
             view,
             view_self,
-            crete,
+            create,
             update,
             update_self,
             remove,
         };
 
         const schema = Yup.object().shape({
-            role: Yup.string().required(),
             view: Yup.boolean().notRequired(),
             view_self: Yup.boolean().notRequired(),
             create: Yup.boolean().notRequired(),
@@ -114,7 +113,7 @@ export default {
         return response.status(204).json();
     },
 
-    async can(userId: string, userRole: typeof role, userGrant: typeof grant) {
+    async can(userId: string, userRole: Role, userGrant: Grant) {
         const usersRolesRepository = getCustomRepository(UsersRolesRepository);
 
         const role = await usersRolesRepository.findOne({

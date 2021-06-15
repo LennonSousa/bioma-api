@@ -12,7 +12,7 @@ import mailer from './mailer';
 
 class Tasks {
     async scheduleDailyNotifications() {
-        cron.schedule('57 11 * * *', async () => {
+        cron.schedule('54 14 * * *', async () => {
             console.log('> Running a daily task');
 
             const customerAttachments = await CustomerAttachmentsController.index();
@@ -79,15 +79,18 @@ class Tasks {
                     }
                 });
 
-                await mailer.sendDailyNotificationEmail(
-                    user.name,
-                    user.email,
-                    customerDocuments,
-                    licensingDocuments,
-                    projectDocuments,
-                    propertyDocuments
-                ).then(() => {
-                });
+                if (customerDocuments.length > 0 || licensingDocuments.length > 0
+                    || projectDocuments.length > 0 || propertyDocuments.length > 0) {
+                    await mailer.sendDailyNotificationEmail(
+                        user.name,
+                        user.email,
+                        customerDocuments,
+                        licensingDocuments,
+                        projectDocuments,
+                        propertyDocuments
+                    ).then(() => {
+                    });
+                }
             });
         }),
         {

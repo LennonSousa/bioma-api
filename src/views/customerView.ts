@@ -1,4 +1,5 @@
 import Customer from '../models/CustomersModel';
+import customerTypeView from './customerTypeView';
 import propertyView from './propertyView';
 import projectView from './projectView';
 import customerDocView from './customerDocView';
@@ -25,6 +26,7 @@ export default {
             birth: customer.birth,
             created_by: customer.created_by,
             created_at: customer.created_at,
+            type: customer.type && customerTypeView.render(customer.type),
             docs: customer.docs ? customerDocView.renderMany(customer.docs) : [],
             properties: customer.properties ? propertyView.renderMany(customer.properties) : [],
             projects: customer.projects ? projectView.renderMany(customer.projects) : [],

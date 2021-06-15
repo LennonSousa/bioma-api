@@ -8,6 +8,7 @@ import CustomerAttachmentsController from '../controllers/CustomerAttachmentsCon
 import CustomerDocsController from '../controllers/CustomerDocsController';
 import CustomersController from '../controllers/CustomersController';
 import CustomerPropertiesController from '../controllers/CustomerPropertiesController';
+import CustomerTypesController from '../controllers/CustomerTypesController';
 
 import DocsCustomerController from '../controllers/DocsCustomerController';
 import DocsProjectController from '../controllers/DocsProjectController';
@@ -62,9 +63,9 @@ userAuthRoutes.post('/users', usersAuthMiddleware, UsersController.create);
 userAuthRoutes.put('/users/:id', usersAuthMiddleware, UsersController.update);
 userAuthRoutes.delete('/users/:id', usersAuthMiddleware, UsersController.delete);
 
-userAuthRoutes.get('/user/roles/:id', usersAuthMiddleware, UsersRolesController.index);
-userAuthRoutes.get('/users/roles/:id', usersAuthMiddleware, UsersRolesController.show);
-userAuthRoutes.get('/users/roles', usersAuthMiddleware, UsersRolesController.generate);
+// userAuthRoutes.get('/user/roles/:id', usersAuthMiddleware, UsersRolesController.index);
+// userAuthRoutes.get('/users/roles/:id', usersAuthMiddleware, UsersRolesController.show);
+userAuthRoutes.get('/user/roles', usersAuthMiddleware, UsersRolesController.generate);
 userAuthRoutes.put('/users/roles/:id', usersAuthMiddleware, UsersRolesController.update);
 
 userAuthRoutes.get('/users/:id/notifications', usersAuthMiddleware, NotificationsController.index);
@@ -109,6 +110,12 @@ userAuthRoutes.get('/members/property/:id', usersAuthMiddleware, PropertyMembers
 userAuthRoutes.get('/members/:id/property', usersAuthMiddleware, PropertyMembersController.show);
 userAuthRoutes.post('/members/property', usersAuthMiddleware, PropertyMembersController.create);
 userAuthRoutes.delete('/members/:id/property', usersAuthMiddleware, PropertyMembersController.delete);
+
+userAuthRoutes.get('/customers/types', usersAuthMiddleware, CustomerTypesController.index);
+userAuthRoutes.get('/customers/types/:id', usersAuthMiddleware, CustomerTypesController.show);
+userAuthRoutes.post('/customers/types', usersAuthMiddleware, CustomerTypesController.create);
+userAuthRoutes.put('/customers/types/:id', usersAuthMiddleware, CustomerTypesController.update);
+userAuthRoutes.delete('/customers/types/:id', usersAuthMiddleware, CustomerTypesController.delete);
 
 userAuthRoutes.get('/customers', usersAuthMiddleware, CustomersController.index);
 userAuthRoutes.get('/customers/:id', usersAuthMiddleware, CustomersController.show);

@@ -28,7 +28,20 @@ export default {
         const usersRepository = getCustomRepository(UsersRepository);
 
         const user = await usersRepository.findOneOrFail(id, {
-            relations: ['roles']
+            relations: [
+                'roles',
+                'customerMembers',
+                'customerMembers.customer',
+                'licensingMembers',
+                'licensingMembers.licensing',
+                'licensingMembers.licensing.customer',
+                'projectMembers',
+                'projectMembers.project',
+                'projectMembers.project.customer',
+                'propertyMembers',
+                'propertyMembers.property',
+                'propertyMembers.property.customer',
+            ]
         });
 
         return response.json(userView.render(user));
@@ -101,7 +114,7 @@ export default {
             await usersRepository.update(id, newUser);
         }
 
-        await mailer.sendNewUserEmail(name, email, `${process.env.APP_URL}/users/authenticate/new?email=${email}&token=${tempPassword}`).then(() => {
+        await mailer.sendNewUserEmail(name, email, `${process.env.APP_URL}/users/new/auth?email=${email}&token=${tempPassword}`).then(() => {
             return response.status(201).json();
         });
     },
@@ -112,7 +125,6 @@ export default {
         const {
             name,
             phone,
-            active,
             paused,
         } = request.body;
 
@@ -121,15 +133,13 @@ export default {
         const data = {
             name,
             phone,
-            active,
             paused,
         };
 
         const schema = Yup.object().shape({
             name: Yup.string().required(),
             phone: Yup.string().notRequired().nullable(),
-            active: Yup.boolean().required(),
-            paused: Yup.boolean().required(),
+            paused: Yup.boolean().notRequired(),
         });
 
         await schema.validate(data, {

@@ -1,5 +1,6 @@
-import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
+import CustomerType from './CustomerTypesModel';
 import CustomerDoc from './CustomerDocsModel';
 import Property from './PropertiesModel';
 import Project from './ProjectsModel';
@@ -56,6 +57,10 @@ export default class CustomersModel {
 
     @Column()
     created_at: Date;
+
+    @ManyToOne(() => CustomerType, customerType => customerType.customers)
+    @JoinColumn({ name: 'type_id' })
+    type: CustomerType;
 
     @OneToMany(() => CustomerDoc, customerDoc => customerDoc.customer, {
         cascade: ['insert', 'update']

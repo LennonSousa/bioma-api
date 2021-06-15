@@ -8,9 +8,9 @@ export default {
             view: role.view,
             view_self: role.view_self,
             create: role.create,
-            edit: role.update,
-            edit_self: role.update_self,
-            delete: role.remove,
+            update: role.update,
+            update_self: role.update_self,
+            remove: role.remove,
         }
     },
 

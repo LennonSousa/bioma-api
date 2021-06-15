@@ -7,6 +7,6 @@ const userPublicRoutes = express.Router();
 
 userPublicRoutes.post('/users/authenticate', UsersAuthenticationsController.create);
 
-userPublicRoutes.get('/users/new', UsersNewController.show);
+userPublicRoutes.get('/users/new/auth', UsersNewController.show);
 
 export default userPublicRoutes;

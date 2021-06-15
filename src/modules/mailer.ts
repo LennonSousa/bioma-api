@@ -48,28 +48,6 @@ class Mailer {
         });
     }
 
-    async sendNewCustomerEmail(email: string, token: string) {
-        const variables = {
-            store_name: process.env.STORE_NAME,
-            token,
-            current_year: getYear(new Date()),
-        }
-
-        const templatePath = resolve(__dirname, "..", "views", "emails", "newCustomer.hbs");
-
-        const text = `Bem-vindo a ${process.env.STORE_NAME}.
-        Para confirmar o seu e-mail,
-        digite no aplicativo o código a seguir:
-        ${token}`;
-
-        await this.execute(email, "Bem-vindo(a).", variables, templatePath, text).then(() => {
-            return true;
-        }).catch(err => {
-            console.log('Error to send new user e-mail: ', err);
-            return false
-        });
-    }
-
     async sendNewUserEmail(name: string, email: string, link: string) {
         const variables = {
             name,
@@ -80,11 +58,7 @@ class Mailer {
 
         const templatePath = resolve(__dirname, "..", "views", "emails", "newUser.hbs");
 
-        const text = `Olá, ${name}
-        Bem-vindo a plataforma de pedidos e entregas OrderN.
-        Você foi convidado para ser integrante no sistema de gerenciamento do estabelecimento ${process.env.STORE_NAME}.
-        Clique no link a seguir para aceitar e concluir o seu cadastro:
-        ${link}`;
+        const text = `Bem-vindo a plataforma gerenciamento ${process.env.STORE_NAME}.`;
 
         await this.execute(email, "Bem-vindo(a).", variables, templatePath, text).then(() => {
             return true;
@@ -159,21 +133,17 @@ class Mailer {
         });
     }
 
-    async sendCustomerResetPassword(name: string, email: string, token: string) {
+    async sendUserResetPassword(name: string, email: string, link: string) {
         const variables = {
             store_name: process.env.STORE_NAME,
             name,
-            token,
+            link,
             current_year: getYear(new Date()),
         }
 
-        const templatePath = resolve(__dirname, "..", "views", "emails", "resetCustomerPassword.hbs");
+        const templatePath = resolve(__dirname, "..", "views", "emails", "resetUserPassword.hbs");
 
-        const text = `Olá ${name},
-        Recebemos a sua solicitação para trocar a sua senha,
-        para prosseguir, digite no aplicativo o código a seguir:
-        ${token}
-        Caso não tenha sido você que solicitou a troca da sua senha, ignore este e-mail.`;
+        const text = `Recebemos a sua solicitação para trocar a sua senha.`;
 
         await this.execute(email, "Recuperação de senha.", variables, templatePath, text).then(() => {
             return true;
@@ -183,19 +153,16 @@ class Mailer {
         });
     }
 
-    async sendCustomerConfirmedResetPassword(name: string, email: string) {
+    async sendUserConfirmedResetPassword(name: string, email: string) {
         const variables = {
             store_name: process.env.STORE_NAME,
             name,
             current_year: getYear(new Date()),
         }
 
-        const templatePath = resolve(__dirname, "..", "views", "emails", "confirmedResetCustomerPassword.hbs");
+        const templatePath = resolve(__dirname, "..", "views", "emails", "confirmedResetUserPassword.hbs");
 
-        const text = `Olá ${name}
-        A sua senha de acesso ao aplicativo foi alterada.
-        Caso não tenha sido você que solicitou a troca da senha.
-        Acesse imediatamente o aplicativo e recupere a sua senha.`;
+        const text = `A sua senha de acesso ao aplicativo foi alterada.`;
 
         await this.execute(email, "Senha alterada.", variables, templatePath, text).then(() => {
             return true;
