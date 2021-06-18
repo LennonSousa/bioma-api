@@ -22,4 +22,10 @@ export default class NotificationsModel {
     @ManyToOne(() => User, user => user.notifications)
     @JoinColumn({ name: 'user_id' })
     user: User;
+
+    @Column()
+    item: string;
+
+    @Column()
+    item_id: string;
 }

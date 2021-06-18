@@ -8,8 +8,10 @@ import { NotificationsRepository } from '../repositories/NotificationsRepository
 interface NotificationsProps {
     title: string,
     sub_title: string,
-    read: boolean,
+    read?: boolean,
     user: string,
+    item: string,
+    item_id: string,
 }
 
 export default {
@@ -41,7 +43,7 @@ export default {
         return notification;
     },
 
-    async create({ title, sub_title, read, user }: NotificationsProps) {
+    async create({ title, sub_title, read, user, item, item_id }: NotificationsProps) {
         const notificationsRepository = getCustomRepository(NotificationsRepository);
 
         const data = {
@@ -49,6 +51,8 @@ export default {
             sub_title,
             read,
             user: user as any,
+            item,
+            item_id,
         };
 
         const schema = Yup.object().shape({
@@ -56,6 +60,8 @@ export default {
             sub_title: Yup.string().required(),
             read: Yup.boolean().notRequired(),
             user: Yup.string().required(),
+            item: Yup.string().required(),
+            item_id: Yup.string().required(),
         });
 
         await schema.validate(data, {
@@ -71,23 +77,17 @@ export default {
         const { id } = request.params;
 
         const {
-            title,
-            sub_title,
             read,
         } = request.body;
 
         const notificationsRepository = getCustomRepository(NotificationsRepository);
 
         const data = {
-            title,
-            sub_title,
             read,
         };
 
         const schema = Yup.object().shape({
-            title: Yup.string().required(),
-            sub_title: Yup.string().required(),
-            read: Yup.boolean().notRequired(),
+            read: Yup.boolean().required(),
         });
 
         await schema.validate(data, {

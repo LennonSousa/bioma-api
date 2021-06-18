@@ -10,6 +10,8 @@ export default {
             read: notification.read,
             created_at: notification.created_at,
             user: notification.user && user.render(notification.user),
+            item: notification.item,
+            item_id: notification.item_id,
         }
     },
 

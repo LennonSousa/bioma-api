@@ -68,8 +68,8 @@ userAuthRoutes.delete('/users/:id', usersAuthMiddleware, UsersController.delete)
 userAuthRoutes.get('/user/roles', usersAuthMiddleware, UsersRolesController.generate);
 userAuthRoutes.put('/users/roles/:id', usersAuthMiddleware, UsersRolesController.update);
 
-userAuthRoutes.get('/users/:id/notifications', usersAuthMiddleware, NotificationsController.index);
-userAuthRoutes.put('/users/notifications/:id', usersAuthMiddleware, NotificationsController.update);
+userAuthRoutes.get('/notifications/user/:id', usersAuthMiddleware, NotificationsController.index);
+userAuthRoutes.put('/notifications/:id', usersAuthMiddleware, NotificationsController.update);
 
 userAuthRoutes.put('/users/new/:id', usersAuthMiddleware, UsersNewController.update);
 

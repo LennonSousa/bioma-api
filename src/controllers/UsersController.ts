@@ -41,6 +41,7 @@ export default {
                 'propertyMembers',
                 'propertyMembers.property',
                 'propertyMembers.property.customer',
+                'notifications',
             ]
         });
 

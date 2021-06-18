@@ -37,7 +37,21 @@ export default {
             where: [
                 { email, active: 1, paused: 0 }
             ],
-            relations: ['roles']
+            relations: [
+                'roles',
+                'customerMembers',
+                'customerMembers.customer',
+                'licensingMembers',
+                'licensingMembers.licensing',
+                'licensingMembers.licensing.customer',
+                'projectMembers',
+                'projectMembers.project',
+                'projectMembers.project.customer',
+                'propertyMembers',
+                'propertyMembers.property',
+                'propertyMembers.property.customer',
+                'notifications',
+            ]
         });
 
         if (!userAuth)

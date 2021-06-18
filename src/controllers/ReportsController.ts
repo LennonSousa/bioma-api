@@ -47,7 +47,32 @@ export default {
     },
 
     async customers(request: Request, response: Response) {
-        const { warnings } = request.query;
+        const { warnings, type } = request.query;
+
+        if (type) {
+            const data = {
+                type
+            };
+
+            const schema = Yup.object().shape({
+                type: Yup.string().required(),
+            });
+
+            await schema.validate(data, {
+                abortEarly: false,
+            });
+
+            const customersRepository = getCustomRepository(CustomersRepository);
+
+            const customers = await customersRepository.find({
+                where: { type },
+                order: {
+                    created_at: "DESC"
+                }
+            });
+
+            return response.json(customerView.renderMany(customers));
+        }
 
         const warning = Yup.boolean().cast(warnings);
 
