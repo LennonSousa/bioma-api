@@ -13,7 +13,7 @@ import mailer from './mailer';
 
 class Tasks {
     async scheduleDailyNotifications() {
-        cron.schedule('16 15 * * *', async () => {
+        cron.schedule('00 05 * * *', async () => {
             console.log('> Running a daily task');
 
             const customerAttachments = await CustomerAttachmentsController.index();
@@ -134,6 +134,8 @@ class Tasks {
                     });
                 }
             });
+
+            console.log('> Finished daily task');
         }),
         {
             timezone: "America/Sao_Paulo"
