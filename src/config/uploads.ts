@@ -17,7 +17,7 @@ export function UploadsConfig(type: typeof uploadType) {
                         fs.mkdirSync(dirPath)
                     }
                 } catch (err) {
-                    console.error(err)
+                    console.error(err);
                 }
 
                 cb(null, dirPath);
@@ -29,7 +29,7 @@ export function UploadsConfig(type: typeof uploadType) {
             }
         }),
         limits: {
-            fileSize: 5 * 1024 * 1024,
+            fileSize: 200 * 1024 * 1024,
         }
     }
 
