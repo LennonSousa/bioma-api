@@ -1,6 +1,6 @@
 import cron from 'node-cron';
 import { getCustomRepository } from 'typeorm';
-import { formatDistanceToNow } from 'date-fns';
+import { format, formatDistanceToNow } from 'date-fns';
 import br from 'date-fns/locale/pt-BR';
 
 import { UsersRepository } from '../repositories/UsersRepository';
@@ -14,7 +14,7 @@ import mailer from './mailer';
 class Tasks {
     async scheduleDailyNotifications() {
         cron.schedule('00 05 * * *', async () => {
-            console.log('> Running a daily task');
+            console.log('> Running a daily task: ', format(new Date, 'Pp', { locale: br }));
 
             const customerAttachments = await CustomerAttachmentsController.index();
             const licensingAttachments = await LicensingAttachmentsController.index();
