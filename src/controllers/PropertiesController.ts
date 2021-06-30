@@ -10,18 +10,33 @@ import UsersRolesController from './UsersRolesController';
 export default {
     async index(request: Request, response: Response) {
         const { user_id } = request.params;
+        const { customer } = request.query;
 
         if (! await UsersRolesController.can(user_id, "properties", "view"))
             return response.status(403).send({ error: 'User permission not granted!' });
 
         const propertiesRepository = getCustomRepository(PropertiesRepository);
 
+        if (customer) {
+            const properties = await propertiesRepository.find({
+                where: { customer },
+                relations: [
+                    'customer',
+                ],
+                order: {
+                    created_at: "DESC"
+                }
+            });
+
+            return response.json(propertyView.renderMany(properties));
+        }
+
         const properties = await propertiesRepository.find({
             relations: [
                 'customer',
             ],
             order: {
-                created_at: "ASC"
+                created_at: "DESC"
             }
         });
 

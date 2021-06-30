@@ -4,9 +4,15 @@ import * as Yup from 'yup';
 
 import bankView from '../views/bankView';
 import { BanksRepository } from '../repositories/BanksRepository';
+import UsersRolesController from './UsersRolesController';
 
 export default {
     async index(request: Request, response: Response) {
+        const { user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "banks", "view"))
+            return response.status(403).send({ error: 'User permission not granted!' });
+
         const banksRepository = getCustomRepository(BanksRepository);
 
         const banks = await banksRepository.find({
@@ -19,7 +25,10 @@ export default {
     },
 
     async show(request: Request, response: Response) {
-        const { id } = request.params;
+        const { id, user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "banks", "view"))
+            return response.status(403).send({ error: 'User permission not granted!' });
 
         const banksRepository = getCustomRepository(BanksRepository);
 
@@ -36,6 +45,11 @@ export default {
     },
 
     async create(request: Request, response: Response) {
+        const { user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "banks", "create"))
+            return response.status(403).send({ error: 'User permission not granted!' });
+
         const {
             agency,
             address,
@@ -86,7 +100,10 @@ export default {
     },
 
     async update(request: Request, response: Response) {
-        const { id } = request.params;
+        const { id, user_id } = request.params;
+
+        if (! await UsersRolesController.can(user_id, "banks", "update"))
+            return response.status(403).send({ error: 'User permission not granted!' });
 
         const {
             agency,

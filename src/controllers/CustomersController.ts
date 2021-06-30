@@ -21,7 +21,7 @@ export default {
                 'type',
             ],
             order: {
-                created_at: "ASC"
+                created_at: "DESC"
             }
         });
 
@@ -43,7 +43,18 @@ export default {
                 'docs.doc',
                 'properties',
                 'projects',
+                'projects.customer',
+                'projects.bank',
+                'projects.bank.institution',
+                'projects.property',
+                'projects.type',
+                'projects.status',
+                'projects.line',
                 'licensings',
+                'licensings.customer',
+                'licensings.property',
+                'licensings.authorization',
+                'licensings.status',
                 'attachments',
                 'attachments.customer',
                 'attachments.logs',

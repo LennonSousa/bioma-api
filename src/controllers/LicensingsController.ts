@@ -10,15 +10,50 @@ import UsersRolesController from './UsersRolesController';
 export default {
     async index(request: Request, response: Response) {
         const { user_id } = request.params;
+        const { customer, property } = request.query;
 
         if (! await UsersRolesController.can(user_id, "licensings", "view"))
             return response.status(403).send({ error: 'User permission not granted!' });
 
         const licensingsRepository = getCustomRepository(LicensingsRepository);
 
+        if (customer) {
+            const licensings = await licensingsRepository.find({
+                where: { customer },
+                order: {
+                    updated_at: "DESC"
+                },
+                relations: [
+                    'customer',
+                    'property',
+                    'authorization',
+                    'status',
+                ]
+            });
+
+            return response.json(licensingView.renderMany(licensings));
+        }
+
+        if (property) {
+            const licensings = await licensingsRepository.find({
+                where: { property },
+                order: {
+                    updated_at: "DESC"
+                },
+                relations: [
+                    'customer',
+                    'property',
+                    'authorization',
+                    'status',
+                ]
+            });
+
+            return response.json(licensingView.renderMany(licensings));
+        }
+
         const licensings = await licensingsRepository.find({
             order: {
-                created_at: "ASC"
+                updated_at: "DESC"
             },
             relations: [
                 'customer',

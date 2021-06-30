@@ -10,7 +10,7 @@ import { ProjectsRepository } from '../repositories/ProjectsRepository';
 export default {
     async index(request: Request, response: Response) {
         const { user_id } = request.params;
-        const { start, end } = request.query;
+        const { start, end, customer, property, bank } = request.query;
 
         if (! await UsersRolesController.can(user_id, "projects", "view"))
             return response.status(403).send({ error: 'User permission not granted!' });
@@ -30,14 +30,16 @@ export default {
                     'line',
                 ],
                 order: {
-                    updated_at: "ASC"
+                    updated_at: "DESC"
                 }
             });
 
             return response.json(projectView.renderMany(projects));
         }
-        else {
+
+        if (customer) {
             const projects = await projectsRepository.find({
+                where: { customer },
                 relations: [
                     'customer',
                     'bank',
@@ -48,12 +50,69 @@ export default {
                     'line',
                 ],
                 order: {
-                    created_at: "ASC"
+                    updated_at: "DESC"
                 }
             });
 
             return response.json(projectView.renderMany(projects));
         }
+
+        if (property) {
+            const projects = await projectsRepository.find({
+                where: { property },
+                relations: [
+                    'customer',
+                    'bank',
+                    'bank.institution',
+                    'property',
+                    'type',
+                    'status',
+                    'line',
+                ],
+                order: {
+                    updated_at: "DESC"
+                }
+            });
+
+            return response.json(projectView.renderMany(projects));
+        }
+
+        if (bank) {
+            const projects = await projectsRepository.find({
+                where: { bank },
+                relations: [
+                    'customer',
+                    'bank',
+                    'bank.institution',
+                    'property',
+                    'type',
+                    'status',
+                    'line',
+                ],
+                order: {
+                    updated_at: "DESC"
+                }
+            });
+
+            return response.json(projectView.renderMany(projects));
+        }
+
+        const projects = await projectsRepository.find({
+            relations: [
+                'customer',
+                'bank',
+                'bank.institution',
+                'property',
+                'type',
+                'status',
+                'line',
+            ],
+            order: {
+                updated_at: "DESC"
+            }
+        });
+
+        return response.json(projectView.renderMany(projects));
     },
 
     async show(request: Request, response: Response) {
