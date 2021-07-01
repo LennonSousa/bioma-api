@@ -27,6 +27,14 @@ export class createNotifications1622826226506 implements MigrationInterface {
                     default: false,
                 },
                 {
+                    name: 'item',
+                    type: 'varchar'
+                },
+                {
+                    name: 'item_id',
+                    type: 'varchar'
+                },
+                {
                     name: 'created_at',
                     type: 'date',
                     default: '(CURRENT_DATE)',

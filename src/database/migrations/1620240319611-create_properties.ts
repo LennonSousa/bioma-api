@@ -25,7 +25,7 @@ export class createProperties1620240319611 implements MigrationInterface {
                     },
                     {
                         name: 'route',
-                        type: 'varchar',
+                        type: 'text',
                         isNullable: true,
                     },
                     {
