@@ -7,26 +7,38 @@ import { LicensingMembersRepository } from '../repositories/LicensingMembersRepo
 
 export default {
     async index(request: Request, response: Response) {
+        const { id } = request.params;
+        const { limit = 6, page = 1 } = request.query;
+
         const licensingMembersRepository = getCustomRepository(LicensingMembersRepository);
 
-        const licensingMembers = await licensingMembersRepository.find();
+        const licensingMembers = await licensingMembersRepository.find(
+            {
+                where: { user: id },
+                relations: [
+                    'licensing',
+                    'licensing.customer',
+                    'licensing.property',
+                    'licensing.authorization',
+                    'licensing.status',
+                    'user',
+                ],
+                take: Number(limit),
+                skip: ((Number(page) - 1) * Number(limit)),
+            }
+        );
+
+        const totalMembers = await licensingMembersRepository.count(
+            {
+                where: { user: id },
+            }
+        );
+
+        const totalPages = Math.ceil(totalMembers / Number(limit));
+
+        response.header('X-Total-Pages', String(totalPages));
 
         return response.json(licensingMemberView.renderMany(licensingMembers));
-    },
-
-    async show(request: Request, response: Response) {
-        const { id } = request.params;
-
-        const licensingMembersRepository = getCustomRepository(LicensingMembersRepository);
-
-        const licensingMember = await licensingMembersRepository.findOneOrFail(id, {
-            relations: [
-                'licensing',
-                'user',
-            ]
-        });
-
-        return response.json(licensingMemberView.render(licensingMember));
     },
 
     async create(request: Request, response: Response) {

@@ -7,26 +7,41 @@ import { ProjectMembersRepository } from '../repositories/ProjectMembersReposito
 
 export default {
     async index(request: Request, response: Response) {
+        const { id } = request.params;
+        const { limit = 6, page = 1 } = request.query;
+
         const projectMembersRepository = getCustomRepository(ProjectMembersRepository);
 
-        const projectMembers = await projectMembersRepository.find();
+        const projectMembers = await projectMembersRepository.find(
+            {
+                where: { user: id },
+                relations: [
+                    'project',
+                    'project.customer',
+                    'project.bank',
+                    'project.bank.institution',
+                    'project.property',
+                    'project.type',
+                    'project.status',
+                    'project.line',
+                    'user',
+                ],
+                take: Number(limit),
+                skip: ((Number(page) - 1) * Number(limit)),
+            }
+        );
+
+        const totalMembers = await projectMembersRepository.count(
+            {
+                where: { user: id },
+            }
+        );
+
+        const totalPages = Math.ceil(totalMembers / Number(limit));
+
+        response.header('X-Total-Pages', String(totalPages));
 
         return response.json(projectMemberView.renderMany(projectMembers));
-    },
-
-    async show(request: Request, response: Response) {
-        const { id } = request.params;
-
-        const projectMembersRepository = getCustomRepository(ProjectMembersRepository);
-
-        const projectMember = await projectMembersRepository.findOneOrFail(id, {
-            relations: [
-                'project',
-                'user',
-            ]
-        });
-
-        return response.json(projectMemberView.render(projectMember));
     },
 
     async create(request: Request, response: Response) {

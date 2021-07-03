@@ -91,23 +91,19 @@ userAuthRoutes.post('/customers/docs', usersAuthMiddleware, usersAuthMiddleware,
 userAuthRoutes.put('/customers/docs/:id', usersAuthMiddleware, usersAuthMiddleware, UploadsConfig('customers').single('file'), CustomerDocsController.update);
 userAuthRoutes.delete('/customers/docs/:id', usersAuthMiddleware, CustomerDocsController.delete);
 
-userAuthRoutes.get('/members/customer/:id', usersAuthMiddleware, CustomerMembersController.index);
-userAuthRoutes.get('/members/:id/customer', usersAuthMiddleware, CustomerMembersController.show);
+userAuthRoutes.get('/members/customers/user/:id', usersAuthMiddleware, CustomerMembersController.index);
 userAuthRoutes.post('/members/customer', usersAuthMiddleware, CustomerMembersController.create);
 userAuthRoutes.delete('/members/:id/customer', usersAuthMiddleware, CustomerMembersController.delete);
 
-userAuthRoutes.get('/members/licensing/:id', usersAuthMiddleware, LicensingMembersController.index);
-userAuthRoutes.get('/members/:id/licensing', usersAuthMiddleware, LicensingMembersController.show);
+userAuthRoutes.get('/members/licensings/user/:id', usersAuthMiddleware, LicensingMembersController.index);
 userAuthRoutes.post('/members/licensing', usersAuthMiddleware, LicensingMembersController.create);
 userAuthRoutes.delete('/members/:id/licensing', usersAuthMiddleware, LicensingMembersController.delete);
 
-userAuthRoutes.get('/members/project/:id', usersAuthMiddleware, ProjectMembersController.index);
-userAuthRoutes.get('/members/:id/project', usersAuthMiddleware, ProjectMembersController.show);
+userAuthRoutes.get('/members/projects/user/:id', usersAuthMiddleware, ProjectMembersController.index);
 userAuthRoutes.post('/members/project', usersAuthMiddleware, ProjectMembersController.create);
 userAuthRoutes.delete('/members/:id/project', usersAuthMiddleware, ProjectMembersController.delete);
 
-userAuthRoutes.get('/members/property/:id', usersAuthMiddleware, PropertyMembersController.index);
-userAuthRoutes.get('/members/:id/property', usersAuthMiddleware, PropertyMembersController.show);
+userAuthRoutes.get('/members/properties/user/:id', usersAuthMiddleware, PropertyMembersController.index);
 userAuthRoutes.post('/members/property', usersAuthMiddleware, PropertyMembersController.create);
 userAuthRoutes.delete('/members/:id/property', usersAuthMiddleware, PropertyMembersController.delete);
 

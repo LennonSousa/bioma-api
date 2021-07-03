@@ -7,26 +7,35 @@ import { PropertyMembersRepository } from '../repositories/PropertyMembersReposi
 
 export default {
     async index(request: Request, response: Response) {
+        const { id } = request.params;
+        const { limit = 6, page = 1 } = request.query;
+
         const propertyMembersRepository = getCustomRepository(PropertyMembersRepository);
 
-        const propertyMembers = await propertyMembersRepository.find();
+        const propertyMembers = await propertyMembersRepository.find(
+            {
+                where: { user: id },
+                relations: [
+                    'property',
+                    'property.customer',
+                    'user',
+                ],
+                take: Number(limit),
+                skip: ((Number(page) - 1) * Number(limit)),
+            }
+        );
+
+        const totalMembers = await propertyMembersRepository.count(
+            {
+                where: { user: id },
+            }
+        );
+
+        const totalPages = Math.ceil(totalMembers / Number(limit));
+
+        response.header('X-Total-Pages', String(totalPages));
 
         return response.json(propertyMemberView.renderMany(propertyMembers));
-    },
-
-    async show(request: Request, response: Response) {
-        const { id } = request.params;
-
-        const propertyMembersRepository = getCustomRepository(PropertyMembersRepository);
-
-        const propertyMember = await propertyMembersRepository.findOneOrFail(id, {
-            relations: [
-                'property',
-                'user',
-            ]
-        });
-
-        return response.json(propertyMemberView.render(propertyMember));
     },
 
     async create(request: Request, response: Response) {

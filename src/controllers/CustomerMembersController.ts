@@ -7,26 +7,35 @@ import { CustomerMembersRepository } from '../repositories/CustomerMembersReposi
 
 export default {
     async index(request: Request, response: Response) {
+        const { id } = request.params;
+        const { limit = 6, page = 1 } = request.query;
+
         const customerMembersRepository = getCustomRepository(CustomerMembersRepository);
 
-        const customerMembers = await customerMembersRepository.find();
+        const customerMembers = await customerMembersRepository.find(
+            {
+                where: { user: id },
+                relations: [
+                    'customer',
+                    'customer.type',
+                    'user',
+                ],
+                take: Number(limit),
+                skip: ((Number(page) - 1) * Number(limit)),
+            }
+        );
+
+        const totalMembers = await customerMembersRepository.count(
+            {
+                where: { user: id },
+            }
+        );
+
+        const totalPages = Math.ceil(totalMembers / Number(limit));
+
+        response.header('X-Total-Pages', String(totalPages));
 
         return response.json(customerMemberView.renderMany(customerMembers));
-    },
-
-    async show(request: Request, response: Response) {
-        const { id } = request.params;
-
-        const customerMembersRepository = getCustomRepository(CustomerMembersRepository);
-
-        const customerMember = await customerMembersRepository.findOneOrFail(id, {
-            relations: [
-                'customer',
-                'user',
-            ]
-        });
-
-        return response.json(customerMemberView.render(customerMember));
     },
 
     async create(request: Request, response: Response) {
