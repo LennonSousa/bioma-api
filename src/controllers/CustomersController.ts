@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, Like } from 'typeorm';
 import * as Yup from 'yup';
 
 import customerView from '../views/customerView';
@@ -10,11 +10,32 @@ import UsersRolesController from './UsersRolesController';
 export default {
     async index(request: Request, response: Response) {
         const { user_id } = request.params;
+        const { limit = 5, page = 1, name } = request.query;
 
         if (! await UsersRolesController.can(user_id, "customers", "view"))
             return response.status(403).send({ error: 'User permission not granted!' });
 
         const customersRepository = getCustomRepository(CustomersRepository);
+
+        if (name) {
+            const customers = await customersRepository.find({
+                where: { name: Like(`%${name}%`) },
+                relations: [
+                    'type',
+                ],
+                order: {
+                    created_at: "DESC"
+                },
+            });
+
+            return response.json(customerView.renderMany(customers));
+        }
+
+        const totalCustomers = await customersRepository.count();
+
+        const totalPages = Math.ceil(totalCustomers / Number(limit));
+
+        response.header('X-Total-Pages', String(totalPages));
 
         const customers = await customersRepository.find({
             relations: [
@@ -22,7 +43,9 @@ export default {
             ],
             order: {
                 created_at: "DESC"
-            }
+            },
+            take: Number(limit),
+            skip: ((Number(page) - 1) * Number(limit)),
         });
 
         return response.json(customerView.renderMany(customers));

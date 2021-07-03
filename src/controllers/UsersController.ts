@@ -30,23 +30,6 @@ export default {
         const user = await usersRepository.findOneOrFail(id, {
             relations: [
                 'roles',
-                'customerMembers',
-                'customerMembers.customer',
-                'licensingMembers',
-                'licensingMembers.licensing',
-                'licensingMembers.licensing.customer',
-                'licensingMembers.licensing.property',
-                'licensingMembers.licensing.authorization',
-                'licensingMembers.licensing.status',
-                'projectMembers',
-                'projectMembers.project',
-                'projectMembers.project.customer',
-                'projectMembers.project.bank',
-                'projectMembers.project.bank.institution',
-                'projectMembers.project.status',
-                'propertyMembers',
-                'propertyMembers.property',
-                'propertyMembers.property.customer',
                 'notifications',
             ]
         });
@@ -112,6 +95,8 @@ export default {
         });
 
         if (foundUser && foundUser.active) return response.status(400).json({ error: 'User already exists and activated!' });
+
+        if (foundUser && !foundUser.active) return response.status(400).json({ error: 'User not activated!' });
 
         // If dosen't exists, create a new user with a temporary password and send a e-mail.
         if (!foundUser) await usersRepository.save(newUser);

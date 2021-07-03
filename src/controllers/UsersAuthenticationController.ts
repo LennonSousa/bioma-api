@@ -39,17 +39,6 @@ export default {
             ],
             relations: [
                 'roles',
-                'customerMembers',
-                'customerMembers.customer',
-                'licensingMembers',
-                'licensingMembers.licensing',
-                'licensingMembers.licensing.customer',
-                'projectMembers',
-                'projectMembers.project',
-                'projectMembers.project.customer',
-                'propertyMembers',
-                'propertyMembers.property',
-                'propertyMembers.property.customer',
                 'notifications',
             ]
         });
