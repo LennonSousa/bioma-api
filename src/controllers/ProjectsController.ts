@@ -10,7 +10,7 @@ import { ProjectsRepository } from '../repositories/ProjectsRepository';
 export default {
     async index(request: Request, response: Response) {
         const { user_id } = request.params;
-        const { start, end, customer, property, bank } = request.query;
+        const { start, end, limit = 10, page = 1, customer, property, bank } = request.query;
 
         if (! await UsersRolesController.can(user_id, "projects", "view"))
             return response.status(403).send({ error: 'User permission not granted!' });
@@ -31,73 +31,30 @@ export default {
                 ],
                 order: {
                     updated_at: "DESC"
-                }
+                },
+                take: Number(limit),
+                skip: ((Number(page) - 1) * Number(limit)),
             });
+
+            const totalItems = await projectsRepository.count({
+                where: { updated_at: Between(start, end) },
+            });
+
+            const totalPages = Math.ceil(totalItems / Number(limit));
+
+            response.header('X-Total-Pages', String(totalPages));
 
             return response.json(projectView.renderMany(projects));
         }
 
-        if (customer) {
-            const projects = await projectsRepository.find({
-                where: { customer },
-                relations: [
-                    'customer',
-                    'bank',
-                    'bank.institution',
-                    'property',
-                    'type',
-                    'status',
-                    'line',
-                ],
-                order: {
-                    updated_at: "DESC"
-                }
-            });
+        var findConditions = {};
 
-            return response.json(projectView.renderMany(projects));
-        }
-
-        if (property) {
-            const projects = await projectsRepository.find({
-                where: { property },
-                relations: [
-                    'customer',
-                    'bank',
-                    'bank.institution',
-                    'property',
-                    'type',
-                    'status',
-                    'line',
-                ],
-                order: {
-                    updated_at: "DESC"
-                }
-            });
-
-            return response.json(projectView.renderMany(projects));
-        }
-
-        if (bank) {
-            const projects = await projectsRepository.find({
-                where: { bank },
-                relations: [
-                    'customer',
-                    'bank',
-                    'bank.institution',
-                    'property',
-                    'type',
-                    'status',
-                    'line',
-                ],
-                order: {
-                    updated_at: "DESC"
-                }
-            });
-
-            return response.json(projectView.renderMany(projects));
-        }
+        if (customer) findConditions['customer'] = customer;
+        if (property) findConditions['property'] = property;
+        if (bank) findConditions['bank'] = bank;
 
         const projects = await projectsRepository.find({
+            where: findConditions,
             relations: [
                 'customer',
                 'bank',
@@ -109,8 +66,18 @@ export default {
             ],
             order: {
                 updated_at: "DESC"
-            }
+            },
+            take: Number(limit),
+            skip: ((Number(page) - 1) * Number(limit)),
         });
+
+        const totalItems = await projectsRepository.count({
+            where: findConditions,
+        });
+
+        const totalPages = Math.ceil(totalItems / Number(limit));
+
+        response.header('X-Total-Pages', String(totalPages));
 
         return response.json(projectView.renderMany(projects));
     },

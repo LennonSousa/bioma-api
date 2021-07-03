@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getCustomRepository } from 'typeorm';
+import { Between, getCustomRepository } from 'typeorm';
 import * as Yup from 'yup';
 
 import licensingView from '../views/licensingView';
@@ -10,16 +10,16 @@ import UsersRolesController from './UsersRolesController';
 export default {
     async index(request: Request, response: Response) {
         const { user_id } = request.params;
-        const { customer, property } = request.query;
+        const { start, end, limit = 10, page = 1, customer, property } = request.query;
 
         if (! await UsersRolesController.can(user_id, "licensings", "view"))
             return response.status(403).send({ error: 'User permission not granted!' });
 
         const licensingsRepository = getCustomRepository(LicensingsRepository);
 
-        if (customer) {
+        if (start && end) {
             const licensings = await licensingsRepository.find({
-                where: { customer },
+                where: { updated_at: Between(start, end) },
                 order: {
                     updated_at: "DESC"
                 },
@@ -28,30 +28,29 @@ export default {
                     'property',
                     'authorization',
                     'status',
-                ]
+                ],
+                take: Number(limit),
+                skip: ((Number(page) - 1) * Number(limit)),
             });
+
+            const totalItems = await licensingsRepository.count({
+                where: { updated_at: Between(start, end) },
+            });
+
+            const totalPages = Math.ceil(totalItems / Number(limit));
+
+            response.header('X-Total-Pages', String(totalPages));
 
             return response.json(licensingView.renderMany(licensings));
         }
 
-        if (property) {
-            const licensings = await licensingsRepository.find({
-                where: { property },
-                order: {
-                    updated_at: "DESC"
-                },
-                relations: [
-                    'customer',
-                    'property',
-                    'authorization',
-                    'status',
-                ]
-            });
+        var findConditions = {};
 
-            return response.json(licensingView.renderMany(licensings));
-        }
+        if (customer) findConditions['customer'] = customer;
+        if (property) findConditions['property'] = property;
 
         const licensings = await licensingsRepository.find({
+            where: findConditions,
             order: {
                 updated_at: "DESC"
             },
@@ -60,8 +59,18 @@ export default {
                 'property',
                 'authorization',
                 'status',
-            ]
+            ],
+            take: Number(limit),
+            skip: ((Number(page) - 1) * Number(limit)),
         });
+
+        const totalItems = await licensingsRepository.count({
+            where: findConditions,
+        });
+
+        const totalPages = Math.ceil(totalItems / Number(limit));
+
+        response.header('X-Total-Pages', String(totalPages));
 
         return response.json(licensingView.renderMany(licensings));
     },

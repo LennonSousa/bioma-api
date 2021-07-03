@@ -10,35 +10,36 @@ import UsersRolesController from './UsersRolesController';
 export default {
     async index(request: Request, response: Response) {
         const { user_id } = request.params;
-        const { customer } = request.query;
+        const { limit = 10, page = 1, customer } = request.query;
 
         if (! await UsersRolesController.can(user_id, "properties", "view"))
             return response.status(403).send({ error: 'User permission not granted!' });
 
         const propertiesRepository = getCustomRepository(PropertiesRepository);
 
-        if (customer) {
-            const properties = await propertiesRepository.find({
-                where: { customer },
-                relations: [
-                    'customer',
-                ],
-                order: {
-                    created_at: "DESC"
-                }
-            });
+        var findConditions = {};
 
-            return response.json(propertyView.renderMany(properties));
-        }
+        if (customer) findConditions['customer'] = customer;
 
         const properties = await propertiesRepository.find({
+            where: findConditions,
             relations: [
                 'customer',
             ],
             order: {
                 created_at: "DESC"
-            }
+            },
+            take: Number(limit),
+            skip: ((Number(page) - 1) * Number(limit)),
         });
+
+        const totalItems = await propertiesRepository.count({
+            where: findConditions,
+        });
+
+        const totalPages = Math.ceil(totalItems / Number(limit));
+
+        response.header('X-Total-Pages', String(totalPages));
 
         return response.json(propertyView.renderMany(properties));
     },

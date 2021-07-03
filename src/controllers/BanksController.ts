@@ -9,6 +9,7 @@ import UsersRolesController from './UsersRolesController';
 export default {
     async index(request: Request, response: Response) {
         const { user_id } = request.params;
+        const { limit = 10, page = 1 } = request.query;
 
         if (! await UsersRolesController.can(user_id, "banks", "view"))
             return response.status(403).send({ error: 'User permission not granted!' });
@@ -18,8 +19,16 @@ export default {
         const banks = await banksRepository.find({
             relations: [
                 'institution',
-            ]
+            ],
+            take: Number(limit),
+            skip: ((Number(page) - 1) * Number(limit)),
         });
+
+        const totalItems = await banksRepository.count();
+
+        const totalPages = Math.ceil(totalItems / Number(limit));
+
+        response.header('X-Total-Pages', String(totalPages));
 
         return response.json(bankView.renderMany(banks));
     },
