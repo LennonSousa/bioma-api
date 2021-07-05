@@ -23,6 +23,7 @@ export default {
             analyst_contact: project.analyst_contact,
             notes: project.notes,
             warnings: project.warnings,
+            warnings_text: project.warnings_text,
             created_by: project.created_by,
             created_at: project.created_at,
             updated_by: project.updated_by,

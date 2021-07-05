@@ -44,9 +44,6 @@ export default {
         const bank = await banksRepository.findOneOrFail(id, {
             relations: [
                 'institution',
-                'projects',
-                'projects.customer',
-                'projects.status',
             ]
         });
 

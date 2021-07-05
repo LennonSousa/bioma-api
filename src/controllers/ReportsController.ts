@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getCustomRepository, LessThan } from 'typeorm';
+import { getCustomRepository } from 'typeorm';
 import * as Yup from 'yup';
 
 import customerView from '../views/customerView';
@@ -10,6 +10,9 @@ import { ProjectsRepository } from '../repositories/ProjectsRepository';
 
 import licensingView from '../views/licensingView';
 import { LicensingsRepository } from '../repositories/LicensingsRepository';
+
+import propertyView from '../views/propertyView';
+import { PropertiesRepository } from '../repositories/PropertiesRepository';
 
 export default {
     async banks(request: Request, response: Response) {
@@ -193,7 +196,7 @@ export default {
     },
 
     async projects(request: Request, response: Response) {
-        const { status, bank } = request.query;
+        const { status, bank, warnings } = request.query;
 
         if (status) {
             const data = {
@@ -226,12 +229,45 @@ export default {
             return response.json(projectView.renderMany(projects));
         }
 
+        if (bank) {
+            const data = {
+                bank
+            };
+
+            const schema = Yup.object().shape({
+                bank: Yup.string().required(),
+            });
+
+            await schema.validate(data, {
+                abortEarly: false,
+            });
+
+            const projectsRepository = getCustomRepository(ProjectsRepository);
+
+            const projects = await projectsRepository.find({
+                where: { bank },
+                relations: [
+                    'customer',
+                    'bank',
+                    'bank.institution',
+                    'status',
+                ],
+                order: {
+                    updated_at: "DESC"
+                }
+            });
+
+            return response.json(projectView.renderMany(projects));
+        }
+
+        const warning = Yup.boolean().cast(warnings);
+
         const data = {
-            bank
+            warning
         };
 
         const schema = Yup.object().shape({
-            bank: Yup.string().required(),
+            warning: Yup.boolean().required(),
         });
 
         await schema.validate(data, {
@@ -241,15 +277,9 @@ export default {
         const projectsRepository = getCustomRepository(ProjectsRepository);
 
         const projects = await projectsRepository.find({
-            where: { bank },
-            relations: [
-                'customer',
-                'bank',
-                'bank.institution',
-                'status',
-            ],
+            where: { warnings: warning },
             order: {
-                updated_at: "DESC"
+                created_at: "DESC"
             }
         });
 
@@ -257,35 +287,62 @@ export default {
     },
 
     async properties(request: Request, response: Response) {
-        const { property } = request.query;
+        const { property, warnings } = request.query;
+
+        if (property) {
+            const data = {
+                property
+            };
+
+            const schema = Yup.object().shape({
+                property: Yup.string().required(),
+            });
+
+            await schema.validate(data, {
+                abortEarly: false,
+            });
+
+            const projectsRepository = getCustomRepository(ProjectsRepository);
+
+            const projects = await projectsRepository.find({
+                where: { property },
+                relations: [
+                    'customer',
+                    'bank',
+                    'bank.institution',
+                    'status',
+                ],
+                order: {
+                    updated_at: "DESC"
+                }
+            });
+
+            return response.json(projectView.renderMany(projects));
+        }
+
+        const warning = Yup.boolean().cast(warnings);
 
         const data = {
-            property
+            warning
         };
 
         const schema = Yup.object().shape({
-            property: Yup.string().required(),
+            warning: Yup.boolean().required(),
         });
 
         await schema.validate(data, {
             abortEarly: false,
         });
 
-        const projectsRepository = getCustomRepository(ProjectsRepository);
+        const propertiesRepository = getCustomRepository(PropertiesRepository);
 
-        const projects = await projectsRepository.find({
-            where: { property },
-            relations: [
-                'customer',
-                'bank',
-                'bank.institution',
-                'status',
-            ],
+        const properties = await propertiesRepository.find({
+            where: { warnings: warning },
             order: {
-                updated_at: "DESC"
+                created_at: "DESC"
             }
         });
 
-        return response.json(projectView.renderMany(projects));
+        return response.json(propertyView.renderMany(properties));
     },
 }

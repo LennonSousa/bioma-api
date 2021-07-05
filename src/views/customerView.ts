@@ -23,6 +23,7 @@ export default {
             owner: customer.owner,
             notes: customer.notes,
             warnings: customer.warnings,
+            warnings_text: customer.warnings_text,
             birth: customer.birth,
             created_by: customer.created_by,
             created_at: customer.created_at,

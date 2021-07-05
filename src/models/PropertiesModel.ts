@@ -39,6 +39,9 @@ export default class PropertiesModel {
     warnings: boolean;
 
     @Column()
+    warnings_text: string;
+
+    @Column()
     created_by: string;
 
     @Column()

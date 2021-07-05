@@ -58,7 +58,6 @@ export default {
                 'customer.properties',
                 'docs',
                 'docs.doc',
-                'projects',
                 'attachments',
                 'attachments.property',
                 'attachments.logs',
@@ -86,6 +85,7 @@ export default {
             coordinates,
             notes,
             warnings,
+            warnings_text,
             customer,
             docs,
             members,
@@ -107,6 +107,7 @@ export default {
             coordinates,
             notes,
             warnings,
+            warnings_text,
             created_by: user.name,
             customer,
             docs,
@@ -123,6 +124,7 @@ export default {
             coordinates: Yup.string().notRequired().nullable(),
             notes: Yup.string().notRequired(),
             warnings: Yup.boolean().notRequired(),
+            warnings_text: Yup.string().notRequired().nullable(),
             customer: Yup.string().required(),
             docs: Yup.array(
                 Yup.object().shape({
@@ -166,6 +168,7 @@ export default {
             coordinates,
             notes,
             warnings,
+            warnings_text,
             customer,
         } = request.body;
 
@@ -181,6 +184,7 @@ export default {
             coordinates,
             notes,
             warnings,
+            warnings_text,
             customer,
         };
 
@@ -194,6 +198,7 @@ export default {
             coordinates: Yup.string().notRequired().nullable(),
             notes: Yup.string().notRequired().nullable(),
             warnings: Yup.boolean().notRequired(),
+            warnings_text: Yup.string().notRequired().nullable(),
             customer: Yup.string().required(),
         });
 

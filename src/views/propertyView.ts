@@ -18,6 +18,7 @@ export default {
             coordinates: property.coordinates,
             notes: property.notes,
             warnings: property.warnings,
+            warnings_text: property.warnings_text,
             created_by: property.created_by,
             created_at: property.created_at,
             customer: property.customer && customerView.render(property.customer),

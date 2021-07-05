@@ -50,6 +50,9 @@ export default class CustomersModel {
     warnings: boolean;
 
     @Column()
+    warnings_text: string;
+
+    @Column()
     birth: Date;
 
     @Column()
