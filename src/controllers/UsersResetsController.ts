@@ -129,7 +129,7 @@ export default {
             await mailer.sendUserResetPassword(
                 foundUser.name,
                 foundUser.email,
-                `${process.env.APP_URL}/users/reset?email=${email}&token=${tempPassword}`
+                `${process.env.APP_URL}/users/reset/auth?email=${email}&token=${tempPassword}`
             ).then(() => {
                 return response.status(201).json();
             });
