@@ -6,6 +6,7 @@ import LicensingMember from './LicensingMembersModel';
 import ProjectMember from './ProjectMembersModel';
 import PropertyMember from './PropertyMembersModel';
 import Notifications from './NotificationsModel';
+import Reset from './UsersResetsModel';
 
 @Entity('users')
 export default class UsersModel {
@@ -61,4 +62,8 @@ export default class UsersModel {
     @OneToMany(() => Notifications, notification => notification.user)
     @JoinColumn({ name: 'user_id' })
     notifications: Notifications[];
+
+    @OneToMany(() => Reset, reset => reset.user)
+    @JoinColumn({ name: 'user_id' })
+    resets: Reset[];
 }

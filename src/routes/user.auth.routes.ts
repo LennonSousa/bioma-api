@@ -45,6 +45,7 @@ import PropertyDocsController from '../controllers/PropertyDocsController';
 import UsersController from '../controllers/UsersController';
 import UsersRolesController from '../controllers/UsersRolesController';
 import UsersNewController from '../controllers/UsersNewController';
+import UsersResetsController from '../controllers/UsersResetsController';
 import NotificationsController from '../controllers/NotificationsController';
 
 import ReportsController from '../controllers/ReportsController';
@@ -56,6 +57,8 @@ const userAuthRoutes = express.Router();
 userAuthRoutes.get('/users/authenticated', usersAuthMiddleware, function (request, response) {
     return response.status(202).json();
 });
+
+userAuthRoutes.put('/users/reset/:id', usersAuthMiddleware, UsersResetsController.update);
 
 userAuthRoutes.get('/users', usersAuthMiddleware, UsersController.index);
 userAuthRoutes.get('/users/:id', usersAuthMiddleware, UsersController.show);
