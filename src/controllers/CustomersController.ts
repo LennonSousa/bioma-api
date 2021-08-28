@@ -24,7 +24,7 @@ export default {
                     'type',
                 ],
                 order: {
-                    created_at: "DESC"
+                    name: "ASC"
                 },
             });
 
@@ -42,7 +42,7 @@ export default {
                 'type',
             ],
             order: {
-                created_at: "DESC"
+                name: "ASC"
             },
             take: Number(limit),
             skip: ((Number(page) - 1) * Number(limit)),
