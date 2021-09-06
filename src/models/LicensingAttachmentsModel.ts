@@ -29,6 +29,9 @@ export default class LicensingAttachmentsModel {
     @Column()
     schedule_at: Date;
 
+    @Column()
+    order: number;
+
     @ManyToOne(() => Licensing, licensing => licensing.attachments)
     @JoinColumn({ name: 'licensing_id' })
     licensing: Licensing;

@@ -75,6 +75,7 @@ export default {
             licensing,
             schedule,
             schedule_at,
+            order,
         } = request.body;
 
         if (expire)
@@ -96,6 +97,7 @@ export default {
             licensing,
             schedule,
             schedule_at,
+            order,
         };
 
         const schema = Yup.object().shape({
@@ -106,6 +108,7 @@ export default {
             expire_at: Yup.date().notRequired(),
             schedule: Yup.boolean().notRequired(),
             schedule_at: Yup.date().notRequired(),
+            order: Yup.number().required(),
             licensing: Yup.string().required(),
         });
 
@@ -139,6 +142,7 @@ export default {
             expire_at,
             schedule,
             schedule_at,
+            order,
         } = request.body;
 
         if (expire)
@@ -156,6 +160,7 @@ export default {
             expire_at,
             schedule,
             schedule_at,
+            order,
         };
 
         const schema = Yup.object().shape({
@@ -165,6 +170,7 @@ export default {
             expire_at: Yup.date().notRequired(),
             schedule: Yup.boolean().notRequired(),
             schedule_at: Yup.date().notRequired(),
+            order: Yup.number().required(),
         });
 
         await schema.validate(data, {

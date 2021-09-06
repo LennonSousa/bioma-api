@@ -29,6 +29,9 @@ export default class ProjectAttachmentsModel {
     @Column()
     schedule_at: Date;
 
+    @Column()
+    order: number;
+
     @ManyToOne(() => Project, project => project.attachments)
     @JoinColumn({ name: 'project_id' })
     project: Project;

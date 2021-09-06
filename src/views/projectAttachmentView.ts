@@ -13,6 +13,7 @@ export default {
             expire_at: projectAttachment.expire_at,
             schedule: projectAttachment.schedule,
             schedule_at: projectAttachment.schedule_at,
+            order: projectAttachment.order,
             project: projectAttachment.project && projectView.render(projectAttachment.project),
             logs: projectAttachment.logs ? logProjectAttachment.renderMany(projectAttachment.logs) : [],
         }
@@ -25,6 +26,8 @@ export default {
     },
 
     renderMany(projectAttachments: ProjectAttachment[]) {
-        return projectAttachments.map(projectAttachment => this.render(projectAttachment));
+        const projectAttachmentsSorted = projectAttachments.sort((a, b) => a.order - b.order);
+
+        return projectAttachmentsSorted.map(projectAttachment => this.render(projectAttachment));
     }
 }

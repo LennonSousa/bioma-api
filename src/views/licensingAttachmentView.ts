@@ -13,6 +13,7 @@ export default {
             expire_at: licensingAttachment.expire_at,
             schedule: licensingAttachment.schedule,
             schedule_at: licensingAttachment.schedule_at,
+            order: licensingAttachment.order,
             licensing: licensingAttachment.licensing && licensingView.render(licensingAttachment.licensing),
             logs: licensingAttachment.logs ? logLicensingAttachment.renderMany(licensingAttachment.logs) : [],
         }
@@ -25,6 +26,8 @@ export default {
     },
 
     renderMany(licensingAttachments: LicensingAttachment[]) {
-        return licensingAttachments.map(licensingAttachment => this.render(licensingAttachment));
+        const licensingAttachmentsSorted = licensingAttachments.sort((a, b) => a.order - b.order);
+
+        return licensingAttachmentsSorted.map(licensingAttachment => this.render(licensingAttachment));
     }
 }

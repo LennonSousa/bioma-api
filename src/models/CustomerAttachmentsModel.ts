@@ -29,6 +29,9 @@ export default class CustomerAttachmentsModel {
     @Column()
     schedule_at: Date;
 
+    @Column()
+    order: number;
+
     @ManyToOne(() => Customer, licensing => licensing.attachments)
     @JoinColumn({ name: 'customer_id' })
     customer: Customer;

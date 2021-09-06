@@ -13,6 +13,7 @@ export default {
             expire_at: propertyAttachment.expire_at,
             schedule: propertyAttachment.schedule,
             schedule_at: propertyAttachment.schedule_at,
+            order: propertyAttachment.order,
             property: propertyAttachment.property && propertyView.render(propertyAttachment.property),
             logs: propertyAttachment.logs ? logPropertyAttachment.renderMany(propertyAttachment.logs) : [],
         }
@@ -25,6 +26,8 @@ export default {
     },
 
     renderMany(propertyAttachments: PropertyAttachment[]) {
-        return propertyAttachments.map(propertyAttachment => this.render(propertyAttachment));
+        const propertyAttachmentsSorted = propertyAttachments.sort((a, b) => a.order - b.order);
+
+        return propertyAttachmentsSorted.map(propertyAttachment => this.render(propertyAttachment));
     }
 }

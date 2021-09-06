@@ -29,6 +29,9 @@ export default class PropertyAttachmentsModel {
     @Column()
     schedule_at: Date;
 
+    @Column()
+    order: number;
+
     @ManyToOne(() => Property, property => property.attachments)
     @JoinColumn({ name: 'property_id' })
     property: Property;

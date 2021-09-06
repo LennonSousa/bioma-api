@@ -15,6 +15,7 @@ export default {
             expire_at: customerAttachment.expire_at,
             schedule: customerAttachment.schedule,
             schedule_at: customerAttachment.schedule_at,
+            order: customerAttachment.order,
             customer: customerAttachment.customer && customerView.render(customerAttachment.customer),
             logs: customerAttachment.logs ? logCustomerAttachment.renderMany(customerAttachment.logs) : [],
         }
@@ -27,6 +28,8 @@ export default {
     },
 
     renderMany(customerAttachments: CustomerAttachment[]) {
-        return customerAttachments.map(customerAttachment => this.render(customerAttachment));
+        const customerAttachmentsSorted = customerAttachments.sort((a, b) => a.order - b.order);
+
+        return customerAttachmentsSorted.map(customerAttachment => this.render(customerAttachment));
     }
 }
