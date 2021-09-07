@@ -3,30 +3,22 @@ import { MigrationInterface, QueryRunner, TableColumn } from "typeorm";
 export class refactoryAttachments1630934722197 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        const customerAttachmentsTable = await queryRunner.getTable("customer_attachments");
-
-        await queryRunner.addColumn(customerAttachmentsTable, new TableColumn({
+        await queryRunner.addColumn("customer_attachments", new TableColumn({
             name: 'order',
             type: 'integer',
         }));
 
-        const propertyAttachmentsTable = await queryRunner.getTable("property_attachments");
-
-        await queryRunner.addColumn(propertyAttachmentsTable, new TableColumn({
+        await queryRunner.addColumn("property_attachments", new TableColumn({
             name: 'order',
             type: 'integer',
         }));
 
-        const projectAttachmentsTable = await queryRunner.getTable("project_attachments");
-
-        await queryRunner.addColumn(projectAttachmentsTable, new TableColumn({
+        await queryRunner.addColumn("property_attachments", new TableColumn({
             name: 'order',
             type: 'integer',
         }));
 
-        const licensingAttachmentsTable = await queryRunner.getTable("licensing_attachments");
-
-        await queryRunner.addColumn(licensingAttachmentsTable, new TableColumn({
+        await queryRunner.addColumn("licensing_attachments", new TableColumn({
             name: 'order',
             type: 'integer',
         }));
