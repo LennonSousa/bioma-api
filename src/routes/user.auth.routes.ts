@@ -55,9 +55,10 @@ import usersAuthMiddleware from '../middlewares/usersAuth';
 const userAuthRoutes = express.Router();
 
 userAuthRoutes.get('/users/authenticated', usersAuthMiddleware, function (request, response) {
-    console.log('x-forwarded-for', request.headers['x-forwarded-for']);
-    console.log('remoteAddress', request.socket.remoteAddress);
-    console.log('ips', request.ips);
+    console.log('x-forwarded-for: ', request.header('X-Forwarded-For'));
+    console.log('remoteAddress: ', request.socket.remoteAddress);
+    console.log('ips: ', request.ips);
+    console.log('request: ', request.ips);
 
     return response.status(202).json();
 });
