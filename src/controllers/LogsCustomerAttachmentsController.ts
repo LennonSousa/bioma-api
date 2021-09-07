@@ -1,5 +1,7 @@
 import { getCustomRepository } from 'typeorm';
 import * as Yup from 'yup';
+import requestIp from 'request-ip';
+import geoIp from 'geoip-lite';
 
 import { LogsCustomerAttachmentsRepository } from '../repositories/LogsCustomerAttachmentsRepository';
 

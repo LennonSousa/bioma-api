@@ -55,8 +55,6 @@ import usersAuthMiddleware from '../middlewares/usersAuth';
 const userAuthRoutes = express.Router();
 
 userAuthRoutes.get('/users/authenticated', usersAuthMiddleware, function (request, response) {
-    console.log('request: ', request);
-
     return response.status(202).json();
 });
 

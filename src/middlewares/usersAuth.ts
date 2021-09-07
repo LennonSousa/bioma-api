@@ -2,12 +2,18 @@ import { NextFunction, Request, Response } from 'express';
 import jwt from "jsonwebtoken";
 import requestIp from 'request-ip';
 
+import geoIp from 'geoip-lite';
+
 export default (request: Request, response: Response, next: NextFunction) => {
     const authHeader = request.headers.authorization;
 
     const clientIp = requestIp.getClientIp(request);
 
-    console.log('requestIp: ', clientIp);
+    console.log('clientIp: ', clientIp);
+
+    var geo = geoIp.lookup(clientIp);
+
+    console.log(geo);
 
     if (!authHeader)
         return response.status(401).send({ error: 'No token provided user auth' });
