@@ -16,6 +16,9 @@ export default class LogsProjectAttachmentsModel {
     @Column()
     action: string;
 
+    @Column()
+    client_ip: string;
+
     @ManyToOne(() => Attachment, attachment => attachment.logs)
     @JoinColumn({ name: 'attachment_id' })
     attachment: Attachment;

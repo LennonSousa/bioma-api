@@ -8,6 +8,7 @@ export default {
             accessed_at: log.accessed_at,
             user: log.user,
             action: log.action,
+            client_ip: log.client_ip,
             attachment: log.attachment && projectAttachmentView.render(log.attachment),
         }
     },

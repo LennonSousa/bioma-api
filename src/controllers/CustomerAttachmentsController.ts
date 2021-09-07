@@ -3,6 +3,7 @@ import { getCustomRepository, Equal } from 'typeorm';
 import * as Yup from 'yup';
 import fs from 'fs';
 import { format } from 'date-fns';
+import requestIp from 'request-ip';
 
 import customerAttachmentView from '../views/customerAttachmentView';
 import { CustomerAttachmentsRepository } from '../repositories/CustomerAttachmentsRepository';
@@ -55,7 +56,9 @@ export default {
 
         const user = await userRepository.findOneOrFail(user_id);
 
-        await LogsCustomerAttachmentsController.create(new Date(), user.name, 'view', customerAttachment.id);
+        const clientIp = requestIp.getClientIp(request);
+
+        await LogsCustomerAttachmentsController.create(new Date(), user.name, 'view', clientIp, customerAttachment.id);
 
         return response.download(download.path);
     },
@@ -123,7 +126,9 @@ export default {
 
         const user = await userRepository.findOneOrFail(user_id);
 
-        await LogsCustomerAttachmentsController.create(new Date(), user.name, 'create', customerAttachment.id);
+        const clientIp = requestIp.getClientIp(request);
+
+        await LogsCustomerAttachmentsController.create(new Date(), user.name, 'create', clientIp, customerAttachment.id);
 
         return response.status(201).json(customerAttachmentView.render(customerAttachment));
     },
@@ -184,7 +189,9 @@ export default {
 
         const user = await userRepository.findOneOrFail(user_id);
 
-        await LogsCustomerAttachmentsController.create(new Date(), user.name, 'update', id);
+        const clientIp = requestIp.getClientIp(request);
+
+        await LogsCustomerAttachmentsController.create(new Date(), user.name, 'update', clientIp, id);
 
         return response.status(204).json();
     },

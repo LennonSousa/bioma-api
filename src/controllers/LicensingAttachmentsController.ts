@@ -3,6 +3,7 @@ import { Equal, getCustomRepository } from 'typeorm';
 import * as Yup from 'yup';
 import fs from 'fs';
 import { format } from 'date-fns';
+import requestIp from 'request-ip';
 
 import licensingAttachmentView from '../views/licensingAttachmentView';
 import { LicensingAttachmentsRepository } from '../repositories/LicensingAttachmentsRepository';
@@ -56,7 +57,9 @@ export default {
 
         const user = await userRepository.findOneOrFail(user_id);
 
-        await LogsLicensingAttachmentsController.create(new Date(), user.name, 'view', licensingAttachment.id);
+        const clientIp = requestIp.getClientIp(request);
+
+        await LogsLicensingAttachmentsController.create(new Date(), user.name, 'view', clientIp, licensingAttachment.id);
 
         return response.download(download.path);
     },
@@ -124,7 +127,9 @@ export default {
 
         const user = await userRepository.findOneOrFail(user_id);
 
-        await LogsLicensingAttachmentsController.create(new Date(), user.name, 'create', licensingAttachment.id);
+        const clientIp = requestIp.getClientIp(request);
+
+        await LogsLicensingAttachmentsController.create(new Date(), user.name, 'create', clientIp, licensingAttachment.id);
 
         return response.status(201).json(licensingAttachmentView.render(licensingAttachment));
     },
@@ -185,7 +190,9 @@ export default {
 
         const user = await userRepository.findOneOrFail(user_id);
 
-        await LogsLicensingAttachmentsController.create(new Date(), user.name, 'update', id);
+        const clientIp = requestIp.getClientIp(request);
+
+        await LogsLicensingAttachmentsController.create(new Date(), user.name, 'update', clientIp, id);
 
         return response.status(204).json();
     },
