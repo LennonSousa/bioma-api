@@ -5,6 +5,7 @@ import PropertyDoc from './PropertyDocsModel';
 import Project from './ProjectsModel';
 import Attachment from './PropertyAttachmentsModel';
 import Member from './PropertyMembersModel';
+import Log from './LogsPropertiesModel';
 
 @Entity('properties')
 export default class PropertiesModel {
@@ -70,4 +71,10 @@ export default class PropertiesModel {
     })
     @JoinColumn({ name: 'customer_id' })
     members: Member[];
+
+    @OneToMany(() => Log, log => log.property, {
+        cascade: ['insert', 'update']
+    })
+    @JoinColumn({ name: 'property_id' })
+    logs: Log[];
 }

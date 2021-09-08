@@ -7,6 +7,7 @@ import jwt from 'jsonwebtoken';
 
 import UsersModel from '../models/UsersModel';
 import userView from '../views/userView';
+import LogsUsersController from '../controllers/LogsUsersController';
 
 require('dotenv/config');
 
@@ -48,15 +49,20 @@ export default {
                 error: 'User e-mail or password dosen\'t exists.'
             });
 
-        if (!await bcrypt.compare(password, userAuth.password))
+        if (!await bcrypt.compare(password, userAuth.password)) {
+            await LogsUsersController.create("users", "view_self", request, userAuth.id, "Login denied");
+
             return response.status(401).json({
                 error: 'User e-mail or password dosen\'t exists.'
             });
+        }
 
         if (process.env.USER_JWT_SECRET) {
             const token = jwt.sign({ id: userAuth.id }, process.env.USER_JWT_SECRET, {
                 expiresIn: "1d"
             });
+
+            await LogsUsersController.create("users", "view_self", request, userAuth.id, "Login successfully");
 
             return response.status(201).json({ user: userView.render(userAuth), token: token });
         }

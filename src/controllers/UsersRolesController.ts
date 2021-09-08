@@ -5,8 +5,8 @@ import * as Yup from 'yup';
 import userRoleView from '../views/userRoleView';
 import { UsersRolesRepository } from '../repositories/UsersRolesRepository';
 
-type Role = 'customers' | 'institutions' | 'licensings' | 'properties' | 'projects' | 'banks' | 'users';
-type Grant = 'view' | 'view_self' | 'create' | 'update' | 'update_self' | 'remove';
+export type Role = 'customers' | 'institutions' | 'licensings' | 'properties' | 'projects' | 'banks' | 'users';
+export type Grant = 'view' | 'view_self' | 'create' | 'update' | 'update_self' | 'remove';
 
 const grants = ['view', 'view_self', 'create', 'update', 'update_self', 'remove'];
 

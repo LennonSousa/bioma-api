@@ -6,6 +6,7 @@ import customerDocView from './customerDocView';
 import licensingView from './licensingView';
 import attachmentView from './customerAttachmentView';
 import memberView from './customerMemberView';
+import logCustomerView from './logCustomerView';
 
 export default {
     render(customer: Customer) {
@@ -34,6 +35,7 @@ export default {
             licensings: customer.licensings ? licensingView.renderMany(customer.licensings) : [],
             attachments: customer.attachments ? attachmentView.renderMany(customer.attachments) : [],
             members: customer.members ? memberView.renderMany(customer.members) : [],
+            logs: customer.logs ? logCustomerView.renderMany(customer.logs) : [],
         }
     },
 

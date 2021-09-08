@@ -12,6 +12,7 @@ import ProjectLine from './ProjectLinesModel';
 import Event from './EventsLicensingModel';
 import Attachment from './LicensingAttachmentsModel';
 import Member from './LicensingMembersModel';
+import Log from './LogsLicensingsModel';
 
 @Entity('licensings')
 export default class LicensingsModel {
@@ -112,4 +113,10 @@ export default class LicensingsModel {
     })
     @JoinColumn({ name: 'licensing_id' })
     members: Member[];
+
+    @OneToMany(() => Log, log => log.licensing, {
+        cascade: ['insert', 'update']
+    })
+    @JoinColumn({ name: 'licensing_id' })
+    logs: Log[];
 }

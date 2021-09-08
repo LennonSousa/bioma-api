@@ -6,6 +6,8 @@ import customerView from '../views/customerView';
 import { CustomersRepository } from '../repositories/CustomersRepository';
 import { UsersRepository } from '../repositories/UsersRepository';
 import UsersRolesController from './UsersRolesController';
+import LogsCustomersController from '../controllers/LogsCustomersController';
+import LogsUsersController from '../controllers/LogsUsersController';
 
 export default {
     async index(request: Request, response: Response) {
@@ -68,7 +70,8 @@ export default {
                 'attachments.customer',
                 'attachments.logs',
                 'members',
-                'members.user'
+                'members.user',
+                'logs',
             ]
         });
 
@@ -168,6 +171,8 @@ export default {
 
         await customersRepository.save(customer);
 
+        await LogsCustomersController.create(user_id, request, "create", customer.id);
+
         return response.status(201).json(customerView.render(customer));
     },
 
@@ -241,6 +246,8 @@ export default {
 
         await customersRepository.update(id, customer);
 
+        await LogsCustomersController.create(user_id, request, "update", id);
+
         return response.status(204).json();
     },
 
@@ -252,7 +259,11 @@ export default {
 
         const customersRepository = getCustomRepository(CustomersRepository);
 
+        const customer = await customersRepository.findOneOrFail(id);
+
         await customersRepository.delete(id);
+
+        await LogsUsersController.create("customers", "remove", request, user_id, customer.name);
 
         return response.status(204).send();
     }

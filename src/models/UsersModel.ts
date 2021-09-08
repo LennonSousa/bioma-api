@@ -7,6 +7,7 @@ import ProjectMember from './ProjectMembersModel';
 import PropertyMember from './PropertyMembersModel';
 import Notifications from './NotificationsModel';
 import Reset from './UsersResetsModel';
+import Log from './LogsUsersModel';
 
 @Entity('users')
 export default class UsersModel {
@@ -66,4 +67,10 @@ export default class UsersModel {
     @OneToMany(() => Reset, reset => reset.user)
     @JoinColumn({ name: 'user_id' })
     resets: Reset[];
+
+    @OneToMany(() => Log, log => log.user, {
+        cascade: ['insert', 'update']
+    })
+    @JoinColumn({ name: 'user_id' })
+    logs: Log[];
 }

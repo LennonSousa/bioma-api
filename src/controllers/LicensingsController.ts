@@ -6,6 +6,8 @@ import licensingView from '../views/licensingView';
 import { LicensingsRepository } from '../repositories/LicensingsRepository';
 import { UsersRepository } from '../repositories/UsersRepository';
 import UsersRolesController from './UsersRolesController';
+import LogsLicensingsController from '../controllers/LogsLicensingsController';
+import LogsUsersController from '../controllers/LogsUsersController';
 
 export default {
     async index(request: Request, response: Response) {
@@ -100,7 +102,8 @@ export default {
                 'attachments.licensing',
                 'attachments.logs',
                 'members',
-                'members.user'
+                'members.user',
+                'logs',
             ]
         });
 
@@ -199,6 +202,8 @@ export default {
 
         await licensingsRepository.save(licensing);
 
+        await LogsLicensingsController.create(user_id, request, "create", licensing.id);
+
         return response.status(201).json(licensingView.render(licensing));
     },
 
@@ -288,6 +293,8 @@ export default {
 
         await licensingsRepository.update(id, licensing);
 
+        await LogsLicensingsController.create(user_id, request, "update", id);
+
         return response.status(204).json();
     },
 
@@ -299,7 +306,15 @@ export default {
 
         const licensingsRepository = getCustomRepository(LicensingsRepository);
 
+        const licensing = await licensingsRepository.findOneOrFail(id,
+            {
+                relations: ['customer']
+            }
+        );
+
         await licensingsRepository.delete(id);
+
+        await LogsUsersController.create("licensings", "remove", request, user_id, licensing.customer.name);
 
         return response.status(204).send();
     }

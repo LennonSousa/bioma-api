@@ -6,6 +6,8 @@ import propertyView from '../views/propertyView';
 import { PropertiesRepository } from '../repositories/PropertiesRepository';
 import { UsersRepository } from '../repositories/UsersRepository';
 import UsersRolesController from './UsersRolesController';
+import LogsPropertiesController from '../controllers/LogsPropertiesController';
+import LogsUsersController from '../controllers/LogsUsersController';
 
 export default {
     async index(request: Request, response: Response) {
@@ -62,7 +64,8 @@ export default {
                 'attachments.property',
                 'attachments.logs',
                 'members',
-                'members.user'
+                'members.user',
+                'logs',
             ]
         });
 
@@ -149,6 +152,8 @@ export default {
 
         await propertiesRepository.save(property);
 
+        await LogsPropertiesController.create(user_id, request, "create", property.id);
+
         return response.status(201).json(propertyView.render(property));
     },
 
@@ -210,6 +215,8 @@ export default {
 
         await propertiesRepository.update(id, property);
 
+        await LogsPropertiesController.create(user_id, request, "update", id);
+
         return response.status(204).json();
     },
 
@@ -221,7 +228,15 @@ export default {
 
         const propertiesRepository = getCustomRepository(PropertiesRepository);
 
+        const property = await propertiesRepository.findOneOrFail(id,
+            {
+                relations: ['customer']
+            }
+        );
+
         await propertiesRepository.delete(id);
+
+        await LogsUsersController.create("properties", "remove", request, user_id, `${property.name} - ${property.customer.name}`);
 
         return response.status(204).send();
     }

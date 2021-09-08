@@ -3,13 +3,12 @@ import { getCustomRepository, Equal } from 'typeorm';
 import * as Yup from 'yup';
 import fs from 'fs';
 import { format } from 'date-fns';
-import requestIp from 'request-ip';
 
 import customerAttachmentView from '../views/customerAttachmentView';
 import { CustomerAttachmentsRepository } from '../repositories/CustomerAttachmentsRepository';
 import LogsCustomerAttachmentsController from '../controllers/LogsCustomerAttachmentsController';
-import { UsersRepository } from '../repositories/UsersRepository';
 import UsersRolesController from './UsersRolesController';
+import LogsCustomersController from '../controllers/LogsCustomersController';
 
 export default {
     async index() {
@@ -52,13 +51,7 @@ export default {
 
         const download = customerAttachmentView.renderDownload(customerAttachment);
 
-        const userRepository = getCustomRepository(UsersRepository);
-
-        const user = await userRepository.findOneOrFail(user_id);
-
-        const clientIp = requestIp.getClientIp(request);
-
-        await LogsCustomerAttachmentsController.create(new Date(), user.name, 'view', clientIp, customerAttachment.id);
+        await LogsCustomerAttachmentsController.create(user_id, 'view', request, customerAttachment.id);
 
         return response.download(download.path);
     },
@@ -122,13 +115,7 @@ export default {
 
         await customerAttachmentsRepository.save(customerAttachment);
 
-        const userRepository = getCustomRepository(UsersRepository);
-
-        const user = await userRepository.findOneOrFail(user_id);
-
-        const clientIp = requestIp.getClientIp(request);
-
-        await LogsCustomerAttachmentsController.create(new Date(), user.name, 'create', clientIp, customerAttachment.id);
+        await LogsCustomerAttachmentsController.create(user_id, 'create', request, customerAttachment.id);
 
         return response.status(201).json(customerAttachmentView.render(customerAttachment));
     },
@@ -185,13 +172,7 @@ export default {
 
         await customerAttachmentsRepository.update(id, customerAttachment);
 
-        const userRepository = getCustomRepository(UsersRepository);
-
-        const user = await userRepository.findOneOrFail(user_id);
-
-        const clientIp = requestIp.getClientIp(request);
-
-        await LogsCustomerAttachmentsController.create(new Date(), user.name, 'update', clientIp, id);
+        await LogsCustomerAttachmentsController.create(user_id, 'update', request, id);
 
         return response.status(204).json();
     },
@@ -221,6 +202,14 @@ export default {
         }
 
         await customerAttachmentsRepository.delete(id);
+
+        await LogsCustomersController.create(
+            user_id,
+            request,
+            "remove",
+            customerAttachment.customer.id,
+            customerAttachment.name,
+        );
 
         return response.status(204).send();
     }

@@ -9,6 +9,7 @@ import projectLineView from './projectLineView';
 import eventProjectView from './eventProjectView';
 import attachmentView from './projectAttachmentView';
 import memberView from './projectMemberView';
+import logProjectView from './logProjectView';
 
 export default {
     render(project: Project) {
@@ -38,6 +39,7 @@ export default {
             events: project.events ? eventProjectView.renderMany(project.events) : [],
             attachments: project.attachments ? attachmentView.renderMany(project.attachments) : [],
             members: project.members ? memberView.renderMany(project.members) : [],
+            logs: project.logs ? logProjectView.renderMany(project.logs) : [],
         }
     },
 

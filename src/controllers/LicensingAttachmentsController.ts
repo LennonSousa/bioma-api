@@ -3,13 +3,12 @@ import { Equal, getCustomRepository } from 'typeorm';
 import * as Yup from 'yup';
 import fs from 'fs';
 import { format } from 'date-fns';
-import requestIp from 'request-ip';
 
 import licensingAttachmentView from '../views/licensingAttachmentView';
 import { LicensingAttachmentsRepository } from '../repositories/LicensingAttachmentsRepository';
 import LogsLicensingAttachmentsController from '../controllers/LogsLicensingAttachmentsController';
-import { UsersRepository } from '../repositories/UsersRepository';
 import UsersRolesController from './UsersRolesController';
+import LogsLicensingsController from '../controllers/LogsLicensingsController';
 
 export default {
     async index() {
@@ -53,13 +52,7 @@ export default {
 
         const download = licensingAttachmentView.renderDownload(licensingAttachment);
 
-        const userRepository = getCustomRepository(UsersRepository);
-
-        const user = await userRepository.findOneOrFail(user_id);
-
-        const clientIp = requestIp.getClientIp(request);
-
-        await LogsLicensingAttachmentsController.create(new Date(), user.name, 'view', clientIp, licensingAttachment.id);
+        await LogsLicensingAttachmentsController.create(user_id, 'view', request, licensingAttachment.id);
 
         return response.download(download.path);
     },
@@ -123,13 +116,7 @@ export default {
 
         await licensingAttachmentsRepository.save(licensingAttachment);
 
-        const userRepository = getCustomRepository(UsersRepository);
-
-        const user = await userRepository.findOneOrFail(user_id);
-
-        const clientIp = requestIp.getClientIp(request);
-
-        await LogsLicensingAttachmentsController.create(new Date(), user.name, 'create', clientIp, licensingAttachment.id);
+        await LogsLicensingAttachmentsController.create(user_id, 'create', request, licensingAttachment.id);
 
         return response.status(201).json(licensingAttachmentView.render(licensingAttachment));
     },
@@ -186,13 +173,7 @@ export default {
 
         await licensingAttachmentsRepository.update(id, licensingAttachment);
 
-        const userRepository = getCustomRepository(UsersRepository);
-
-        const user = await userRepository.findOneOrFail(user_id);
-
-        const clientIp = requestIp.getClientIp(request);
-
-        await LogsLicensingAttachmentsController.create(new Date(), user.name, 'update', clientIp, id);
+        await LogsLicensingAttachmentsController.create(user_id, 'update', request, id);
 
         return response.status(204).json();
     },
@@ -222,6 +203,14 @@ export default {
         }
 
         await licensingAttachmentsRepository.delete(id);
+
+        await LogsLicensingsController.create(
+            user_id,
+            request,
+            'remove',
+            licensingAttachment.licensing.id,
+            licensingAttachment.name,
+        );
 
         return response.status(204).send();
     }

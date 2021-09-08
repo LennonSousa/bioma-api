@@ -5,6 +5,7 @@ import customerMemberView from './customerMemberView';
 import licensingMemberView from './licensingMemberView';
 import projectMemberView from './projectMemberView';
 import propertyMemberView from './propertyMemberView';
+import logUserView from './logUserView';
 
 export default {
     render(user: User) {
@@ -23,6 +24,7 @@ export default {
             licensingMembers: user.licensingMembers ? licensingMemberView.renderMany(user.licensingMembers) : [],
             projectMembers: user.projectMembers ? projectMemberView.renderMany(user.projectMembers) : [],
             propertyMembers: user.propertyMembers ? propertyMemberView.renderMany(user.propertyMembers) : [],
+            logs: user.logs ? logUserView.renderMany(user.logs) : [],
         }
     },
 

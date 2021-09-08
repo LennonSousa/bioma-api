@@ -10,6 +10,7 @@ import ProjectLine from './ProjectLinesModel';
 import Event from './EventsProjectModel';
 import Attachment from './ProjectAttachmentsModel';
 import Member from './ProjectMembersModel';
+import Log from './LogsProjectsModel';
 
 @Entity('projects')
 export default class ProjectsModel {
@@ -101,4 +102,10 @@ export default class ProjectsModel {
     })
     @JoinColumn({ name: 'project_id' })
     members: Member[];
+
+    @OneToMany(() => Log, log => log.project, {
+        cascade: ['insert', 'update']
+    })
+    @JoinColumn({ name: 'project_id' })
+    logs: Log[];
 }

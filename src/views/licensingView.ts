@@ -11,6 +11,7 @@ import projectLineView from './projectLineView';
 import eventLicensingView from './eventLicensingView';
 import attachmentView from './licensingAttachmentView';
 import memberView from './licensingMemberView';
+import logLicensingView from './logLicensingView';
 
 export default {
     render(licensing: Licensing) {
@@ -43,6 +44,7 @@ export default {
             events: licensing.events ? eventLicensingView.renderMany(licensing.events) : [],
             attachments: licensing.attachments ? attachmentView.renderMany(licensing.attachments) : [],
             members: licensing.members ? memberView.renderMany(licensing.members) : [],
+            logs: licensing.logs ? logLicensingView.renderMany(licensing.logs) : [],
         }
     },
 

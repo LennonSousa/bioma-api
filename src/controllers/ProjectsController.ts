@@ -6,6 +6,8 @@ import UsersRolesController from './UsersRolesController';
 
 import projectView from '../views/projectView';
 import { ProjectsRepository } from '../repositories/ProjectsRepository';
+import LogsProjectsController from '../controllers/LogsProjectsController';
+import LogsUsersController from '../controllers/LogsUsersController';
 
 export default {
     async index(request: Request, response: Response) {
@@ -106,7 +108,8 @@ export default {
                 'attachments.project',
                 'attachments.logs',
                 'members',
-                'members.user'
+                'members.user',
+                'logs',
             ]
         });
 
@@ -207,6 +210,8 @@ export default {
 
         await projectsRepository.save(project);
 
+        await LogsProjectsController.create(user_id, request, "create", project.id);
+
         return response.status(201).json(projectView.render(project));
     },
 
@@ -289,6 +294,8 @@ export default {
 
         await projectsRepository.update(id, project);
 
+        await LogsProjectsController.create(user_id, request, "update", id);
+
         return response.status(204).json();
     },
 
@@ -300,7 +307,15 @@ export default {
 
         const projectsRepository = getCustomRepository(ProjectsRepository);
 
+        const project = await projectsRepository.findOneOrFail(id,
+            {
+                relations: ['customer']
+            }
+        );
+
         await projectsRepository.delete(id);
+
+        await LogsUsersController.create("projects", "remove", request, user_id, project.customer.name);
 
         return response.status(204).send();
     }

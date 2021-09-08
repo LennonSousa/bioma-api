@@ -4,6 +4,7 @@ import propertyDocView from './propertyDocView';
 import projectView from './projectView';
 import memberView from './propertyMemberView';
 import attachmentView from './propertyAttachmentView';
+import logPropertyView from './logPropertyView';
 
 export default {
     render(property: Property) {
@@ -26,6 +27,7 @@ export default {
             projects: property.projects ? projectView.renderMany(property.projects) : [],
             members: property.members ? memberView.renderMany(property.members) : [],
             attachments: property.attachments ? attachmentView.renderMany(property.attachments) : [],
+            logs: property.logs ? logPropertyView.renderMany(property.logs) : [],
         }
     },
 
