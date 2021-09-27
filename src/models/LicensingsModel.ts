@@ -6,9 +6,7 @@ import LicensingInfringement from './LicensingInfringementsModel';
 import LicensingAuthorization from './LicensingAuthorizationsModel';
 import LicensingAgency from './LicensingAgenciesModel';
 import LicensingStatus from './LicensingStatusModel';
-import Bank from './BanksModel';
 import ProjectType from './ProjectTypesModel';
-import ProjectLine from './ProjectLinesModel';
 import Event from './EventsLicensingModel';
 import Attachment from './LicensingAttachmentsModel';
 import Member from './LicensingMembersModel';
@@ -88,17 +86,9 @@ export default class LicensingsModel {
     @JoinColumn({ name: 'licensing_status_id' })
     status: LicensingStatus;
 
-    @ManyToOne(() => Bank, bank => bank.licensings)
-    @JoinColumn({ name: 'bank_id' })
-    bank: Bank;
-
     @ManyToOne(() => ProjectType, projectType => projectType.licensings)
     @JoinColumn({ name: 'project_type_id' })
     type: ProjectType;
-
-    @ManyToOne(() => ProjectLine, projectLine => projectLine.licensings)
-    @JoinColumn({ name: 'project_line_id' })
-    line: ProjectLine;
 
     @OneToMany(() => Event, event => event.licensing)
     @JoinColumn({ name: 'licensing_id' })

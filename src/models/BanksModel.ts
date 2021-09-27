@@ -2,7 +2,6 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColum
 
 import Institution from './InstitutionsModel';
 import Project from './ProjectsModel';
-import Licensing from './LicensingsModel';
 
 @Entity('banks')
 export default class BanksModel {
@@ -40,8 +39,4 @@ export default class BanksModel {
     @OneToMany(() => Project, project => project.bank)
     @JoinColumn({ name: 'bank_id' })
     projects: Project[];
-
-    @OneToMany(() => Licensing, licensing => licensing.bank)
-    @JoinColumn({ name: 'bank_id' })
-    licensings: Licensing[];
 }

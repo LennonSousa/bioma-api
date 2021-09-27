@@ -5,9 +5,7 @@ import licensingInfringmentView from './licensingInfringementView';
 import licensingAuthorizationView from './licensingAuthorizationView';
 import licensingAgencyView from './licensingAgencyView';
 import licensingStatusView from './licensingStatusView';
-import bankView from './bankView';
 import projectTypeView from './projectTypeView';
-import projectLineView from './projectLineView';
 import eventLicensingView from './eventLicensingView';
 import attachmentView from './licensingAttachmentView';
 import memberView from './licensingMemberView';
@@ -38,9 +36,7 @@ export default {
             authorization: licensing.authorization && licensingAuthorizationView.render(licensing.authorization),
             agency: licensing.agency && licensingAgencyView.render(licensing.agency),
             status: licensing.status && licensingStatusView.render(licensing.status),
-            bank: licensing.bank && bankView.render(licensing.bank),
             type: licensing.type && projectTypeView.render(licensing.type),
-            line: licensing.line && projectLineView.render(licensing.line),
             events: licensing.events ? eventLicensingView.renderMany(licensing.events) : [],
             attachments: licensing.attachments ? attachmentView.renderMany(licensing.attachments) : [],
             members: licensing.members ? memberView.renderMany(licensing.members) : [],

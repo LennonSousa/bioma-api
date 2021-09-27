@@ -93,10 +93,7 @@ export default {
                 'authorization',
                 'agency',
                 'status',
-                'bank',
-                'bank.institution',
                 'type',
-                'line',
                 'events',
                 'attachments',
                 'attachments.licensing',
@@ -134,9 +131,7 @@ export default {
             authorization,
             agency,
             status,
-            bank,
             type,
-            line,
             members,
         } = request.body;
 
@@ -164,9 +159,7 @@ export default {
             authorization,
             agency,
             status,
-            bank,
             type,
-            line,
             members,
             created_by: user.name,
             updated_by: user.name,
@@ -185,8 +178,6 @@ export default {
             agency: Yup.string().required(),
             status: Yup.string().required(),
             type: Yup.string().required(),
-            line: Yup.string().required(),
-            bank: Yup.string().required(),
             members: Yup.array(
                 Yup.object().shape({
                     user: Yup.string().required(),
@@ -231,9 +222,7 @@ export default {
             authorization,
             agency,
             status,
-            bank,
             type,
-            line,
         } = request.body;
 
         const licensingsRepository = getCustomRepository(LicensingsRepository);
@@ -262,9 +251,7 @@ export default {
             authorization,
             agency,
             status,
-            bank,
             type,
-            line,
         };
 
         const schema = Yup.object().shape({
@@ -281,8 +268,6 @@ export default {
             agency: Yup.string().required(),
             status: Yup.string().required(),
             type: Yup.string().required(),
-            line: Yup.string().required(),
-            bank: Yup.string().required(),
         });
 
         await schema.validate(data, {
