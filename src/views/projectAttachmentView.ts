@@ -1,6 +1,7 @@
 import ProjectAttachment from '../models/ProjectAttachmentsModel';
 import projectView from './projectView';
 import logProjectAttachment from './logProjectAttachmentView';
+import shareProjectAttachmentView from './shareProjectAttachmentView';
 
 export default {
     render(projectAttachment: ProjectAttachment) {
@@ -16,6 +17,7 @@ export default {
             order: projectAttachment.order,
             project: projectAttachment.project && projectView.render(projectAttachment.project),
             logs: projectAttachment.logs ? logProjectAttachment.renderMany(projectAttachment.logs) : [],
+            shares: projectAttachment.shares ? shareProjectAttachmentView.renderMany(projectAttachment.shares) : [],
         }
     },
 

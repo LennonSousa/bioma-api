@@ -153,6 +153,27 @@ class Mailer {
         });
     }
 
+    async sendShareAttachment(name: string, email: string, file: string, link: string) {
+        const variables = {
+            store_name: process.env.STORE_NAME,
+            name,
+            file,
+            link,
+            current_year: getYear(new Date()),
+        }
+
+        const templatePath = resolve(__dirname, "..", "views", "emails", "shareAttachment.hbs");
+
+        const text = `Você recebeu um arquivo compartilhado.`;
+
+        await this.execute(email, "Arquivo compartilhado.", variables, templatePath, text).then(() => {
+            return true;
+        }).catch(err => {
+            console.log('Error to send share attachment e-mail: ', err);
+            return false
+        });
+    }
+
     async sendUserConfirmedResetPassword(name: string, email: string) {
         const variables = {
             store_name: process.env.STORE_NAME,

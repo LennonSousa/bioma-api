@@ -2,6 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColum
 
 import Property from './PropertiesModel';
 import Log from './LogsPropertyAttachmentsModel';
+import Share from './SharesPropertyAttachmentModel';
 
 @Entity('property_attachments')
 export default class PropertyAttachmentsModel {
@@ -41,4 +42,8 @@ export default class PropertyAttachmentsModel {
     })
     @JoinColumn({ name: 'attachment_id' })
     logs: Log[];
+
+    @OneToMany(() => Share, share => share.attachment)
+    @JoinColumn({ name: 'attachment_id' })
+    shares: Share[];
 }

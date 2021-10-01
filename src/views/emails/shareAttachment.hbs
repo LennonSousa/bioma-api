@@ -24,9 +24,10 @@
         <div style="margin-top: 15px; padding-right: 5px; padding-left: 5px;">
             <h2 style="font-family: Nunito, sans-serif;
             font-weight: 700;
-            font-size: 20px;">Olá {{name}},</h2>
-            <p style="color: #303030; font-size: 16px">Recebemos a sua solicitação para trocar a sua senha,</p>
-            <span style="color: #666666;">para prosseguir, clique no botão a seguir:</span>
+            font-size: 20px;">Olá,</h2>
+            <p style="color: #303030; font-size: 16px">{{name}} compartilhou o seguinte arquivo com você:</p>
+            <p style="color: #303030; font-size: 16px"><strong>{{file}}</strong></p>
+            <p style="color: #303030;">para visualizá-lo, clique no botão a seguir:</p>
         </div>
 
         <div>
@@ -39,14 +40,13 @@
             display: inline-block;
             text-decoration: none;
             border-radius: 5px;" href="{{link}}" rel="noopener noreferrer" target="_blank">
-                Trocar a minha senha
+                Visualizar arquivo
             </a>
         </div>
 
         <div style="margin-top: 15px; padding-right: 5px; padding-left: 5px;">
-            <p style="color: #303030; font-size: 16px">A solicitação enviada é válida por até 06 horas.</p>
-            <p style="color: #303030; font-size: 16px">Caso não tenha sido você que solicitou a troca da sua senha,
-                ignore este e-mail.</p>
+            <p style="color: #666666; font-size: 16px">Para visualizar o arquivo você precisa aceitar os termos e
+                condições.</p>
         </div>
 
         <div style="min-height: 70px;

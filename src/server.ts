@@ -7,6 +7,7 @@ import tasks from './modules/tasks';
 import errorHandler from './errors/handler';
 import userPublicRoutes from './routes/user.public.routes';
 import userAuthRoutes from './routes/user.auth.routes';
+import customerAuthRoutes from './routes/customer.auth.routes';
 
 require('dotenv/config');
 
@@ -24,6 +25,7 @@ app.use(express.json());
 
 app.use(userPublicRoutes);
 app.use(userAuthRoutes);
+app.use(customerAuthRoutes);
 app.use(errorHandler);
 
 app.listen(process.env.PORT || 3333, () => {

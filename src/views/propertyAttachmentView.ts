@@ -1,6 +1,7 @@
 import PropertyAttachment from '../models/PropertyAttachmentsModel';
 import propertyView from './propertyView';
 import logPropertyAttachment from './logPropertyAttachmentView';
+import sharePropertyAttachmentView from './sharePropertyAttachmentView';
 
 export default {
     render(propertyAttachment: PropertyAttachment) {
@@ -16,6 +17,7 @@ export default {
             order: propertyAttachment.order,
             property: propertyAttachment.property && propertyView.render(propertyAttachment.property),
             logs: propertyAttachment.logs ? logPropertyAttachment.renderMany(propertyAttachment.logs) : [],
+            shares: propertyAttachment.shares ? sharePropertyAttachmentView.renderMany(propertyAttachment.shares) : [],
         }
     },
 

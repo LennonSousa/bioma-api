@@ -2,6 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColum
 
 import Licensing from './LicensingsModel';
 import Log from './LogsLicensingAttachmentsModel';
+import Share from './SharesLicensingAttachmentModel';
 
 @Entity('licensing_attachments')
 export default class LicensingAttachmentsModel {
@@ -41,4 +42,8 @@ export default class LicensingAttachmentsModel {
     })
     @JoinColumn({ name: 'attachment_id' })
     logs: Log[];
+
+    @OneToMany(() => Share, share => share.attachment)
+    @JoinColumn({ name: 'attachment_id' })
+    shares: Share[];
 }

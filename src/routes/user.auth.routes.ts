@@ -51,6 +51,10 @@ import NotificationsController from '../controllers/NotificationsController';
 import ReportsController from '../controllers/ReportsController';
 
 import usersAuthMiddleware from '../middlewares/usersAuth';
+import SharesLicensingAttachmentController from '../controllers/SharesLicensingAttachmentController';
+import SharesCustomerAttachmentController from '../controllers/SharesCustomerAttachmentController';
+import SharesProjectAttachmentController from '../controllers/SharesProjectAttachmentController';
+import SharesPropertyAttachmentController from '../controllers/SharesPropertyAttachmentController';
 
 const userAuthRoutes = express.Router();
 
@@ -252,5 +256,17 @@ userAuthRoutes.get('/reports/customers', usersAuthMiddleware, ReportsController.
 userAuthRoutes.get('/reports/licensings', usersAuthMiddleware, ReportsController.licensings);
 userAuthRoutes.get('/reports/projects', usersAuthMiddleware, ReportsController.projects);
 userAuthRoutes.get('/reports/properties', usersAuthMiddleware, ReportsController.properties);
+
+userAuthRoutes.post('/shares/customers', usersAuthMiddleware, SharesCustomerAttachmentController.create);
+userAuthRoutes.delete('/shares/customers/:id', usersAuthMiddleware, SharesCustomerAttachmentController.delete);
+
+userAuthRoutes.post('/shares/licensings', usersAuthMiddleware, SharesLicensingAttachmentController.create);
+userAuthRoutes.delete('/shares/licensings/:id', usersAuthMiddleware, SharesLicensingAttachmentController.delete);
+
+userAuthRoutes.post('/shares/projects', usersAuthMiddleware, SharesProjectAttachmentController.create);
+userAuthRoutes.delete('/shares/projects/:id', usersAuthMiddleware, SharesProjectAttachmentController.delete);
+
+userAuthRoutes.post('/shares/properties', usersAuthMiddleware, SharesPropertyAttachmentController.create);
+userAuthRoutes.delete('/shares/properties/:id', usersAuthMiddleware, SharesPropertyAttachmentController.delete);
 
 export default userAuthRoutes;

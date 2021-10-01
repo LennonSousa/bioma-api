@@ -1,6 +1,7 @@
 import LicensingAttachment from '../models/LicensingAttachmentsModel';
 import licensingView from './licensingView';
 import logLicensingAttachment from './logLicensingAttachmentView';
+import shareLicensingAttachmentView from './shareLicensingAttachmentView';
 
 export default {
     render(licensingAttachment: LicensingAttachment) {
@@ -16,6 +17,7 @@ export default {
             order: licensingAttachment.order,
             licensing: licensingAttachment.licensing && licensingView.render(licensingAttachment.licensing),
             logs: licensingAttachment.logs ? logLicensingAttachment.renderMany(licensingAttachment.logs) : [],
+            shares: licensingAttachment.shares ? shareLicensingAttachmentView.renderMany(licensingAttachment.shares) : [],
         }
     },
 

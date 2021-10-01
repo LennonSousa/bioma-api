@@ -1,6 +1,7 @@
 import CustomerAttachment from '../models/CustomerAttachmentsModel';
 import customerView from './customerView';
 import logCustomerAttachment from './logCustomerAttachmentView';
+import shareCustomerAttachmentView from './shareCustomerAttachmentView';
 
 require('dotenv/config');
 
@@ -18,6 +19,7 @@ export default {
             order: customerAttachment.order,
             customer: customerAttachment.customer && customerView.render(customerAttachment.customer),
             logs: customerAttachment.logs ? logCustomerAttachment.renderMany(customerAttachment.logs) : [],
+            shares: customerAttachment.shares ? shareCustomerAttachmentView.renderMany(customerAttachment.shares) : [],
         }
     },
 
