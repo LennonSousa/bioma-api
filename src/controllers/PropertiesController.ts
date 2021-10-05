@@ -63,6 +63,7 @@ export default {
                 'attachments',
                 'attachments.property',
                 'attachments.logs',
+                'attachments.shares',
                 'members',
                 'members.user',
                 'logs',

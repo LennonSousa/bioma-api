@@ -98,6 +98,7 @@ export default {
                 'attachments',
                 'attachments.licensing',
                 'attachments.logs',
+                'attachments.shares',
                 'members',
                 'members.user',
                 'logs',

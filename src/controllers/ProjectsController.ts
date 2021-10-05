@@ -107,6 +107,7 @@ export default {
                 'attachments',
                 'attachments.project',
                 'attachments.logs',
+                'attachments.shares',
                 'members',
                 'members.user',
                 'logs',

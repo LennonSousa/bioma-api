@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { addHours } from 'date-fns';
+import { isAfter } from 'date-fns';
 import mailer from '../modules/mailer';
 
 import { UsersRepository } from '../repositories/UsersRepository';
@@ -39,6 +39,7 @@ export default {
 
         const {
             email,
+            expire_at,
             attachment,
         } = request.body;
 
@@ -54,8 +55,6 @@ export default {
         const tempPassword = crypto.randomBytes(10).toString('hex');
         const hash = await bcrypt.hash(tempPassword, 10);
 
-        const expire_at = addHours(new Date(), 48);
-
         const data = {
             email,
             token: hash,
@@ -66,7 +65,8 @@ export default {
 
         // Validation fields.
         const schema = Yup.object().shape({
-            email: Yup.string().required(),
+            email: Yup.string().email().required(),
+            expire_at: Yup.date().required(),
             attachment: Yup.string().required(),
         });
 
@@ -125,7 +125,7 @@ export default {
             relations: ['attachment']
         });
 
-        if (new Date() > foundShareAttachment.expire_at) {
+        if (isAfter(new Date(), foundShareAttachment.expire_at)) {
             return response.status(400).json({
                 error: 'Expired user token!',
                 code: 'expired',
