@@ -83,7 +83,7 @@ export default {
                 user.name,
                 email,
                 attachmentFile.name,
-                `${process.env.APP_URL}/shares/projects/auth?share=${shareAttachment.id}&token=${tempPassword}`
+                `${process.env.APP_URL}/shares/auth?item=projects&share=${shareAttachment.id}&token=${tempPassword}`
             ).then(async () => {
                 await LogsProjectAttachmentsController.create(user_id, 'update', request, attachmentFile.id);
 

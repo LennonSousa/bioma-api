@@ -83,7 +83,7 @@ export default {
                 user.name,
                 email,
                 attachmentFile.name,
-                `${process.env.APP_URL}/shares/licensings/auth?share=${shareAttachment.id}&token=${tempPassword}`
+                `${process.env.APP_URL}/shares/auth?item=licensings&share=${shareAttachment.id}&token=${tempPassword}`
             ).then(async () => {
                 await LogsLicensingAttachmentsController.create(user_id, 'update', request, attachmentFile.id);
 
