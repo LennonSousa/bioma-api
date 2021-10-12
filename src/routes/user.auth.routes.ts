@@ -55,6 +55,7 @@ import SharesLicensingAttachmentController from '../controllers/SharesLicensingA
 import SharesCustomerAttachmentController from '../controllers/SharesCustomerAttachmentController';
 import SharesProjectAttachmentController from '../controllers/SharesProjectAttachmentController';
 import SharesPropertyAttachmentController from '../controllers/SharesPropertyAttachmentController';
+import PropertyAvaliationsController from '../controllers/PropertyAvaliationsController';
 
 const userAuthRoutes = express.Router();
 
@@ -238,6 +239,12 @@ userAuthRoutes.get('/properties/attachments/:id', usersAuthMiddleware, PropertyA
 userAuthRoutes.post('/properties/:id/attachments', usersAuthMiddleware, UploadsConfig('properties').single('file'), PropertyAttachmentsController.create);
 userAuthRoutes.put('/properties/attachments/:id', usersAuthMiddleware, PropertyAttachmentsController.update);
 userAuthRoutes.delete('/properties/attachments/:id', usersAuthMiddleware, PropertyAttachmentsController.delete);
+
+userAuthRoutes.get('/properties/avaliations', usersAuthMiddleware, PropertyAvaliationsController.index);
+userAuthRoutes.get('/properties/avaliations/:id', usersAuthMiddleware, PropertyAvaliationsController.show);
+userAuthRoutes.post('/properties/avaliations', usersAuthMiddleware, PropertyAvaliationsController.create);
+userAuthRoutes.put('/properties/avaliations/:id', usersAuthMiddleware, PropertyAvaliationsController.update);
+userAuthRoutes.delete('/properties/avaliations/:id', usersAuthMiddleware, PropertyAvaliationsController.delete);
 
 userAuthRoutes.get('/properties', usersAuthMiddleware, PropertiesController.index);
 userAuthRoutes.get('/properties/:id', usersAuthMiddleware, PropertiesController.show);
